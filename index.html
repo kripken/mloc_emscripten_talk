@@ -44,19 +44,192 @@
           <h2>Overview</h2>
           <ul>
             <li>Compiling to JavaScript</li>
-            <li>Demo to motivate</li>
+            <li>Demo to motivate?</li>
             <li>Logic to motivate</li>
             <li>History/Some successful sites</li>
             <li>Tools: Link to list of compiled languages</li>
             <li>Emscripten - <small>example tool i know well, and several slides on how it works</small></li>
             <li>Demos - BananaBread, Qt, bullet, mruby, gnuplot</li>
             <li>asm.js ??????????</li>
-            <li></li>
-            <li></li>
-            <li></li>
+            <li>Summary</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Compiling to JS - Nothing New!</h2>
+          <ul>
+            <li><b>2006</b>: <b>Google Web Toolkit (GWT)</b>, which compiles Java into JavaScript</li>
+            <li><b>2007</b>: <b>pyjamas</b>, which compiles Python into JavaScript</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Plenty of Languages</h2>
+          <ul>
+            <li><a href="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">Jeremy Ashkenas's list</a> has over a hundred</li>
+            <li class="zfragment">Two main kinds:
+              <ul>
+                <li class="zfragment"><b>Established</b> languages: C, C++, Java, C#, Python, etc.</li>
+                <li class="zfragment"><b>New languages</b> intended for compilation to JavaScript: CoffeeScript, TypeScript, Dart, Roy, etc.</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Widespread Adoption</h2>
+          <ul>
+            <li><b>Java (GWT)</b> used in <a href="http://www.blogger.com/">Blogger</a>, many enterprise apps</li>
+            <li><b>C# (Script#)</b> used in <a href="http://office.microsoft.com/en-us/web-apps">Microsoft Office Web Apps</a></li>
+            <li>Such applications can consist of <a href="http://blogs.msdn.com/b/ie/archive/2011/11/22/evolving-ecmascript.aspx">hundreds of thousands of lines of code</a> or more</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Why is this approach successful?</h2>
+        </section>
+
+        <section>
+          <h2>1. Language Features</h2>
+          <ul>
+            <li>Static typing</li>
+            <li>Existing tools</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>2. Performance</h2>
+          <ul>
+            <li>Compiled JavaScript can be <b>faster</b> than "regular" handwritten JavaScript</li>
+            <li class="fragment">Wait, compiled JavaScript is a <b>subset</b> of JavaScript! How can it be faster?</li>
+            <li class="fragment">That's what I want to talk to you about :)</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>One Step Back:<br>How Compilation Works</h2>
+          <ul>
+            <br>
+            <p><b style="color: #ff7700">C/C++</b> &nbsp&nbsp <b>=></b> &nbsp&nbsp <b style="color: #7744aa">LLVM</b> &nbsp&nbsp <b>=></b> &nbsp&nbsp <b style="color: #0077ff">Emscripten</b> &nbsp&nbsp <b>=></b> &nbsp&nbsp <b style="color: #77aa44">JavaScript</b></p>
+          </ul>
+        </section>
+
+        <section>
+          <h2>LLVM Optimizations</h2>
+          <p><b>LLVM's optimizer</b> uses type information to perform many useful optimizations. Decades of work have gone into developing optimization passes for C/C++ compilers.</p>
+          <br>
+          <p><small><span style="color: #ccc">...dce</span><span style="color: #999">, inline</span><span style="color: #666">, constmerge</span><span style="color: #333">, constprop</span><span style="color: #000">, dse</span><span style="color: #000">, licm</span><span style="color: #333">, gvn</span><span style="color: #666">, instcombine</span><span style="color: #999">, mem2reg</span><span style="color: #ccc">, scalarrepl..</span></small></p>
+        </section>
+
+        <section>
+          <h2>LLVM Optimizations</h2>
+          <p>These optimization are only available for compiled code!</p><p>Reproducing it manually on a huge "normal" JavaScript codebase would be
+            <ul>
+              <li>extremely <b>hard and time-consuming</b>, and</li>
+              <li>make the code <b>less maintainable</b></li>
+            </ul>
+          </p>
+        </section>
+
+        <section>
+          <h2>JavaScript Engine Optimizations</h2>
+          <ul>
+            <li>Modern JavaScript engines can infer types at runtime</li>
+            <li>This especially helps on code that is <b>implicitly typed</b> - which is exactly what compiled code is!</li>
+          </ul>
+          <p>
+            <pre><code contenteditable>
+  function compiledCalculation() {
+    var x = f()|0;  // x is a 32-bit value
+    var y = g()|0;  // so is y
+    return (x+y)|0; // 32-bit addition, no type or overflow checks
+  }
+            </code></pre>
+          </p>
+        </section>
+
+        <section>
+          <h2>Benchmarks</h2>
+          <table style="border: 1px solid">
+          <tr>
+          <td><b>Benchmark</b></td><td><b>Firefox + asm.js</b></td><td><b>Firefox</b></td><td><b>Chrome</b></td>
+          </tr>
+          <tr>
+          <td>Fannkuch</td><td>1.5</td><td>2.5</td><td>3.5</td>
+          </tr>
+          <tr>
+          <td>Fannkuch</td><td>1.5</td><td>2.5</td><td>3.5</td>
+          </tr>
+          </table>
+        </section>
+
+        <section>
+          <h2></h2>
+          <ul>
             <li></li>
           </ul>
         </section>
+
+        <section>
+          <h2></h2>
+          <ul>
+            <li></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2></h2>
+          <ul>
+            <li></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2></h2>
+          <ul>
+            <li></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2></h2>
+          <ul>
+            <li></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2></h2>
+          <ul>
+            <li></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2></h2>
+          <ul>
+            <li></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2></h2>
+          <ul>
+          </ul>
+        </section>
+
+        <section>
+          <h2></h2>
+        </section>
+
+        <section>
+          <h2></h2>
+        </section>
+
+        <section>
+          <h2></h2>
+        </section>
+
         <section>
           <h2>Heads Up</h2>
           <p>
