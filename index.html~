@@ -41,21 +41,6 @@
         </section>
 
         <section>
-          <h2>Overview</h2>
-          <ul>
-            <li>Compiling to JavaScript</li>
-            <li>Demo to motivate?</li>
-            <li>Logic to motivate</li>
-            <li>History/Some successful sites</li>
-            <li>Tools: Link to list of compiled languages</li>
-            <li>Emscripten - <small>example tool i know well, and several slides on how it works</small></li>
-            <li>Demos - BananaBread, Qt, bullet, mruby, gnuplot</li>
-            <li>asm.js ??????????</li>
-            <li>Summary</li>
-          </ul>
-        </section>
-
-        <section>
           <h2>Compiling to JS - Nothing New!</h2>
           <ul>
             <li><b>2006</b>: <b>Google Web Toolkit (GWT)</b>, which compiles Java into JavaScript</li>
@@ -74,6 +59,7 @@
               </ul>
             </li>
           </ul>
+XXX I'll focus on the former, and specifically C/C++
         </section>
 
         <section>
@@ -99,6 +85,12 @@
 
         <section>
           <h2>2. Performance</h2>
+          <p>JavaScript engines have gotten fast enough to run large compiled codebases</p>
+          <p>Late 2008/early 2009: <b>V8</b>, <b>TraceMonkey</b>, and <b>Nitro</b> were released, and the race for JavaScript speed was on</p>
+        </section>
+
+        <section>
+          <h2>2. Performance</h2>
           <ul>
             <li>Compiled JavaScript can be <b>faster</b> than "regular" handwritten JavaScript</li>
             <li class="fragment">Wait, compiled JavaScript is a <b>subset</b> of JavaScript! How can it be faster?</li>
@@ -117,12 +109,13 @@
         <section>
           <h2>LLVM Optimizations</h2>
           <p><b>LLVM's optimizer</b> uses type information to perform many useful optimizations. Decades of work have gone into developing optimization passes for C/C++ compilers.</p>
+          <br>
           <p><small><span style="color: #ccc">...dce</span><span style="color: #999">, inline</span><span style="color: #666">, constmerge</span><span style="color: #333">, constprop</span><span style="color: #000">, dse</span><span style="color: #000">, licm</span><span style="color: #333">, gvn</span><span style="color: #666">, instcombine</span><span style="color: #999">, mem2reg</span><span style="color: #ccc">, scalarrepl..</span></small></p>
         </section>
 
         <section>
           <h2>LLVM Optimizations</h2>
-          <p>These optimization are only available for compiled code!</p><p>Reproducing it manually on a huge "normal" JavaScript codebase would be
+          <p>These optimization are only available for compiled code!</p><p>Reproducing them manually on a huge "normal" JavaScript codebase would be
             <ul>
               <li>extremely <b>hard and time-consuming</b>, and</li>
               <li>make the code <b>less maintainable</b></li>
@@ -131,10 +124,10 @@
         </section>
 
         <section>
-          <h2>JavaScript Engine Optimizations</h2>
+          <h2>JavaScript Engine Optimizations - 1</h2>
           <ul>
-            <li>Modern JavaScript engines can infer types at runtime</li>
-            <li>This especially helps on code that is <b>implicitly typed</b> - which is exactly what compiled code is!</li>
+            <li>Modern JavaScript engines can <b>infer types</b> at runtime</li>
+            <li>This especially helps on code that is implicitly typed - which is exactly what compiled code is!</li>
           </ul>
           <p>
             <pre><code contenteditable>
@@ -148,32 +141,106 @@
         </section>
 
         <section>
-          <h2>Benchmarks</h2>
+          <h2>JavaScript Engine Optimizations - 2</h2>
+          <ul>
+            <li>Modern JavaScript engines optimize <b>typed arrays</b> very well</li>
+            <li>Compiled code can use a singleton typed array as memory</li>
+          </ul>
+          <p>
+            <pre><code contenteditable>
+  var MEM = new Uint8Array(1024*1024);
+
+  function compiledMemoryAccess(x) {
+    // ...
+    MEM[x] = MEM[x+10]; // read from x+10, write to x
+    // ...
+  }
+            </code></pre>
+          </p>
+        </section>
+
+        <section>
+          <h2>Benchmarks (X slower than native/gcc -O2, lower is better XXX copy to other places)</h2>
           <table style="border: 1px solid">
-          <tr>
-          <td><b>Benchmark</b></td><td><b>Firefox + asm.js</b></td><td><b>Firefox</b></td><td><b>Chrome</b></td>
-          </tr>
-          <tr>
-          <td>Fannkuch</td><td>1.5</td><td>2.5</td><td>3.5</td>
-          </tr>
-          <tr>
-          <td>Fannkuch</td><td>1.5</td><td>2.5</td><td>3.5</td>
-          </tr>
+            <tr><td><b>Benchmark</b></td><td><b>Firefox</b></td><td><b>Chrome</b></td></tr>
+            <tr> <td>Copy</td>        <td> 1.75</td> <td>2.00</td> </tr>
+            <tr> <td>Corrections</td> <td> 1.75</td> <td>1.68</td> </tr>
+            <tr> <td>Fannkuch</td>    <td> 3.45</td> <td>20.54</td> </tr>
+            <tr> <td>Fasta</td>       <td> 3.21</td> <td>10.47</td> </tr>
+            <tr> <td>Life</td>        <td> 1.93</td> <td>11.48<a href="http://code.google.com/p/v8/issues/detail?id=2513">(bug)</a></td> </tr>
+            <tr> <td>Memops</td>      <td> 2.83</td> <td>2.90</td> </tr>
+            <tr> <td>Primes</td>      <td> 1.50</td> <td>2.44</td> </tr>
+            <tr> <td>Skinning</td>    <td>13.08</td> <td>61.20<a href="http://code.google.com/p/v8/issues/detail?id=2223">(bug)</a></td> </tr>
+            <tr> <td>Zlib</td>        <td> 5.17</td> <td>5.77</td> </tr>
+            <tr> <td>Bullet</td>      <td>12.69</td> <td>9.76</td> </tr>
           </table>
         </section>
 
         <section>
-          <h2></h2>
+          <h2>4x slower than native.<br>Can we do better?</h2>
+          <h2 class="fragment" style="color: #f73">Yes!</h2>
+        </section>
+
+        <section>
+          <h2>asm.js</h2>
+          <p>A <a href="https://github.com/dherman/asm.js">research project</a> at Mozilla that aims to formally
+             define the subset of JavaScript that compilers like Emscripten and Mandreel
+             <b>already</b> generate: implicitly-typed computations, singleton typed array, etc.
+          </p>
+        </section>
+
+        <section>
+          <h2>asm.js - Formal type system benefits</h2>
           <ul>
-            <li></li>
+            <li>Can validate that a compiler generates JavaScript that fits the spec</li>
+            <li>JavaScript engines can analyze code using the spec and optimize more easily</li>
           </ul>
         </section>
 
         <section>
-          <h2></h2>
+          <h2>asm.js - Easier Optimization</h2>
           <ul>
-            <li></li>
+            <li>Types of variables pop out of the type system execution XXXX</li>
+            <li>Guarantee that there are no speed bumps: No exceptions can be thrown, no variable has more than one type, etc.</li>
           </ul>
+        </section>
+
+        <section>
+          <h2>Benchmarks</h2>
+          <table style="border: 1px solid">
+            <tr><td><b>Benchmark</b></td><td><b>Firefox+asm.js</b></td><td><b>Firefox</b></td><td><b>Chrome</b></td></tr>
+            <tr> <td>Copy</td>        <td><b style="color: #f93">1.65</b></td> <td> 1.75</td> <td>2.00</td> </tr>
+            <tr> <td>Corrections</td> <td><b style="color: #f93">1.27</b></td> <td> 1.75</td> <td>1.68</td> </tr>
+            <tr> <td>Fannkuch</td>    <td><b style="color: #f93">1.56</b></td> <td> 3.45</td> <td>20.54</td> </tr>
+            <tr> <td>Fasta</td>       <td><b style="color: #f93">3.46</b></td> <td> 3.21</td> <td>10.47</td> </tr>
+            <tr> <td>Life</td>        <td><b style="color: #f93">1.63</b></td> <td> 1.93</td> <td>11.48<a href="http://code.google.com/p/v8/issues/detail?id=2513">(bug)</a></td> </tr><td></td> 
+            <tr> <td>Memops</td>      <td><b style="color: #f93">1.51</b></td> <td> 2.83</td> <td>2.90</td> </tr>
+            <tr> <td>Primes</td>      <td><b style="color: #f93">1.50</b></td> <td> 1.50</td> <td>2.44</td> </tr>
+            <tr> <td>Skinning</td>    <td><b style="color: #f93">3.01</b></td> <td>13.08</td> <td>61.20<a href="http://code.google.com/p/v8/issues/detail?id=2223">(bug)</a></td> </tr>
+            <tr> <td>Zlib</td>        <td><b style="color: #f93">2.00</b></td> <td> 5.17</td> <td>5.77</td> </tr>
+            <tr> <td>Bullet</td>      <td><b style="color: #f93">2.20</b></td> <td>12.69</td> <td>9.76</td> </tr>
+          </table>
+        </section>
+
+        <section>
+          <h2>asm.js - benefits</h2>
+          <ul>
+            <li><b>Faster code execution</b> - around <b>2X</b> slower than native (comparable to Java, C#)
+              <ul><li>Optimizations can be done in a straightforward way in existing JavaScript engines,
+                      working prototype in Firefox already</li></ul>
+            </li>
+            <li>Code is just a subset of JavaScript
+              <ul>
+                <li>Code <b>already</b> runs in all browsers</li>
+                <li><b>No</b> need for new standards</li>
+              </ul>
+            </li>
+          </ul>          
+        </section>
+
+        <section>
+          <h2>Let's see asm.js in action!</h2>
+            <p>Demos - BananaBread, Qt, bullet, mruby, gnuplot</p>
         </section>
 
         <section>
