@@ -50,6 +50,14 @@
     <script src='game/headlessCanvas.js'></script>
     <script>
 
+  var realAudio = Audio;
+  Audio = function() {
+    var ret = new realAudio();
+    ret.play = ret.pause = function(){ console.log('play|pause') };
+    ret.cloneNode = function() { console.log('clone'); return this };
+    return ret;
+  }
+
 var pageParams = 'low,low,asm,windowed,benchmark,deterministic';
 
 var goButton = document.querySelector('.fullscreen-button.go');
@@ -65,6 +73,9 @@ goButton.addEventListener('click', function(e) {
 var goButton = document.querySelector('.fullscreen-button.go-headless');
 goButton.addEventListener('click', function(e) {
   pageParams += ',headlessCanvas';
+  window.requestAnimationFrame = function(x) {
+    setTimeout(x, 1);
+  };
 
   document.querySelector('.status-content.fullscreen-buttons').classList.add('hide');
   document.getElementById('main_text').classList.remove('hide');
