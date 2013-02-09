@@ -1,0 +1,1 @@
+twttr.receiveCount({"count":2,"url":"http:\/\/xmlvm.org\/html5\/"});
