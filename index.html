@@ -41,25 +41,32 @@
         </section>
 
         <section>
-          <h2>Compiling to JS - Nothing New!</h2>
+          <h2>The Compilation to<br>JavaScript Approach</h2>
           <ul>
-            <li><b>2006</b>: <b>Google Web Toolkit (GWT)</b>, which compiles Java into JavaScript</li>
-            <li><b>2007</b>: <b>pyjamas</b>, which compiles Python into JavaScript</li>
+            <li><b>Write</b> code in whatever language you want</li>
+            <li>Run it through a <b>compiler</b> that generates JavaScript</li>
+            <li><b>Run</b> that JavaScript on the web</p>
           </ul>
         </section>
 
         <section>
-          <h2>Plenty of Languages</h2>
+          <h2>Why JavaScript?</h2>
+          <p>Fully-standardized, works in all browsers</p>
+          <p>Nothing else has as much reach</p>
+        </section>
+
+        <section>
+          <h2>First set of demos</h2>
+          <p>BananaBread, Qt</p>
+        </section>
+
+        <section>
+          <h2>Compiling to JavaScript:<br>Nothing New!</h2>
           <ul>
-            <li><a href="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">Jeremy Ashkenas's list</a> has over a hundred</li>
-            <li class="zfragment">Two main kinds:
-              <ul>
-                <li class="zfragment"><b>Established</b> languages: C, C++, Java, C#, Python, etc.</li>
-                <li class="zfragment"><b>New languages</b> intended for compilation to JavaScript: CoffeeScript, TypeScript, Dart, Roy, etc.</li>
-              </ul>
-            </li>
+            <li><b>2006</b>: <b>Google Web Toolkit (GWT)</b>, compiles Java into JavaScript</li>
+            <li><b>2007</b>: <b>pyjamas</b>, compiles Python into JavaScript</li>
+            <li>etc.</li>
           </ul>
-XXX I'll focus on the former, and specifically C/C++
         </section>
 
         <section>
@@ -72,6 +79,20 @@ XXX I'll focus on the former, and specifically C/C++
         </section>
 
         <section>
+          <h2>Plenty of Languages</h2>
+          <ul>
+            <li><a href="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">Jeremy Ashkenas's list</a> has over a hundred</li>
+            <li class="fragment">Two main kinds:
+              <ul>
+                <li class="fragment"><b>Established</b> languages: C, C++, Java, C#, Python, etc.</li>
+                <li class="fragment"><b>New languages</b> intended for compilation to JavaScript: CoffeeScript, TypeScript, Dart, Roy, etc.</li>
+              </ul>
+            </li>
+            <li class="fragment">I'll focus on <b>C and C++</b></li>
+          </ul>
+        </section>
+
+        <section>
           <h2>Why is this approach successful?</h2>
         </section>
 
@@ -79,7 +100,7 @@ XXX I'll focus on the former, and specifically C/C++
           <h2>1. Language Features</h2>
           <ul>
             <li>Static typing</li>
-            <li>Existing tools</li>
+            <li>Use existing tools</li>
           </ul>
         </section>
 
@@ -90,7 +111,7 @@ XXX I'll focus on the former, and specifically C/C++
         </section>
 
         <section>
-          <h2>2. Performance</h2>
+          <h2>More on Performance</h2>
           <ul>
             <li>Compiled JavaScript can be <b>faster</b> than "regular" handwritten JavaScript</li>
             <li class="fragment">Wait, compiled JavaScript is a <b>subset</b> of JavaScript! How can it be faster?</li>
@@ -160,24 +181,28 @@ XXX I'll focus on the former, and specifically C/C++
         </section>
 
         <section>
-          <h2>Benchmarks (X slower than native/gcc -O2, lower is better XXX copy to other places)</h2>
+          <h2>Benchmarks</h2>
+          <small>
           <table style="border: 1px solid">
             <tr><td><b>Benchmark</b></td><td><b>Firefox</b></td><td><b>Chrome</b></td></tr>
-            <tr> <td>Copy</td>        <td> 1.75</td> <td>2.00</td> </tr>
-            <tr> <td>Corrections</td> <td> 1.75</td> <td>1.68</td> </tr>
-            <tr> <td>Fannkuch</td>    <td> 3.45</td> <td>20.54</td> </tr>
-            <tr> <td>Fasta</td>       <td> 3.21</td> <td>10.47</td> </tr>
-            <tr> <td>Life</td>        <td> 1.93</td> <td>11.48<a href="http://code.google.com/p/v8/issues/detail?id=2513">(bug)</a></td> </tr>
-            <tr> <td>Memops</td>      <td> 2.83</td> <td>2.90</td> </tr>
-            <tr> <td>Primes</td>      <td> 1.50</td> <td>2.44</td> </tr>
-            <tr> <td>Skinning</td>    <td>13.08</td> <td>61.20<a href="http://code.google.com/p/v8/issues/detail?id=2223">(bug)</a></td> </tr>
-            <tr> <td>Zlib</td>        <td> 5.17</td> <td>5.77</td> </tr>
-            <tr> <td>Bullet</td>      <td>12.69</td> <td>9.76</td> </tr>
+            <tr> <td>Copy</td>        <td> 1.75</td> <td>TODO</td> </tr>
+            <tr> <td>Corrections</td> <td> 1.75</td> <td></td> </tr>
+            <tr> <td>Fannkuch</td>    <td> 3.45</td> <td></td> </tr>
+            <tr> <td>Fasta</td>       <td> 3.21</td> <td></td> </tr>
+            <tr> <td>Life</td>        <td> 1.93</td> <td></td> </tr>
+            <tr> <td>Memops</td>      <td> 2.83</td> <td></td> </tr>
+            <tr> <td>Primes</td>      <td> 1.50</td> <td></td> </tr>
+            <tr> <td>Skinning</td>    <td>13.08</td> <td></td> </tr>
+            <tr> <td>Zlib</td>        <td> 5.17</td> <td></td> </tr>
+            <tr> <td>Bullet</td>      <td>12.69</td> <td></td> </tr>
           </table>
+          </small>
+          <br>
+          Numbers are times slower than C/C++ (clang -O2). Lower numbers are better.
         </section>
 
         <section>
-          <h2>4x slower than native.<br>Can we do better?</h2>
+          <h2>About 4x slower than native.<br>Can we do better?</h2>
           <h2 class="fragment" style="color: #f73">Yes!</h2>
         </section>
 
@@ -185,8 +210,28 @@ XXX I'll focus on the former, and specifically C/C++
           <h2>asm.js</h2>
           <p><a href="https://github.com/dherman/asm.js">asm.js</a> is a research project at Mozilla that aims to formally
              define the subset of JavaScript that compilers like Emscripten and Mandreel
-             <b>already</b> generate: implicitly-typed computations, singleton typed array, etc.
+             <b>already</b> target: implicitly-typed computations, singleton typed array, etc.
           </p>
+        </section>
+
+        <section>
+          <h2>asm.js</h2>
+          <pre><code contenteditable>
+function strlen(ptr) {
+  ptr = ptr|0;
+  var curr = 0;
+  curr = ptr;
+  while (MEM32[(curr&16777215)>>2] != 0) {
+    curr = (curr + 1)|0;
+  }
+  return (curr - ptr)|0;
+}
+          </code></pre><br>
+          <ul>
+            <li class="fragment">We ensure that ptr is always an integer</li>
+            <li class="fragment">We want to read from address curr, masking keeps it safe</li>
+            <li class="fragment">Additions and subtractions are all 32-bit</li>
+          </ul>
         </section>
 
         <section>
@@ -200,26 +245,30 @@ XXX I'll focus on the former, and specifically C/C++
         <section>
           <h2>asm.js - Easier Optimization</h2>
           <ul>
-            <li>Types of variables pop out of the type system execution XXXX</li>
+            <li>Types of variables pop out of the type system execution XXXX - no need to observe type information and recompile at runtime</li>
             <li>Guarantee that there are no speed bumps: No exceptions can be thrown, no variable has more than one type, etc.</li>
           </ul>
         </section>
 
         <section>
           <h2>Benchmarks</h2>
+          <small>
           <table style="border: 1px solid">
             <tr><td><b>Benchmark</b></td><td><b>Firefox+asm.js</b></td><td><b>Firefox</b></td><td><b>Chrome</b></td></tr>
-            <tr> <td>Copy</td>        <td><b style="color: #f93">1.65</b></td> <td> 1.75</td> <td>2.00</td> </tr>
-            <tr> <td>Corrections</td> <td><b style="color: #f93">1.27</b></td> <td> 1.75</td> <td>1.68</td> </tr>
-            <tr> <td>Fannkuch</td>    <td><b style="color: #f93">1.56</b></td> <td> 3.45</td> <td>20.54</td> </tr>
-            <tr> <td>Fasta</td>       <td><b style="color: #f93">3.46</b></td> <td> 3.21</td> <td>10.47</td> </tr>
-            <tr> <td>Life</td>        <td><b style="color: #f93">1.63</b></td> <td> 1.93</td> <td>11.48<a href="http://code.google.com/p/v8/issues/detail?id=2513">(bug)</a></td> </tr><td></td> 
-            <tr> <td>Memops</td>      <td><b style="color: #f93">1.51</b></td> <td> 2.83</td> <td>2.90</td> </tr>
-            <tr> <td>Primes</td>      <td><b style="color: #f93">1.50</b></td> <td> 1.50</td> <td>2.44</td> </tr>
-            <tr> <td>Skinning</td>    <td><b style="color: #f93">3.01</b></td> <td>13.08</td> <td>61.20<a href="http://code.google.com/p/v8/issues/detail?id=2223">(bug)</a></td> </tr>
-            <tr> <td>Zlib</td>        <td><b style="color: #f93">2.00</b></td> <td> 5.17</td> <td>5.77</td> </tr>
-            <tr> <td>Bullet</td>      <td><b style="color: #f93">2.20</b></td> <td>12.69</td> <td>9.76</td> </tr>
+            <tr> <td>Copy</td>        <td><b style="color: #f93">1.65</b></td> <td> 1.75</td> <td>TODO</td> </tr>
+            <tr> <td>Corrections</td> <td><b style="color: #f93">1.27</b></td> <td> 1.75</td> <td></td> </tr>
+            <tr> <td>Fannkuch</td>    <td><b style="color: #f93">1.56</b></td> <td> 3.45</td> <td></td> </tr>
+            <tr> <td>Fasta</td>       <td><b style="color: #f93">3.46</b></td> <td> 3.21</td> <td></td> </tr>
+            <tr> <td>Life</td>        <td><b style="color: #f93">1.63</b></td> <td> 1.93</td> <td></td> </tr><td></td> 
+            <tr> <td>Memops</td>      <td><b style="color: #f93">1.51</b></td> <td> 2.83</td> <td></td> </tr>
+            <tr> <td>Primes</td>      <td><b style="color: #f93">1.50</b></td> <td> 1.50</td> <td></td> </tr>
+            <tr> <td>Skinning</td>    <td><b style="color: #f93">3.01</b></td> <td>13.08</td> <td></td> </tr>
+            <tr> <td>Zlib</td>        <td><b style="color: #f93">2.00</b></td> <td> 5.17</td> <td></td> </tr>
+            <tr> <td>Bullet</td>      <td><b style="color: #f93">2.20</b></td> <td>12.69</td> <td></td> </tr>
           </table>
+          </small>
+          <br>
+          Numbers are times slower than C/C++ (clang -O2). Lower numbers are better.
         </section>
 
         <section>
@@ -229,7 +278,7 @@ XXX I'll focus on the former, and specifically C/C++
               <ul><li>Optimizations can be done in a straightforward way in existing JavaScript engines,
                       working prototype in Firefox already</li></ul>
             </li>
-            <li>Code is just a subset of JavaScript
+            <li class="fragment">Code is just a subset of JavaScript
               <ul>
                 <li>Code <b>already</b> runs in all browsers</li>
                 <li><b>No</b> need for new standards</li>
@@ -239,19 +288,31 @@ XXX I'll focus on the former, and specifically C/C++
         </section>
 
         <section>
-          <h2>Let's see asm.js in action!</h2>
-            <p>Demos - BananaBread, Qt, bullet, mruby, gnuplot</p>
+          <h2>asm.js FAQ</h2>
+          <ul>
+            <li class="fragment">This is <b>not</b> a new language. It's a subset of JavaScript that compilers can target. It isn't meant to have cool syntax features or anything like that.</li>
+            <li class="fragment">The current 2X speed factor compared to native code is just the beginning</li>
+            <li class="fragment">This isn't some far-off dream. You can use asm.js right now: Compile your code with `emcc -s ASM_JS=1`, run it in Firefox Nightly and check for messages in the web console about "asm.js compiled alsdsdsdsdsXXX". And it runs properly in all other browsers.</li>
+            <li class="fragment">Limitations: Not all C/C++ code can be compiled to asm.js yet, for example C++ exceptions and setjmp/longjmp, but we plan to fix that.</li>
+          </ul>
+other languages! java, C#
         </section>
 
         <section>
-          <h2></h2>
+          <h2>Let's see asm.js in action!</h2>
+            <p>Demos - BananaBread, Qt, bullet, mruby, gnuplot</p>
+            BananaBread numbers, nt just demo
+        </section>
+
+        <section>
+          <h2>How to port your codebase..</h2>
           <ul>
             <li></li>
           </ul>
         </section>
 
         <section>
-          <h2></h2>
+          <h2>How to write a new codebase..</h2>
           <ul>
             <li></li>
           </ul>
