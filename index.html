@@ -273,7 +273,7 @@
 
         <section>
           <h2>...Just C/C++?</h2>
-          <p class="fragment">C/C++ compiled to JavaScript can be fast (and even faster with asm.js). But what about other languages?</p>
+          <p>C/C++ compiled to JavaScript can be fast (and even faster with asm.js). But what about other languages?</p>
         </section>
 
         <section>
@@ -284,21 +284,37 @@
         <section>
           <h2>Java => C => JavaScript</h2>
           <p><b><a href="xmlvm/index.html">Demo</a></b> using <a href="http://xmlvm.org/">XMLVM</a> and Emscripten</p>
-          <p class="fragment">The same approach could work<br>for C#, etc.</p>
         </section>
 
         <section>
-          <h2>How to port your codebase..</h2>
+          <h2>Compiling to JavaScript:<br>Current state of the art</h2>
           <ul>
-            <li>TODO</li>
+            <li class="fragment"><b>C/C++</b>: Mature</li>
+            <li class="fragment"><b>Java, C#, Objective-C</b>: Needs work</li>
+            <li class="fragment"><b>Python, Ruby, Lua</b>: Open questions</li>
           </ul>
         </section>
 
         <section>
-          <h2>How to write a new codebase..</h2>
-          <ul>
-            <li>TODO</li>
-          </ul>
+          <h2>Dynamic Languages</h2>
+          <p><b><i>Source-to-source</i></b> compilers from such languages to JavaScript ignore semantic
+             differences (for example, numeric types)</p>
+          <p class="fragment">Entire C/C++ <b><i>runtimes</i></b> can be compiled and the original language interpreted with proper
+             semantics, but this is not lightweight</p>
+        </section>
+
+        <section>
+          <h2>Dynamic Languages</h2>
+          <p>Maybe compiled interpreters are ok, if with asm.js we get them to just 2x slower than C?</p>
+          <p class="fragment">If not, we can compile JITs for those languages (PyPy, LuaJIT?), and implement JavaScript backends for
+             them</p>
+          <p class="fragment">Or, improve source-to-source translators to smooth over remaining semantic differences</p>
+        </section>
+
+        <section>
+          <h2>Conclusion</h2>
+          <p>Statically-typed languages and especially C/C++ have mature compilers to JavaScript</p>
+          <p class="fragment">Expect the speed of compiled C/C++ to get to just <b><i>2X</i></b> slower than native code, or better, later this year</p>
         </section>
 
       </div>
