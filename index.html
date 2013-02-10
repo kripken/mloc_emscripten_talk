@@ -260,11 +260,7 @@
           <h2>Trying asm.js now</h2>
             <p>Compile your code using emscripten with <b style="color: #f85">ASM_JS=1</b></p>
             <p>Run it in a build of Firefox from <a href='http://hg.mozilla.org/users/lwagner_mozilla.com/odinmonkey/'>this branch</a></p>
-        </section>
-
-        <section>
-          <h2>asm.js - Current Limitations</h2>
-          <p>C++ exceptions, setjmp/longjmp, etc. - we will focus on those things later on
+            <p class="fragment">Not supported yet: C++ exceptions, setjmp/longjmp</p>
         </section>
 
         <section>
@@ -274,7 +270,7 @@
 
         <section>
           <h2>Not just C/C++!</h2>
-          <p>Many languages can be compiled to C, C++ or LLVM IR, which means they can be compiled to JavaScript with the same approach and benefits</p>
+          <p>Many languages can be compiled to <b style="color: #f85">C</b>, <b style="color: #f85">C++</b> or <b style="color: #f85">LLVM IR</b>, which means they can be compiled to JavaScript with the same approach and benefits</p>
         </section>
 
         <section>
@@ -311,6 +307,8 @@
           <h2>Conclusion</h2>
           <p>Statically-typed languages and especially C/C++ can be compiled effectively to JavaScript</p>
           <p class="fragment">Expect the speed of compiled C/C++ to get to just <b style="color: #f85">2X</b> slower than native code, or better, later this year</p>
+          <br>
+          <p class="fragment"><b style="color: #f85">Thanks for listening!</b></p>
         </section>
 
       </div>
