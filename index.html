@@ -49,7 +49,7 @@
 
         <section>
           <h2>Compiling to JavaScript</h2>
-          <p>You can only <b style="color: #f85">run</b> JavaScript in browsers, but you can <b style="color: #f85">write</b> in another
+          <p>You can run <b style="color: #f85">only</b> JavaScript in browsers, but you can <b style="color: #f85">write</b> in another
              language - if you <b style="color: #f85">compile</b> it to JavaScript</p>
         </section>
 
@@ -195,7 +195,7 @@
     ptr = ptr|0;
     var curr = 0;
     curr = ptr;
-    while (MEM32[curr>>2]|0 != 0) {
+    while (MEM8[curr]|0 != 0) {
       curr = (curr + 1)|0;
     }
     return (curr - ptr)|0;
@@ -211,7 +211,7 @@
         <section>
           <h2>asm.js</h2>
           <p>asm.js code avoids potential slowdowns in code: no variables with mixed types, etc.</p>
-          <p class="fragment">asm.js code only does <b style="color: #f85">low-level assembly-like computation</b>, precisely what compiled C/C++ needs (and hence the name)</p>
+          <p class="fragment">asm.js code does only <b style="color: #f85">low-level assembly-like computation</b>, precisely what compiled C/C++ needs (and hence the name)</p>
         </section>
 
         <section>
