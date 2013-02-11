@@ -36,7 +36,7 @@ if (checkPageParam('deterministic')) {
 var Module = {
   // If the url has 'serve' in it, run a listen server and let others connect to us
   arguments: checkPageParam('serve') ? ['-d1', '-j28780'] : [],
-  benchmark: checkPageParam('benchmark') ? { totalIters: 500, iter: 0 } : null,
+  benchmark: checkPageParam('benchmark') ? { totalIters: 750, iter: 0 } : null,
   failed: false,
   preRun: [],
   postRun: [],
