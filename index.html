@@ -307,23 +307,23 @@
 
         <section>
           <h2>Dynamic Languages</h2>
-          <p><b style="color: #f85">Source-to-source</b> compilers from such languages to JavaScript ignore semantic
-             differences (for example, numeric types)</p>
-          <p class="fragment">Entire C/C++ <b style="color: #f85">runtimes</b> can be compiled and the original language interpreted with proper
+          <p>Entire C/C++ <b style="color: #f85">runtimes</b> can be compiled and the original language interpreted with proper
              semantics, but this is not lightweight</p>
+          <p class="fragment"><b style="color: #f85">Source-to-source</b> compilers from such languages to JavaScript ignore semantic
+             differences (for example, numeric types)</p>
         </section>
 
         <section>
-          <h2>Dynamic Languages</h2>
-          <p>Maybe compiled interpreters are ok, if with asm.js we get them to just 2x slower than C?</p>
-          <p class="fragment">If not, we can compile JITs for those languages (PyPy, LuaJIT?), and implement JavaScript backends for
-             them</p>
-          <p class="fragment">Or, improve source-to-source translators to smooth over remaining semantic differences</p>
+          <h2>Speculations on fast Java, C#</h2>
+          <p>Actually, Java and C# have a similar predicament: Both languages <b style="color: #f85">depend on special VMs</b> to be efficient</p>
+          <p class="fragment">Source-source-compilers for them <b style="color: #f85">lose out</b> on the optimizations done in those VMs</p>
+          <p class="fragment">AOT compilers for them can at least gain <b style="color: #f85">LLVM-type</b> optimizations - but still something is missing</p>
+          <p class="fragment">Should we <b style="color: #f85">compile their VMs</b> and implement JavaScript-emitting JITs?</p>
         </section>
 
         <section>
           <h2>Conclusion</h2>
-          <p>Statically-typed languages and especially C/C++ can be compiled effectively to JavaScript</p>
+          <p><b style="color: #f85">Statically-typed languages</b> and especially C/C++ can be compiled effectively to JavaScript</p>
           <p class="fragment">Expect the speed of compiled C/C++ to get to just <b style="color: #f85">2X</b> slower than native code, or better, later this year</p>
           <br>
           <p class="fragment"><b style="color: #f85">Thanks for listening!</b></p>
