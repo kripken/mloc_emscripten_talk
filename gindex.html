@@ -68,7 +68,7 @@
             <pre><code contenteditable>
   function sum(x) { // in practice, called with small integers
     var s = 0;
-    for (var i = 0; i < x; i++) s += i; // in practice, i is an integer
+    for (var i = 1; i < x; i++) s += i; // in practice, i is an integer
     return s;
   }
             </code></pre>
@@ -106,7 +106,7 @@
           <p>While modern JavaScript engines are fast, they have trouble on <b>large</b> applications:</p>
           <br>
           <p class="fragment"><b>More functions, more variables</b> - harder to figure out types</p>
-          <p class="fragment">Issues with <b>doptimizations/recompilations</b></p>
+          <p class="fragment">Issues with <b>deoptimizations/recompilations</b></p>
           <p class="fragment">Hard to benefit from <b>global information</b> about the whole codebase</p>
         </section>
 
@@ -140,7 +140,7 @@
         <section>
           <h2>asm.js - why it works</h2>
           <p>Ensures that <b>types are not mixed up</b></p>
-          <p class="fragment">Makes it possible to reason about <b>global program structure</b> (memory typed array will not change, etc.)</p>
+          <p class="fragment">Makes it possible to reason about <b>global program structure</b></p>
           <p class="fragment">Helps in <b>existing</b> JavaScript engines by making it simpler to detect types and avoid them changing later</p>
           <p class="fragment">Contains complete type information, allows <b>ahead of time (AOT)</b> compilation as well</p>
         </section>
@@ -164,7 +164,7 @@
 
         <section>
           <h2>Big Picture:<br>Compiling C/C++ to JavaScript</h2>
-          <p><b>No costly rewrites</b>: compile your existing game to the web</p>
+          <p><b>No costly rewrites</b>: Compile your existing game to the web</p>
           <p class="fragment">Often <b>faster</b> than handwritten JavaScript</p>
           <p class="fragment"><b>Mature tools</b>, proven on many real-world codebases</p>
         </section>
@@ -205,7 +205,6 @@
 
         <section>
           <h2>Thank you!<br><br><div style="color: #f85">Questions?</div></h2>
-emscripten + logo open source, free
         </section>
 
       </div>
