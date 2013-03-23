@@ -133,6 +133,8 @@
   }
             </code></pre>
           </p>
+          <p class="fragment">If you've ever seen compiled code from Emscripten or Mandreel, <code><b>|0</b></code> etc. will look familiar</p>
+          <p class="fragment">asm.js just <b>formalizes</b> these techniques and gives <b>guarantees</b> they are used properly</p>
         </section>
 
         <section>
@@ -163,12 +165,27 @@
         <section>
           <h2>Big Picture:<br>Compiling C/C++ to JavaScript</h2>
           <p><b>No costly rewrites</b>: compile your existing game to the web</p>
-          <p>Often <b>faster</b> than handwritten JavaScript</p>
+          <p class="fragment">Often <b>faster</b> than handwritten JavaScript</p>
+          <p class="fragment"><b>Mature tools</b>, proven on many real-world codebases</p>
         </section>
 
         <section>
+          <h2>Emscripten-ported projects</h2>
+          <p>XXX remove? XXX</b></p>
+          <p><b>TODO</b></p>
+          <p><b>Nebula 3</b></p>
+          <p><b>Unigine</b></p>
+          <p><b>Cube 2/Sauerbraten</b></p>
+          <p><b>Bullet</b></p>
+          <p><b>Box 2D</b></p>
+          <p>and many non-game projects (Qt, Python, Sqlite, ...)</p>
+        </section>
+
+        <!--section>
           <h2>Compiled C++ Modules</h2>
-          <p>Another option is to compile C/C++ <b>modules</b> for speed-intensive code, and write <b>normal JavaScript</b> for everything else</p>
+          <p>XXX remove? XXX</p>
+          <p>Aside from compiling entire games, you can compile C/C++ <b>modules</b></p>
+          <p>Allows <b>compiled C++</b> for speed-intensive code and <b>normal JavaScript</b> for everything else</p>
           <p class="fragment">Example of using the <a href="https://github.com/kripken/ammo.js">ammo.js</a> port of <a href="http://bulletphysics.org/">Bullet</a>:</p>
           <p>
             <pre class="fragment"><code contenteditable>
@@ -178,7 +195,7 @@
             </code></pre>
           </p>
           <p class="fragment"><a href="ammo/ammo.html">[Demo]</a></p>
-        </section>
+        </section-->
 
         <!--section>
           <h2>Many paths on the web</h2>
