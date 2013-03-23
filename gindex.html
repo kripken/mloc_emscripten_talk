@@ -136,6 +136,14 @@
         </section>
 
         <section>
+          <h2>asm.js - why it works</h2>
+          <p>Ensures that <b>types are not mixed up</b></p>
+          <p class="fragment">Makes it possible to reason about <b>global program structure</b> (memory typed array will not change, etc.)</p>
+          <p class="fragment">Helps in <b>existing</b> JavaScript engines by making it simpler to detect types and avoid them changing later</p>
+          <p class="fragment">Contains complete type information, allows <b>ahead of time (AOT)</b> compilation as well</p>
+        </section>
+
+        <section>
           <h2>Microbenchmarks</h2>
           <img width="1120" height="452" src="micro4b.png">
         </section>
@@ -147,13 +155,13 @@
 
         <section>
           <h2>asm.js - Status</h2>
-          <p>Works in <b>all</b> modern JavaScript VMs</p>
-          <p class="fragment">Generally <b>faster</b> in them too, by helping them detect types more easily, etc.
+          <p><b><a href="http://emscripten.org">Emscripten</a></b>, an open source C/C++ to JavaScript compiler, can emit asm.js output</p>
+          <p class="fragment">asm.js code already works in <b>all modern browsers</b>, and is generally faster</p>
           <p class="fragment">asm.js optimizations in <a href="http://nightly.mozilla.org/">Firefox nightly</a> speed it up to just <b>2x</b> slower than native. And that's just the beginning!</p>
         </section>
 
         <section>
-          <h2>Compiling C/C++ to JavaScript</h2>
+          <h2>Big Picture:<br>Compiling C/C++ to JavaScript</h2>
           <p><b>No costly rewrites</b>: compile your existing game to the web</p>
           <p>Often <b>faster</b> than handwritten JavaScript</p>
         </section>
@@ -172,16 +180,15 @@
           <p class="fragment"><a href="ammo/ammo.html">[Demo]</a></p>
         </section>
 
-        <section>
+        <!--section>
           <h2>Many paths on the web</h2>
           <p>Compile an <b>entire game</b> to JavaScript</p>
           <p>Or write a game in JavaScript and use <b>compiled C++ modules</b></p>
-        </section>
+        </section-->
 
         <section>
           <h2>Thank you!<br><br><div style="color: #f85">Questions?</div></h2>
 emscripten + logo open source, free
-AOT
         </section>
 
       </div>
