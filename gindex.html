@@ -52,19 +52,43 @@
         </section>
 
         <section>
-          <h2>Because it's there</h2>
+          <h2>1. Because it's there</h2>
           <p>JavaScript is the only <b>standards-based</b> language in all web browsers</p>
         </section>
 
         <section>
-          <h2>..and it's fast</h2>
+          <h2>2. And it can be fast</h2>
           <p>Despite its dynamic nature, with <b>modern JS engines</b> and <b>asm.js</b> it can be very speedy (we just saw how much!)</p>
         </section>
 
         <section>
           <h2>Modern JavaScript Engines</h2>
           <p><b>Detect types</b> at runtime and generate efficient machine code</p>
+          <p>
+            <pre><code contenteditable>
+  function sum(x) { // in practice, called with small integers
+    var s = 0;
+    for (var i = 0; i < x; i++) s += i; // in practice, i is an integer
+    return s;
+  }
+            </code></pre>
+          </p>
+        </section>
+
+        <section>
+          <h2>Modern JavaScript Engines</h2>
           <p>Support features like <b>typed arrays</b> that are easy to make fast</p>
+          <p>
+            <pre><code contenteditable>
+  var heap = new Int32Array(10240);
+  // ..
+  function sumArray(x) {
+    var s = 0;
+    for (var i = 0; i < x; i++) s += heap[i]; // fast read of int32
+    return s;
+  }
+            </code></pre>
+          </p>
         </section>
 
         <section>
@@ -78,17 +102,26 @@
         </section>
 
         <section>
-          <h2>asm.js</h2>
-          <p>Modern JavaScript engines are fast, but have trouble on large and complex applications</p>
-          <p><b>asm.js</b> is a project that aims to fix that</p>
+          <h2>Limitations</h2>
+          <p>While modern JavaScript engines are fast, they have trouble on <b>large</b> applications:</p>
+          <br>
+          <p class="fragment"><b>More functions, more variables</b> - harder to figure out types</p>
+          <p class="fragment">Issues with <b>doptimizations/recompilations</b></p>
+          <p class="fragment">Hard to benefit from <b>global information</b> about the whole codebase</p>
         </section>
 
         <section>
           <h2>asm.js</h2>
-          <p>A <b>subset of JavaScript</b> that is very simple to optimize</p>
-          <p>Has properties like a low-level assembly code</p>
+          <p><a href="http://asmjs.org"><b>asm.js</b></a>, which began as a research project at Mozilla, aims to fix these issues</p>
+          <p class="fragment">asm.js is a <b>subset of JavaScript</b> that is very simple to optimize</p>
+          <p class="fragment"><b>100%</b> backwards compatible: <b>Not</b> a new new language, <b>not</b> a new VM</p>
+          <p class="fragment">But can be optimized <b>like</b> a low-level VM</p>
+        </section>
+
+        <section>
+          <h2>asm.js - example</h2>
           <p>
-            <pre class="fragment"><code contenteditable>
+            <pre><code contenteditable>
   function strlen(ptr) { // calculate length of C string
     ptr = ptr|0;
     var curr = 0;
@@ -113,6 +146,13 @@
         </section>
 
         <section>
+          <h2>asm.js - Status</h2>
+          <p>Works in <b>all</b> modern JavaScript VMs</p>
+          <p class="fragment">Generally <b>faster</b> in them too, by helping them detect types more easily, etc.
+          <p class="fragment">asm.js optimizations in <a href="http://nightly.mozilla.org/">Firefox nightly</a> speed it up to just <b>2x</b> slower than native. And that's just the beginning!</p>
+        </section>
+
+        <section>
           <h2>Compiling C/C++ to JavaScript</h2>
           <p><b>No costly rewrites</b>: compile your existing game to the web</p>
           <p>Often <b>faster</b> than handwritten JavaScript</p>
@@ -120,10 +160,8 @@
 
         <section>
           <h2>Compiled C++ Modules</h2>
-          <p>Use <b>C++ modules with asm.js</b> for speed-intensive things</p>
-          <p>Write <b>normal JavaScript</b> for everything else</p>
-          <p style="margin: 1em"></p>
-          <p class="fragment">Example of using the ammo.js port of Bullet:</p>
+          <p>Another option is to compile C/C++ <b>modules</b> for speed-intensive code, and write <b>normal JavaScript</b> for everything else</p>
+          <p class="fragment">Example of using the <a href="https://github.com/kripken/ammo.js">ammo.js</a> port of <a href="http://bulletphysics.org/">Bullet</a>:</p>
           <p>
             <pre class="fragment"><code contenteditable>
   var groundTransform = new Ammo.btTransform();
@@ -131,17 +169,19 @@
   groundTransform.setOrigin(new Ammo.btVector3(0, -56, 0));
             </code></pre>
           </p>
+          <p class="fragment"><a href="ammo/ammo.html">[Demo]</a></p>
         </section>
 
         <section>
           <h2>Many paths on the web</h2>
           <p>Compile an <b>entire game</b> to JavaScript</p>
-          <p>Or write a game in JavaScript, using <b>compiled C++ modules</b> <a href="ammo/ammo.html">[demo]</a></p>
+          <p>Or write a game in JavaScript and use <b>compiled C++ modules</b></p>
         </section>
 
         <section>
           <h2>Thank you!<br><br><div style="color: #f85">Questions?</div></h2>
-status, nightly
+emscripten + logo open source, free
+AOT
         </section>
 
       </div>
