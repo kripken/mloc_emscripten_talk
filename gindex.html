@@ -26,6 +26,13 @@
     <!--[if lt IE 9]>
     <script src="lib/js/html5shiv.js"></script>
     <![endif]-->
+
+    <style type="text/css">
+      b {
+        color: #f85;
+      }
+    </style>
+
   </head>
 
   <body>
@@ -41,172 +48,23 @@
         </section>
 
         <section>
-          <h2>Compiling to JavaScript</h2>
-          <p>why</p>
+          <h2>Why JavaScript?</h2>
         </section>
 
         <section>
-          <h2>Microbenchmarks</h2>
-          <img width="1120" height="452" src="micro4b.png">
+          <h2>Because it's there</h2>
+          <p>JavaScript is the only <b>standards-based</b> language in all web browsers</p>
         </section>
 
         <section>
-          <h2>Realistic/large benchmarks</h2>
-          <img width="1122" height="453" src="macro4b.png">
+          <h2>..and it's fast</h2>
+          <p>Despite its dynamic nature, with <b>modern JS engines</b> and <b>asm.js</b> it can be very speedy (we just saw how much!)</p>
         </section>
 
         <section>
-          <h2>Many paths on the web</h2>
-          <p>Compile an <b style="color: #f85">entire game</b> to JavaScript</p>
-          <p>Or write a game in JavaScript, using <b style="color: #f85">compiled C++ modules</b> <a href="ammo/ammo.html">[demo]</a></p>
-        </section>
-
-        <section>
-          <h2>Compiled C++ Modules</h2>
-          <p>Use <b style="color: #f85">C++ modules with asm.js</b> for speed-intensive things</p>
-          <p>Write <b style="color: #f85">normal JavaScript</b> for everything else</p>
-          <p style="margin: 1em"></p>
-          <p class="fragment">Example of using the ammo.js port of Bullet:</p>
-          <p>
-            <pre class="fragment"><code contenteditable>
-  var groundTransform = new Ammo.btTransform();
-  groundTransform.setIdentity();
-  groundTransform.setOrigin(new Ammo.btVector3(0, -56, 0));
-            </code></pre>
-          </p>
-        </section>
-
-
-
-
-        <section>
-          <p>JavaScript is standards-based and the <b style="color: #f85">only</b> language that runs in all web browsers</p>
-          <p class="fragment">You can run <b style="color: #f85">only</b> JavaScript in browsers, but you can <b style="color: #f85">write</b> in another
-             language - if you compile it to JavaScript</p>
-          </ul>
-        </section>
-
-        <section>
-          <h2>First set of demos</h2>
-          <p class="fragment"><b style="color: #f85"><a href="banana/game.html?low,low,asm">BananaBread</a></b></p>
-          <p class="fragment"><b style="color: #f85"><a href="qt/QtDemo.html">Qt</a></b></p>
-          <p class="fragment"><b style="color: #f85"><a href="mruby/mruby.html">Ruby</a></b></p>
-          <a href="http://emscripten.org"><img src="emscripten_switch_logo.png" width="35%" style="position: absolute; left: 600px; top: 300px"></a>
-        </section>
-
-        <section>
-          <h2>Compiling to JavaScript:<br>Nothing New!</h2>
-          <ul>
-            <li>2006: <b style="color: #f85">Google Web Toolkit (GWT)</b>, Java to JS</li>
-            <li>2007: <b style="color: #f85">pyjamas</b>, Python into JS</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Adoption</h2>
-          <ul>
-            <li><b style="color: #f85">Java (GWT)</b> used in <a href="http://www.blogger.com/">Blogger</a>, many enterprise apps</li>
-            <li><b style="color: #f85">C# (Script#)</b> used in <a href="http://office.microsoft.com/en-us/web-apps">Microsoft Office Web Apps</a></li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Plenty of Languages</h2>
-          <ul>
-            <li><a href="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">Jeremy Ashkenas's list</a> has many dozens</li>
-            <li class="fragment">Two main kinds:
-              <ul>
-                <li class="fragment"><b style="color: #f85">Established</b> languages: C, C++, Java, C#, Python, etc.</li>
-                <li class="fragment"><b style="color: #f85">New languages</b> intended for compilation to JavaScript: CoffeeScript, TypeScript, Dart, Roy, etc.</li>
-              </ul>
-            </li>
-            <li class="fragment">I'll focus on <b style="color: #f85">C and C++</b></li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>I'll also focus on <div style="color: #f85">performance</div></h2>
-          <p>Doesn't matter for all codebases, but tends to matter more in large ones</p>
-        </section>
-
-        </section>
-
-        <section>
-          <h2>Why is compilation to JS useful?</h2>
-        </section>
-
-        <section>
-          <h2>1. Preference for other languages</h2>
-          <ul>
-            <li>Static typing</li>
-            <li>Existing tools</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>2. Performance</h2>
-          <p>JavaScript engines have gotten fast enough to run large compiled codebases</p>
-          <p class="fragment">Late 2008/early 2009: <b style="color: #f85">V8</b>, <b style="color: #f85">TraceMonkey</b>, and <b style="color: #f85">Nitro</b> were released, and the race for JavaScript speed was on</p>
-          <p class="fragment">That race <b style="color: #f85">enabled</b> running large compiled codebases</p>
-        </section>
-
-        <section>
-          <h2>Performance: Beyond "enabling"</h2>
-          <p>Compiled JavaScript can be <b style="color: #f85">faster</b> than "regular" handwritten JavaScript</p>
-          <p class="fragment">Wait, compiled JavaScript is a <b style="color: #f85">subset</b> of JavaScript! How can it be faster?</p>
-        </section>
-
-        <section>
-          <h2>One Step Back:<br>How Compilation Works</h2>
-          <ul>
-            <br>
-            <p><b style="color: #f85">C/C++</b> &nbsp&nbsp <b style="color: #fff">=></b> &nbsp&nbsp <b style="color: #58f">LLVM</b> &nbsp&nbsp <b style="color: #fff">=></b> &nbsp&nbsp <b style="color: #8f5">Emscripten</b> &nbsp&nbsp <b style="color: #fff">=></b> &nbsp&nbsp <b style="color: #f58">JavaScript</b></p>
-          </ul>
-        </section>
-
-        <section>
-          <h2>LLVM Optimizations</h2>
-          <p><b style="color: #f85">LLVM's optimizer</b> uses type information to perform many useful optimizations. Decades of work have gone into developing optimization passes for C/C++ compilers.</p>
-          <br>
-          <p><small style="color: #bbb">...dce, inline, constmerge, constprop, dse, licm, gvn, instcombine, mem2reg, scalarrepl...</small></p>
-        </section>
-
-        <section>
-          <h2>LLVM Optimizations</h2>
-          <p>These optimization are <b style="color: #f85">only</b> available for compiled code!</p><p>Running them manually on a "normal" JavaScript codebase would be
-             hard and make the code less maintainable</p>
-        </section>
-
-        <section>
-          <h2>JavaScript Engine Optimizations - 1</h2>
-          <p>Modern JavaScript engines <b style="color: #f85">infer types</b> at runtime</p>
-          <p class="fragment">This especially helps on code that is implicitly typed - which is exactly what compiled code is!</p>
-          <p>
-            <pre class="fragment"><code contenteditable>
-  function compiledCalculation() {
-    var x = f()|0;  // x is a 32-bit value
-    var y = g()|0;  // so is y
-    return (x+y)|0; // 32-bit addition, no type or overflow checks
-  }
-            </code></pre>
-          </p>
-        </section>
-
-        <section>
-          <h2>JavaScript Engine Optimizations - 2</h2>
-          <p>Modern JavaScript engines optimize <b style="color: #f85">typed arrays</b> very well</p>
-          <p>
-            <pre class="fragment"><code contenteditable>
-  var MEM8  = new Uint8Array(1024*1024);
-  var MEM32 = new Uint32Array(MEM8.buffer); // alias MEM8's data
-
-  function compiledMemoryAccess(x) {
-    MEM8[x] = MEM8[x+10]; // read from x+10, write to x
-    MEM32[(x+16)>>2] = 100;
-  }
-            </code></pre>
-          </p>
-          <p class="fragment">Compiled C/C++ uses a typed array as "memory"</p>
+          <h2>Modern JavaScript Engines</h2>
+          <p><b>Detect types</b> at runtime and generate efficient machine code</p>
+          <p>Support features like <b>typed arrays</b> that are easy to make fast</p>
         </section>
 
         <section>
@@ -220,21 +78,17 @@
         </section>
 
         <section>
-          <h2><br>Can we do better?</h2>
-          <h2 class="fragment" style="color: #f85">Yes!</h2>
+          <h2>asm.js</h2>
+          <p>Modern JavaScript engines are fast, but have trouble on large and complex applications</p>
+          <p><b>asm.js</b> is a project that aims to fix that</p>
         </section>
 
         <section>
           <h2>asm.js</h2>
-          <p><a href="https://github.com/dherman/asm.js"><b style="color: #f85">asm.js</b></a> (<a href="http://asmjs.org/spec/latest/">spec</a>) is a research project at Mozilla that aims to formally
-             define the subset of JavaScript that compilers like Emscripten and Mandreel
-             <b style="color: #f85">already</b> generate (typed arrays as memory, etc.)
-          </p>
-        </section>
-
-        <section>
-          <h2>asm.js</h2>
-          <pre><code contenteditable>
+          <p>A <b>subset of JavaScript</b> that is very simple to optimize</p>
+          <p>Has properties like a low-level assembly code</p>
+          <p>
+            <pre class="fragment"><code contenteditable>
   function strlen(ptr) { // calculate length of C string
     ptr = ptr|0;
     var curr = 0;
@@ -244,45 +98,8 @@
     }
     return (curr - ptr)|0;
   }
-          </code></pre>
-          <ul>
-            <li class="fragment">Ensure that ptr is always an integer</li>
-            <li class="fragment">Read an integer from address curr</li>
-            <li class="fragment">Additions and subtractions are all 32-bit</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>asm.js</h2>
-          <p>asm.js code avoids potential slowdowns in code: no variables with mixed types, etc.</p>
-          <p class="fragment">asm.js code does only <b style="color: #f85">low-level assembly-like computation</b>, precisely what compiled C/C++ needs (and hence the name)</p>
-        </section>
-
-        <section>
-          <h2>asm.js - Formal type system benefits</h2>
-          <p>Type check output of a C/C++ to JavaScript <b style="color: #f85">compiler</b></p>
-          <p class="fragment">Type check input to a <b style="color: #f85">JavaScript engine</b> at runtime</p>
-        </section>
-
-        <section>
-          <h2>asm.js - Runtime Optimizations (1)</h2>
-          <p><b style="color: #f85">Variable types</b> pop out during type checking. This makes it possible to do ahead of time (AOT) compilation, not only just in time (JIT)</p>
-        </section>
-
-        <section>
-          <h2>asm.js - Runtime Optimizations (2)</h2>
-          <p>JavaScript engine has a guarantee that there are <b style="color: #f85">no speed bumps</b> - variable types won't change, etc. -
-             so it can generate simpler and more efficient code</p>
-        </section>
-
-        <section>
-          <h2>asm.js - Runtime Optimizations (3)</h2>
-          <p>The asm.js type system makes it easy to reason about <b style="color: #f85">global</b> program structure:
-             function calls, memory access, etc.</b></p>
-        </section>
-
-        <section>
-          <h2>How much faster are we<br>talking here..?</h2>
+            </code></pre>
+          </p>
         </section>
 
         <section>
@@ -296,83 +113,35 @@
         </section>
 
         <section>
-          <h2>Seeing is believing</h2>
-          <p><b style="color: #f85"><a href="banana/benchmark.html">BananaBench</a></b></p>
+          <h2>Compiling C/C++ to JavaScript</h2>
+          <p><b>No costly rewrites</b>: compile your existing game to the web</p>
+          <p>Often <b>faster</b> than handwritten JavaScript</p>
         </section>
 
         <section>
-          <h2>asm.js</h2>
-            <p>Code can run around <b style="color: #f85">2X</b> slower than native - comparable to Java, C# - and will get even faster</p>
-            <p class="fragment">Optimizations can be done quickly and straightforwardly in existing JavaScript engines
-                                - <b style="color: #f85">not</b> a new VM or JIT, just some additional optimizations to existing engines</p>
+          <h2>Compiled C++ Modules</h2>
+          <p>Use <b>C++ modules with asm.js</b> for speed-intensive things</p>
+          <p>Write <b>normal JavaScript</b> for everything else</p>
+          <p style="margin: 1em"></p>
+          <p class="fragment">Example of using the ammo.js port of Bullet:</p>
+          <p>
+            <pre class="fragment"><code contenteditable>
+  var groundTransform = new Ammo.btTransform();
+  groundTransform.setIdentity();
+  groundTransform.setOrigin(new Ammo.btVector3(0, -56, 0));
+            </code></pre>
+          </p>
         </section>
 
         <section>
-          <h2>asm.js</h2>
-            <p>Code is just a subset of JavaScript (like <b style="color: #f85">Crockford's "Good Parts"</b>) so already runs in all browsers</p>
-            <p class="fragment"><b style="color: #f85">Not</b> a new language</p>
+          <h2>Many paths on the web</h2>
+          <p>Compile an <b>entire game</b> to JavaScript</p>
+          <p>Or write a game in JavaScript, using <b>compiled C++ modules</b> <a href="ammo/ammo.html">[demo]</a></p>
         </section>
 
         <section>
-          <h2>Trying asm.js now</h2>
-            <p>Compile your code using emscripten with <b style="color: #f85">ASM_JS=1</b></p>
-            <p>Run it in a build of Firefox from <a href='http://hg.mozilla.org/users/lwagner_mozilla.com/odinmonkey/'>this branch</a></p>
-            <p class="fragment">Not supported yet: C++ exceptions, setjmp/longjmp</p>
-        </section>
-
-        <section>
-          <h2>...Just C/C++?</h2>
-          <p>C/C++ compiled to JavaScript can be fast (and even faster with asm.js). But what about other languages?</p>
-        </section>
-
-        <section>
-          <h2>Not just C/C++!</h2>
-          <p>Many languages can be compiled to <b style="color: #f85">C</b>, <b style="color: #f85">C++</b> or <b style="color: #f85">LLVM IR</b>, which means they can be compiled to JavaScript with the same approach and benefits</p>
-        </section>
-
-        <section>
-          <h2>Java => C => JavaScript</h2>
-          <p><b style="color: #f85"><a href="xmlvm/index.html">Demo</a></b> using <a href="http://xmlvm.org/">XMLVM</a> and Emscripten</p>
-        </section>
-
-        <section>
-          <h2>Compiling to JavaScript:<br>Current state of the art</h2>
-          <ul>
-            <li class="fragment"><b style="color: #f85">C/C++</b>: Mature</li>
-            <li class="fragment"><b style="color: #f85">Java, C#, Objective-C</b>: Good</li>
-            <li class="fragment"><b style="color: #f85">Python, Ruby, Lua</b>: Needs work</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Dynamic Languages</h2>
-          <p>Entire C/C++ <b style="color: #f85">runtimes</b> can be compiled and the original language interpreted with proper
-             semantics, but this is not lightweight</p>
-          <p class="fragment"><b style="color: #f85">Source-to-source</b> compilers from such languages to JavaScript ignore semantic
-             differences (for example, numeric types)</p>
-        </section>
-
-        <section>
-          <h2>Fast Java, C#</h2>
-          <p>Actually, Java and C# have a similar predicament: Both languages <b style="color: #f85">depend on special VMs</b> to be efficient</p>
-          <p class="fragment">Source-to-source compilers for them <b style="color: #f85">lose out</b> on the optimizations done in those VMs</p>
-          <p class="fragment">AOT compilers for them can at least gain <b style="color: #f85">LLVM-type</b> optimizations - but still something is missing</p>
-        </section>
-
-        <section>
-          <h2>A Unified Approach?</h2>
-          <p>Should we <b style="color: #f85">compile entire VMs</b> from C/C++ to JavaScript,
-           and implement <b style="color: #f85">JavaScript-emitting JITs</b>?</p>
-          <p class="fragment">Seems the only way to run most languages with perfect semantics + maximum speed</p>
-          <p class="fragment">This is why I believe <b style="color: #f85">C/C++ to JavaScript</b> translation is the core issue regarding compilation to JavaScript</p>
-        </section>
-
-        <section>
-          <h2>Conclusion</h2>
-          <p><b style="color: #f85">Statically-typed languages</b> and especially C/C++ can be compiled effectively to JavaScript</p>
-          <p class="fragment">Expect the speed of compiled C/C++ to get to just <b style="color: #f85">2X</b> slower than native code, or better, later this year</p>
-          <br>
-          <p class="fragment"><b style="color: #f85">Thanks for listening!</b><br><b style="color: #fc8">Questions?</b></p>
+          <h2>Thank you!<br><br><div style="color: #f85">Questions?</div></h2>
+status, nightly
         </section>
 
       </div>
