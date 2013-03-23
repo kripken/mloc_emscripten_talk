@@ -104,7 +104,7 @@
         <section>
           <h2>Limitations</h2>
           <p>While modern JavaScript engines are fast, they have trouble on <b>large</b> applications:</p>
-          <br>
+          <hr>
           <p class="fragment"><b>More functions, more variables</b> - harder to figure out types</p>
           <p class="fragment">Issues with <b>deoptimizations/recompilations</b></p>
           <p class="fragment">Hard to benefit from <b>global information</b> about the whole codebase</p>
@@ -142,7 +142,7 @@
           <p>Ensures that <b>types are not mixed up</b></p>
           <p class="fragment">Makes it possible to reason about <b>global program structure</b></p>
           <p class="fragment">Helps in <b>existing</b> JavaScript engines by making it simpler to detect types and avoid them changing later</p>
-          <p class="fragment">Contains complete type information, allows <b>ahead of time (AOT)</b> compilation as well</p>
+          <p class="fragment">Contains complete type information, allows <b>ahead of time (AOT)</b> compilation as well, with asm.js-specific optimizations</p>
         </section>
 
         <section>
@@ -157,19 +157,22 @@
 
         <section>
           <h2>asm.js - Status</h2>
-          <p><b><a href="http://emscripten.org">Emscripten</a></b>, an open source C/C++ to JavaScript compiler, can emit asm.js output</p>
-          <p class="fragment">asm.js code already works in <b>all modern browsers</b>, and is generally faster</p>
-          <p class="fragment">asm.js optimizations in <a href="http://nightly.mozilla.org/">Firefox nightly</a> speed it up to just <b>2x</b> slower than native. And that's just the beginning!</p>
+          <p><b><a href="http://emscripten.org">Emscripten</a></b> can emit asm.js output</p>
+          <!--div style="height: 0.33em"></div>
+          <p class="fragment"><b style="color: #f85">C/C++</b>&nbsp&nbsp<b style="color: #fff">=></b>&nbsp&nbsp<b style="color: #7af">LLVM</b>&nbsp&nbsp<b style="color: #fff">=></b>&nbsp&nbsp<b style="color: #8f5">Emscripten</b>&nbsp&nbsp<b style="color: #fff">=></b>&nbsp&nbsp<b style="color: #f58">asm.js JavaScript</b></p>
+          <div style="height: 0.33em"></div-->
+          <p class="fragment">asm.js code already works in <b>all modern browsers</b></p>
+          <p class="fragment">asm.js optimizations in <a href="http://nightly.mozilla.org/">Firefox nightly</a> speed it up to <b>2x</b> slower than native. And that's just the beginning!</p>
         </section>
 
         <section>
           <h2>Big Picture:<br>Compiling C/C++ to JavaScript</h2>
-          <p><b>No costly rewrites</b>: Compile your existing game to the web</p>
-          <p class="fragment">Often <b>faster</b> than handwritten JavaScript</p>
-          <p class="fragment"><b>Mature tools</b>, proven on many real-world codebases</p>
+          <p><b>Mature open source tools</b> (emscripten, LLVM, etc.)</p>
+          <p class="fragment"><b>Fast code execution</b>, getting close to native speed</p>
+          <p class="fragment">Lets you <b>avoid costly code rewrites</b></p>
         </section>
 
-        <section>
+        <!--section>
           <h2>Emscripten-ported projects</h2>
           <p>XXX remove? XXX</b></p>
           <p><b>TODO</b></p>
@@ -179,7 +182,7 @@
           <p><b>Bullet</b></p>
           <p><b>Box 2D</b></p>
           <p>and many non-game projects (Qt, Python, Sqlite, ...)</p>
-        </section>
+        </section-->
 
         <!--section>
           <h2>Compiled C++ Modules</h2>
