@@ -62,6 +62,23 @@
         </section>
 
         <section>
+          <h2>Why Compile to JavaScript?</h2>
+        </section>
+
+        <section>
+          <h2>1. Reuse existing code</h2>
+          <div style="height: 0.66em"></div>
+          <hr>
+          <p><b style="color: #f85">C/C++</b>&nbsp&nbsp<b style="color: #fff">=></b>&nbsp&nbsp<b style="color: #7af">LLVM</b>&nbsp&nbsp<b style="color: #fff">=></b>&nbsp&nbsp<b style="color: #8f5"><a href="http://emscripten.org">Emscripten</a></b>&nbsp&nbsp<b style="color: #fff">=></b>&nbsp&nbsp<b style="color: #f58">JavaScript</b></p>
+          <hr>
+        </section>
+
+        <section>
+          <h2>2. Speed</h2>
+          <p>Compiled code can be <b>faster</b> than handwritten JavaScript (!)</p>
+        </section>
+
+        <section>
           <h2>Modern JavaScript Engines</h2>
           <p><b>Detect types</b> at runtime and generate efficient machine code</p>
           <p>
@@ -89,6 +106,12 @@
   }
             </code></pre>
           </p>
+        </section>
+
+        <section>
+          <h2>Compiled Code vs. Handwritten JS</h2>
+          <p>Compiled code from a statically-typed language is still <b>implicitly typed</b></p>
+          <p class="fragment">Easy and natural to make compiled use utilize <b>typed arrays</b> for speed</p>
         </section>
 
         <section>
@@ -158,9 +181,6 @@
         <section>
           <h2>asm.js - Status</h2>
           <p><b><a href="http://emscripten.org">Emscripten</a></b> can emit asm.js output</p>
-          <!--div style="height: 0.33em"></div>
-          <p class="fragment"><b style="color: #f85">C/C++</b>&nbsp&nbsp<b style="color: #fff">=></b>&nbsp&nbsp<b style="color: #7af">LLVM</b>&nbsp&nbsp<b style="color: #fff">=></b>&nbsp&nbsp<b style="color: #8f5">Emscripten</b>&nbsp&nbsp<b style="color: #fff">=></b>&nbsp&nbsp<b style="color: #f58">asm.js JavaScript</b></p>
-          <div style="height: 0.33em"></div-->
           <p class="fragment">asm.js code already works in <b>all modern browsers</b></p>
           <p class="fragment">asm.js optimizations in <a href="http://nightly.mozilla.org/">Firefox nightly</a> speed it up to <b>2x</b> slower than native. And that's just the beginning!</p>
         </section>
