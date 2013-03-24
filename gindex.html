@@ -59,7 +59,7 @@
 
         <section>
           <h2>2. And it can be fast</h2>
-          <p>Despite JavaScript's dynamic nature, <b>modern JavaScript VMs</b> are quite speedy, and even more so with <b>asm.js</b>!</p>
+          <p>Despite JavaScript's dynamic nature, <b>modern JavaScript VMs</b> are quite speedy, and even more so with <b>asm.js</b>, as we shall soon see!</p>
         </section>
 
         <section>
@@ -112,7 +112,7 @@
 
         <section>
           <h2>Compiled Code vs. Handwritten JS</h2>
-          <p>Compiled code from a statically-typed language is still <b>implicitly typed</b></p>
+          <p>Compiled code from a statically-typed language is still <b>implicitly typed</b>, so optimizable</p>
           <p class="fragment">Easy and natural to make compiled use utilize <b>typed arrays</b> for speed</p>
         </section>
 
@@ -131,15 +131,15 @@
           <p>While modern JavaScript engines are fast in many cases, they can have trouble on <b>large</b> applications:</p>
           <hr>
           <p class="fragment"><b>More functions, more variables</b> - harder to figure out types</p>
-          <p class="fragment">Issues with <b>deoptimizations/recompilations</b></p>
+          <p class="fragment">Issues with <b>deoptimizations / recompilations</b></p>
         </section>
 
         <section>
           <h2>asm.js</h2>
           <p><a href="http://asmjs.org"><b>asm.js</b></a>, which began as a research project at Mozilla, aims to fix these issues</p>
-          <hr class="fragment">
-          <p class="fragment"><b style="color: #fda">asm.js is an extraordinarily optimizable,<br>low-level subset of JavaScript</b></p>
-          <hr class="fragment">
+          <hr>
+          <p><b style="color: #fda">asm.js is an extraordinarily optimizable,<br>low-level subset of JavaScript</b></p>
+          <hr>
           <p class="fragment"><b>100%</b> backwards compatible: <b>Not</b> a new new language, <b>not</b> a new VM</p>
           <p class="fragment">But can be optimized <b>like</b> a low-level VM</p>
         </section>
@@ -169,7 +169,7 @@
           <p class="fragment">Makes it possible to reason about <b>global program structure</b></p>
           <hr class="fragment">
           <p class="fragment">Helps in <b>existing</b> JavaScript engines by making it simpler to detect types and avoid them changing later</p>
-          <p class="fragment">Allows <b>ahead of time (AOT)</b> compilation with asm.js-specific optimizations</p>
+          <p class="fragment">Makes <b>ahead of time (AOT)</b> compilation possible with asm.js-specific optimizations</p>
         </section>
 
         <section>
