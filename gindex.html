@@ -43,8 +43,9 @@
       <div class="slides">
 
         <section>
-          <h1><div style="color: #f85">Compiling to<br>JavaScript</div></h1>
-          <h2>Near-native speed on the web</h2>
+          <h1><div style="color: #f85">Compiling C/C++<br> to JavaScript</div></h1>
+          <h2>GDC 2013</h2>
+          <h3>Alon Zakai - Mozilla</h3>
         </section>
 
         <section>
@@ -58,7 +59,7 @@
 
         <section>
           <h2>2. And it can be fast</h2>
-          <p>Despite its dynamic nature, with <b>modern JS engines</b> and <b>asm.js</b> it can be very speedy (we just saw how much!)</p>
+          <p>Despite JavaScript's dynamic nature, <b>modern JavaScript VMs</b> are quite speedy, and even more so with <b>asm.js</b>!</p>
         </section>
 
         <section>
@@ -71,6 +72,7 @@
           <hr>
           <p><b style="color: #f85">C/C++</b>&nbsp&nbsp<b style="color: #fff">=></b>&nbsp&nbsp<b style="color: #7af">LLVM</b>&nbsp&nbsp<b style="color: #fff">=></b>&nbsp&nbsp<b style="color: #8f5"><a href="http://emscripten.org">Emscripten</a></b>&nbsp&nbsp<b style="color: #fff">=></b>&nbsp&nbsp<b style="color: #f58">JavaScript</b></p>
           <hr>
+          <p>Automatically convert to JavaScript, no need for time-consuming manual rewrites</p>
         </section>
 
         <section>
@@ -126,17 +128,18 @@
 
         <section>
           <h2>Limitations</h2>
-          <p>While modern JavaScript engines are fast, they have trouble on <b>large</b> applications:</p>
+          <p>While modern JavaScript engines are fast in many cases, they can have trouble on <b>large</b> applications:</p>
           <hr>
           <p class="fragment"><b>More functions, more variables</b> - harder to figure out types</p>
           <p class="fragment">Issues with <b>deoptimizations/recompilations</b></p>
-          <p class="fragment">Hard to benefit from <b>global information</b> about the whole codebase</p>
         </section>
 
         <section>
           <h2>asm.js</h2>
           <p><a href="http://asmjs.org"><b>asm.js</b></a>, which began as a research project at Mozilla, aims to fix these issues</p>
-          <p class="fragment">asm.js is a <b>subset of JavaScript</b> that is very simple to optimize</p>
+          <hr class="fragment">
+          <p class="fragment"><b style="color: #fda">asm.js is an extraordinarily optimizable,<br>low-level subset of JavaScript</b></p>
+          <hr class="fragment">
           <p class="fragment"><b>100%</b> backwards compatible: <b>Not</b> a new new language, <b>not</b> a new VM</p>
           <p class="fragment">But can be optimized <b>like</b> a low-level VM</p>
         </section>
@@ -157,15 +160,16 @@
             </code></pre>
           </p>
           <p class="fragment">If you've ever seen compiled code from Emscripten or Mandreel, <code><b>|0</b></code> etc. will look familiar</p>
-          <p class="fragment">asm.js just <b>formalizes</b> these techniques and gives <b>guarantees</b> (with a type system) they are used properly</p>
+          <p class="fragment">asm.js just <b>formalizes</b> these techniques and gives <b>guarantees</b> (via a type system) they are used properly</p>
         </section>
 
         <section>
           <h2>asm.js - why it works</h2>
           <p>Ensures that <b>types are not mixed up</b></p>
           <p class="fragment">Makes it possible to reason about <b>global program structure</b></p>
+          <hr class="fragment">
           <p class="fragment">Helps in <b>existing</b> JavaScript engines by making it simpler to detect types and avoid them changing later</p>
-          <p class="fragment">Contains complete type information, allows <b>ahead of time (AOT)</b> compilation as well, with asm.js-specific optimizations</p>
+          <p class="fragment">Allows <b>ahead of time (AOT)</b> compilation with asm.js-specific optimizations</p>
         </section>
 
         <section>
