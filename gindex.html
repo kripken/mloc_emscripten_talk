@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Fast C++ on the Web using Emscripten and asm.js</title>
+
+    <meta name="description" content="Big Web App? Compile It!">
+    <meta name="author" content="Alon Zakai">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <style type="text/css">
+      b {
+        color: #f85;
+      }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+
+        <section>
+          <h1><div style="color: #f85">Compiling C/C++<br> to JavaScript</div></h1>
+          <h2 style="color: #fda">GDC 2013</h2>
+          <h3>Alon Zakai - Mozilla</h3>
+        </section>
+
+        <section>
+          <h2>Why JavaScript?</h2>
+        </section>
+
+        <section>
+          <h2>1. Because it's there</h2>
+          <p>JavaScript is the only <b>standards-based</b> language in all web browsers</p>
+        </section>
+
+        <section>
+          <h2>2. And it can be fast</h2>
+          <p>Despite JavaScript's dynamic nature, <b>modern JavaScript VMs</b> are quite speedy, and even more so with <b>asm.js</b>, as we shall soon see!</p>
+        </section>
+
+        <section>
+          <h2>Why Compile to JavaScript?</h2>
+        </section>
+
+        <section>
+          <h2>1. Reuse existing code</h2>
+          <div style="height: 0.66em"></div>
+          <hr>
+          <p><b style="color: #f85">C/C++</b>&nbsp&nbsp<b style="color: #fff">=></b>&nbsp&nbsp<b style="color: #7af">LLVM</b>&nbsp&nbsp<b style="color: #fff">=></b>&nbsp&nbsp<b style="color: #8f5"><a href="http://emscripten.org">Emscripten</a></b>&nbsp&nbsp<b style="color: #fff">=></b>&nbsp&nbsp<b style="color: #f58">JavaScript</b></p>
+          <hr>
+          <p>Automatically convert to JavaScript, no need for time-consuming manual rewrites</p>
+        </section>
+
+        <section>
+          <h2>2. Speed</h2>
+          <p>Compiled code can be <b>faster</b> than handwritten JavaScript (!)</p>
+        </section>
+
+        <section>
+          <h2>Modern JavaScript Engines</h2>
+          <p><b>Detect types</b> at runtime and generate efficient machine code</p>
+          <p>
+            <pre><code contenteditable>
+  function sum(x) { // in practice, called with small integers
+    var s = 0;
+    for (var i = 1; i < x; i++) s += i; // in practice, i is an integer
+    return s;
+  }
+            </code></pre>
+          </p>
+        </section>
+
+        <section>
+          <h2>Modern JavaScript Engines</h2>
+          <p>Support features like <b>typed arrays</b> that are easy to make fast</p>
+          <p>
+            <pre><code contenteditable>
+  var heap = new Int32Array(10240);
+  // ..
+  function sumArray(x) {
+    var s = 0;
+    for (var i = 0; i < x; i++) s += heap[i]; // fast read of int32
+    return s;
+  }
+            </code></pre>
+          </p>
+        </section>
+
+        <section>
+          <h2>Compiled Code vs. Handwritten JS</h2>
+          <p>Compiled code from a statically-typed language is still <b>implicitly typed</b>, so optimizable</p>
+          <p class="fragment">Easy and natural to make compiled use utilize <b>typed arrays</b> for speed</p>
+        </section>
+
+        <section>
+          <h2>Microbenchmarks</h2>
+          <img width="1143" height="453" src="micro3b.png">
+        </section>
+
+        <section>
+          <h2>Realistic/large benchmarks</h2>
+          <img width="1125" height="453" src="macro3b.png">
+        </section>
+
+        <section>
+          <h2>Limitations</h2>
+          <p>While modern JavaScript engines are fast in many cases, they can have trouble on <b>large</b> applications:</p>
+          <hr>
+          <p class="fragment"><b>More functions, more variables</b> - harder to figure out types</p>
+          <p class="fragment">Issues with <b>deoptimizations / recompilations</b></p>
+        </section>
+
+        <section>
+          <h2>asm.js</h2>
+          <p><a href="http://asmjs.org"><b>asm.js</b></a>, which began as a research project at Mozilla, aims to fix these issues</p>
+          <hr>
+          <p><b style="color: #fda">asm.js is an extraordinarily optimizable,<br>low-level subset of JavaScript</b></p>
+          <hr>
+          <p class="fragment"><b>100%</b> backwards compatible: <b>Not</b> a new new language, <b>not</b> a new VM</p>
+          <p class="fragment">But can be optimized <b>like</b> a low-level VM</p>
+        </section>
+
+        <section>
+          <h2>asm.js - example</h2>
+          <p>
+            <pre><code contenteditable>
+  function strlen(ptr) { // calculate length of C string
+    ptr = ptr|0;
+    var curr = 0;
+    curr = ptr;
+    while (MEM8[curr]|0 != 0) {
+      curr = (curr + 1)|0;
+    }
+    return (curr - ptr)|0;
+  }
+            </code></pre>
+          </p>
+          <p class="fragment">If you've ever seen compiled code from Emscripten or Mandreel, <code><b>|0</b></code> etc. will look familiar</p>
+          <p class="fragment">asm.js just <b>formalizes</b> these techniques and gives <b>guarantees</b> (via a type system) they are used properly</p>
+        </section>
+
+        <section>
+          <h2>asm.js - why it works</h2>
+          <p>Ensures that <b>types are not mixed up</b></p>
+          <p class="fragment">Makes it possible to reason about <b>global program structure</b></p>
+          <hr class="fragment">
+          <p class="fragment">Helps in <b>existing</b> JavaScript engines by making it simpler to detect types and avoid them changing later</p>
+          <p class="fragment">Makes <b>ahead of time (AOT)</b> compilation possible with asm.js-specific optimizations</p>
+        </section>
+
+        <section>
+          <h2>Microbenchmarks</h2>
+          <img width="1120" height="452" src="micro4b.png">
+        </section>
+
+        <section>
+          <h2>Realistic/large benchmarks</h2>
+          <img width="1122" height="453" src="macro4b.png">
+        </section>
+
+        <section>
+          <h2>asm.js - Status</h2>
+          <p><b><a href="http://emscripten.org">Emscripten</a></b> can emit asm.js output</p>
+          <p class="fragment">asm.js code already works in <b>all modern browsers</b></p>
+          <p class="fragment">asm.js optimizations in <a href="http://nightly.mozilla.org/">Firefox nightly</a> speed it up to <b>2x</b> slower than native. And that's just the beginning!</p>
+        </section>
+
+        <section>
+          <h2>Big Picture:<br>Compiling C/C++ to JavaScript</h2>
+          <p><b>Mature open source tools</b> (emscripten, LLVM, etc.)</p>
+          <p><b>Fast code execution</b>, getting close to native speed</p>
+        </section>
+
+        <!--section>
+          <h2>Emscripten-ported projects</h2>
+          <p>XXX remove? XXX</b></p>
+          <p><b>TODO</b></p>
+          <p><b>Nebula 3</b></p>
+          <p><b>Unigine</b></p>
+          <p><b>Cube 2/Sauerbraten</b></p>
+          <p><b>Bullet</b></p>
+          <p><b>Box 2D</b></p>
+          <p>and many non-game projects (Qt, Python, Sqlite, ...)</p>
+        </section-->
+
+        <!--section>
+          <h2>Compiled C++ Modules</h2>
+          <p>XXX remove? XXX</p>
+          <p>Aside from compiling entire games, you can compile C/C++ <b>modules</b></p>
+          <p>Allows <b>compiled C++</b> for speed-intensive code and <b>normal JavaScript</b> for everything else</p>
+          <p class="fragment">Example of using the <a href="https://github.com/kripken/ammo.js">ammo.js</a> port of <a href="http://bulletphysics.org/">Bullet</a>:</p>
+          <p>
+            <pre class="fragment"><code contenteditable>
+  var groundTransform = new Ammo.btTransform();
+  groundTransform.setIdentity();
+  groundTransform.setOrigin(new Ammo.btVector3(0, -56, 0));
+            </code></pre>
+          </p>
+          <p class="fragment"><a href="ammo/ammo.html">[Demo]</a></p>
+        </section-->
+
+        <!--section>
+          <h2>Many paths on the web</h2>
+          <p>Compile an <b>entire game</b> to JavaScript</p>
+          <p>Or write a game in JavaScript and use <b>compiled C++ modules</b></p>
+        </section-->
+
+        <section>
+          <h2>Thank you!<br><br><div style="color: #f85">Questions?</div></h2>
+        </section>
+
+      </div>
+
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+
+    <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: 'default', //Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'fade', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+
+          // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>
