@@ -72,13 +72,34 @@
         </section>
 
         <section>
-          <h2>Why is this cool?</h2>
+          <h2>Why is this fun to work on?</h2>
         </section>
 
         <section>
           <h2>JavaScript is an odd target</h2>
           <p>No <b>goto</b> statements, so invented the <b>Relooper</b> algorithm</p>
-          <p>Many more interesting optimizations still to be done</p>
+          <hr>
+          <p>
+            <center><table width="100%"><tr><td width="45%">
+            <pre><code style="width: 100%"> block1:
+   if not cond: goto block2
+   ..
+   goto block1
+ block2:
+   return 5
+</code></pre>
+            </td><td width="10%"></td><td width="45%">
+            <pre><code>
+ while (cond) {
+   ..
+ }
+ return 5;
+
+</code></pre>
+            </td></tr></table></center>
+          </p>
+          <hr>
+          <p class="fragment">Many more interesting optimizations still to be done</p>
         </section>
 
         <section>
@@ -96,8 +117,6 @@
 
         <section>
           <h2>AAA Games? Isn't JavaScript slow?</h2>
-          <p><b>Modern JavaScript VMs</b> are quite speedy already, but compiled code can be even <b>faster</b> than handwritten JavaScript (!)</p>
-          <p class="fragment">What? How? Compiling into JavaScript still produces... <b>JavaScript</b>, right?</p>
         </section>
 
         <section>
@@ -106,6 +125,11 @@
           <p><b style="color: #fda">asm.js is an extraordinarily optimizable,<br>low-level subset of JavaScript</b></p>
           <hr>
           <p>A <b>type system</b> for compiled code in JavaScript</p>
+            <pre class="fragment"><code> function f(x) {
+   x = x|0;
+   return (x+x+3)|0;
+ }
+</code></pre>
           <p class="fragment">Makes it easy for JavaScript VMs to <b>detect types</b> and ensures they do not change unexpectedly</p>
         </section>
 
