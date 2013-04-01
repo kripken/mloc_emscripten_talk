@@ -45,8 +45,8 @@
           document.getElementById('during').style.visibility = 'visible';
 
           var canvas = document.getElementById("canvas");
-          canvas.width = screen.width*0.75;
-          canvas.height = screen.height*0.50;
+          canvas.width = 750;//screen.width*0.75;
+          canvas.height = 500;//screen.height*0.50;
 
           var gl = CubicVR.GLCore.init(canvas);
 
@@ -172,6 +172,7 @@
               <option value="2500">2500</option>
             </select>
             <input type="button" value="go!" onclick="startUp(boxes.value);">
+            <input type="button" value="stop!" onclick="physicsWorker.terminate();">
           </form>
         </div>
         <div id="during"><div>Physics FPS: <input type="text" id="out" readonly="1" size="3"></div><div id="postdiv"></div></div>
