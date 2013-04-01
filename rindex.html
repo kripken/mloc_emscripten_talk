@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
 
-    <title>Fast C++ on the Web using Emscripten and asm.js</title>
+    <title>emscripten & asm.js</title>
 
     <meta name="description" content="Big Web App? Compile It!">
     <meta name="author" content="Alon Zakai">
@@ -43,7 +43,7 @@
       <div class="slides">
 
         <section>
-          <h1><div style="color: #f85">Emscripten<br>and asm.js</div></h1>
+          <h1><div style="color: #f85">Emscripten<br>& asm.js</div></h1>
           <h2 style="color: #fda">Mozilla Research Party</h2>
           <h3>Alon Zakai - Mozilla</h3>
         </section>
@@ -58,57 +58,79 @@
         </section>
 
         <section>
-          <h2>Why Compile to JavaScript?</h2>
+          <h2>Why is this useful?</h2>
         </section>
 
         <section>
-          <h2>1. JavaScript is Everywhere</h2>
-          <p>JavaScript is the only <b>standards-based</b> language in all web browsers</p>
+          <h2>JavaScript is Everywhere</h2>
+          <p>The only <b>standards-based</b> language in all web browsers</p>
         </section>
 
         <section>
-          <h2>2. Reuse existing code</h2>
-          <p><b>Automatically</b> convert to JavaScript, no need for time-consuming manual rewrites</p>
+          <h2>Reuse existing code</h2>
+          <p><b>Automatically</b> convert to JavaScript</p>
         </section>
 
         <section>
-          <h2>But that's not all!</h2>
+          <h2>Why is this fun to work on?</h2>
         </section>
 
         <section>
-          <h2>Speed</h2>
-          <p><b>Modern JavaScript VMs</b> are quite speedy already, but compiled code can be <b>faster</b> than handwritten JavaScript (!)</p>
-          <p class="fragment">What? How? Compiling into JavaScript still produces... <b>JavaScript</b>, right?</p>
+          <h2>JavaScript is an odd target</h2>
+          <p>No <b>goto</b> statements, so invented the <b>Relooper</b> algorithm</p>
+          <hr>
+          <p>
+            <center><table width="100%"><tr><td width="45%">
+            <pre><code style="width: 100%"> block1:
+   if not cond: goto block2
+   ..
+   goto block1
+ block2:
+   return 5
+</code></pre>
+            </td><td width="10%"></td><td width="45%">
+            <pre><code>
+ while (cond) {
+   ..
+ }
+ return 5;
+
+</code></pre>
+            </td></tr></table></center>
+          </p>
+          <hr>
+          <p class="fragment">Many more interesting optimizations still to be done</p>
         </section>
 
         <section>
-          <h2>Compiled Code</h2>
-          <p>If you compiled a <b>statically typed</b> language into JavaScript, it will still be <b>implicitly typed</b></p>
-          <p>Modern JS engines benefit from code with simple type usage</p>
+          <h2>Useful for things like games</h2>
+          <p><b>Even AAA games!</b> We announced last week that we worked with Epic to port their <b>Unreal Engine 3</b> to HTML5</p>
+          <hr>
+          <p>
+            <video src="epicvideo.webm" controls preload=auto poster="epicvideo.png">
+              Your browser does not support the <code>video</code> element.
+            </video>
+            <!--iframe width="640" height="360" src="http://www.youtube.com/embed/XsyogXtyU9o?feature=oembed" frameborder="0" allowfullscreen></iframe-->
+          </p>
+          <hr>
+        </section>
+
+        <section>
+          <h2>AAA Games? Don't they<br>require near-native speed?</h2>
         </section>
 
         <section>
           <h2>asm.js</h2>
+          <hr>
           <p><b style="color: #fda">asm.js is an extraordinarily optimizable,<br>low-level subset of JavaScript</b></p>
           <hr>
-          <p>A formal type system for compiled code in JavaScript, to help JavaScript VMs even more</p>
-        </section>
-
-        <section>
-          <h2>asm.js - example</h2>
-          <p>
-            <pre><code contenteditable>
-  function strlen(ptr) { // calculate length of C string
-    ptr = ptr|0;
-    var curr = 0;
-    curr = ptr;
-    while (MEM8[curr]|0 != 0) {
-      curr = (curr + 1)|0;
-    }
-    return (curr - ptr)|0;
-  }
-            </code></pre>
-          </p>
+          <p>A <b>type system</b> for compiled code in JavaScript</p>
+            <pre class="fragment"><code> function f(x) {
+   x = x|0;
+   return (x+x+3)|0;
+ }
+</code></pre>
+          <p class="fragment">Makes it easy for JavaScript VMs to <b>detect types</b> and ensures they do not change unexpectedly</p>
         </section>
 
         <section>
@@ -117,17 +139,18 @@
         </section>
 
         <section>
-          <h2>asm.js - Status</h2>
-          <p><b><a href="http://emscripten.org">Emscripten</a></b> can emit asm.js output</p>
-          <p class="fragment">asm.js code already works in <b>all modern browsers</b></p>
-          <p class="fragment">With asm.js-specific optimizations in <a href="http://nightly.mozilla.org/">Firefox Nightly</a>, performance is within <b>2x</b> of native. And that's just the beginning!</p>
-          <p class="fragment">Work beginning on <b>next phase</b> of asm.js spec, thinking about stuff like float32, int64, SIMD, etc.</p>
+          <h2>Seeing is believing</h2>
+          <p><iframe width="800" height="800" src="ammo/ammo.html"></iframe></p>
         </section>
 
         <section>
           <h2>That's it!</h2>
+          <br>
+          <br>
+          <p>For questions, please find us later:</p>
+          <p><a href="http://emscripten.org">emscripten</a> - Alon</p>
+          <p><a href="http://asmjs.org">asm.js</a> - Luke, Dave, Alon</p>
         </section>
-
       </div>
 
     </div>
