@@ -76,6 +76,24 @@
         </section>
 
         <section>
+          <h2>Used for games</h2>
+          <p><b>Even AAA games!</b> We <a href="https://blog.mozilla.org/blog/2013/03/27/mozilla-is-unlocking-the-power-of-the-web-as-a-platform-for-gaming/">announced</a> last week that we worked with Epic to port their <b>Unreal Engine 3</b> to HTML5</p>
+          <hr>
+          <p>
+            <video src="epicvideo.webm" controls preload=auto poster="epicvideo.png" id="vid1">
+              Your browser does not support the <code>video</code> element.
+            </video>
+            <script>
+              document.getElementById('vid1').addEventListener('loadedmetadata', function() {
+                this.currentTime = 39;
+              }, false);
+            </script>
+
+            <!--iframe width="640" height="360" src="http://www.youtube.com/embed/XsyogXtyU9o?feature=oembed" frameborder="0" allowfullscreen></iframe-->
+          </p>
+        </section>
+
+        <section>
           <h2>JavaScript is an odd target</h2>
           <p>No <b>goto</b> statements, so invented the <b>Relooper</b> algorithm</p>
           <hr>
@@ -103,26 +121,8 @@
         </section>
 
         <section>
-          <h2>Useful for things like games</h2>
-          <p><b>Even AAA games!</b> We <a href="https://blog.mozilla.org/blog/2013/03/27/mozilla-is-unlocking-the-power-of-the-web-as-a-platform-for-gaming/">announced</a> last week that we worked with Epic to port their <b>Unreal Engine 3</b> to HTML5</p>
-          <hr>
-          <p>
-            <video src="epicvideo.webm" controls preload=auto poster="epicvideo.png" id="vid1">
-              Your browser does not support the <code>video</code> element.
-            </video>
-            <script>
-              document.getElementById('vid1').addEventListener('loadedmetadata', function() {
-                this.currentTime = 39;
-              }, false);
-            </script>
-
-            <!--iframe width="640" height="360" src="http://www.youtube.com/embed/XsyogXtyU9o?feature=oembed" frameborder="0" allowfullscreen></iframe-->
-          </p>
-          <hr>
-        </section>
-
-        <section>
-          <h2>AAA Games? Don't they<br>require near-native speed?</h2>
+          <h2>How fast is this stuff?</h2>
+          <p class="fragment">Quite fast already in modern JS engines, but needs to be <b>even faster</b></p>
         </section>
 
         <section>
