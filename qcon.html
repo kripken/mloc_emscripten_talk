@@ -32,10 +32,10 @@
         color: #048;
       }
       h3 b {
-        color: #396;
+        color: #369;
       }
       b {
-        color: #f46;
+        color: #ca0;
       }
     </style>
 
@@ -50,124 +50,73 @@
 
         <section>
           <h2><b>JavaScript + Other<br>Languages</b></h2>
-          <h3>Alon Zakai - Mozilla</h3>
+          <h3>Alon Zakai (Mozilla)</h3>
           <h3><b>QCon</b></h3>
         </section>
 
         <section>
-          <h2>Emscripten</h2>
-          <p><b>Emscripten</b> is a compiler from C/C++ to JavaScript</p>
-          <div style="height: 0.66em"></div>
-          <hr>
-          <p><b style="color: #f85">C/C++</b>&nbsp&nbsp<b style="color: #fff">=></b>&nbsp&nbsp<b style="color: #7af">LLVM</b>&nbsp&nbsp<b style="color: #fff">=></b>&nbsp&nbsp<b style="color: #8f5"><a href="http://emscripten.org">Emscripten</a></b>&nbsp&nbsp<b style="color: #fff">=></b>&nbsp&nbsp<b style="color: #f58">JavaScript</b></p>
-          <hr>
+          <h3><b>Other Languages?</b></h3>
+          <p>Why? ;)</p>
         </section>
 
         <section>
-          <h2><b>Why is this useful?</b></h2>
+          <h3><b>JS is great</b></h3>
+          <p>Other languages are great in other ways. Existing code. etc. Use cases? Demos here?</p>
         </section>
 
         <section>
-          <h2><b>JavaScript is Everywhere</b></h2>
-          <p>The only <b>standards-based</b> language in all web browsers</p>
-        </section>
-
-        <section>
-          <h2>Reuse existing code</h2>
-          <p><b>Automatically</b> convert to JavaScript</p>
-        </section>
-
-        <section>
-          <h2>Why is this fun?</h2>
-        </section>
-
-        <section>
-          <h2>Used for games</h2>
-          <p><b>Even AAA games!</b> We <a href="https://blog.mozilla.org/blog/2013/03/27/mozilla-is-unlocking-the-power-of-the-web-as-a-platform-for-gaming/">announced</a> last week that we worked with Epic to port their <b>Unreal Engine 3</b> to HTML5</p>
-          <hr>
+          <h3><b>Another world out there</b></h3>
           <p>
-            <video src="epicvideo.webm" controls preload=auto poster="epicvideo.png" id="vid1">
-              Your browser does not support the <code>video</code> element.
-            </video>
-            <script>
-              document.getElementById('vid1').addEventListener('loadedmetadata', function() {
-                this.currentTime = 39;
-              }, false);
-            </script>
-
-            <!--iframe width="640" height="360" src="http://www.youtube.com/embed/XsyogXtyU9o?feature=oembed" frameborder="0" allowfullscreen></iframe-->
+            <ul>
+              <li>C, C++</li>
+              <li>Java, C#</li>
+              <li>Python, Lua, Ruby</li>
+              <li>...</li>
+            </ul>
           </p>
         </section>
 
         <section>
-          <h2>JavaScript is an odd target</h2>
-          <p>No <b>goto</b> statements, so invented the <b>Relooper</b> algorithm</p>
-          <hr>
-          <p>
-            <center><table width="100%"><tr><td width="45%">
-            <pre><code style="width: 100%"> block1:
-   if not cond: goto block2
-   ..
-   goto block1
- block2:
-   return 5
-</code></pre>
-            </td><td width="10%"></td><td width="45%">
-            <pre><code>
- while (cond) {
-   ..
- }
- return 5;
-
-</code></pre>
-            </td></tr></table></center>
-          </p>
-          <hr>
-          <p class="fragment">Many more interesting optimizations still to be done</p>
+          <h3><b>The Web</b></h3>
+          <p>JavaScript is the <b>only</b> standards-based language in web browsers.</p>
+          <p class="fragment">If we want to run other languages on the web, we need to go <b>through</b> JavaScript</p>
         </section>
 
         <section>
-          <h2>How fast is this stuff?</h2>
-          <p class="fragment">Quite fast already in modern JS engines, but needs to be <b>even faster</b></p>
+          <h3><b>Compiling to JavaScript</b></h3>
+          <p>List of compilers</p>
         </section>
 
         <section>
-          <h2>asm.js</h2>
-          <hr>
-          <p><b style="color: #fda">asm.js is an extraordinarily optimizable,<br>low-level subset of JavaScript</b></p>
-          <hr>
-          <p>A <b>type system</b> for compiled code in JavaScript</p>
-            <pre class="fragment"><code> function f(x) {
-   x = x|0;
-   return (x+x+3)|0;
- }
-</code></pre>
-          <p class="fragment">Makes it easy for JavaScript VMs to <b>detect types</b> and ensures they do not change unexpectedly</p>
+          <h3><b>Compiling VMs to JavaScript</b></h3>
+          <p>Lua example</p>
         </section>
 
         <section>
-          <h2>Benchmarks</h2>
-          <img width="1122" height="453" src="macro4b.png">
+          <h3><b>They can run, but how do they connect?</b></h3>
+          <p>Lua scripting a web page example</p>
         </section>
 
         <section>
-          <h2>Life before asm.js</h2>
-          <p><iframe width="800" height="800" src="ammo/noasm.html" id="before"></iframe></p>
+          <h3><b>How about connecting them to each other?</b></h3>
+          <p>.</p>
         </section>
 
         <section>
-          <h2>Life after asm.js</h2>
-          <p><iframe width="800" height="800" src="ammo/ammo.html" id="after"></iframe></p>
+          <h3><b>Lua / JavaScript</b></h3>
+          <p>Dual-repl example?</p>
         </section>
 
         <section>
-          <h2>That's it!</h2>
-          <br>
-          <br>
-          <p>For questions, please find us later:</p>
-          <p><a href="http://emscripten.org">emscripten</a> - Alon</p>
-          <p><a href="http://asmjs.org">asm.js</a> - Luke, Dave, Alon</p>
+          <h3><b>C / JavaScript</b></h3>
+          <p>ccall, emscripten_run_script, define C APIs in JS</p>
         </section>
+
+        <section>
+          <h3><b>C++ / JavaScript</b></h3>
+          <p>embind</p>
+        </section>
+
       </div>
 
     </div>
