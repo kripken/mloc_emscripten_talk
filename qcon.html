@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>emscripten & asm.js</title>
+
+    <meta name="description" content="Big Web App? Compile It!">
+    <meta name="author" content="Alon Zakai">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/sky.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <style type="text/css">
+      b {
+        color: #048;
+      }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+
+        <section>
+          <h2><div><b>Combining JavaScript with Other Languages on the Web</b></div></h2>
+          <h3>Alon Zakai - Mozilla</h3>
+          <h3 style="color: #024">QCon</h3>
+        </section>
+
+        <section>
+          <h2>Emscripten</h2>
+          <p><b>Emscripten</b> is a compiler from C/C++ to JavaScript</p>
+          <div style="height: 0.66em"></div>
+          <hr>
+          <p><b style="color: #f85">C/C++</b>&nbsp&nbsp<b style="color: #fff">=></b>&nbsp&nbsp<b style="color: #7af">LLVM</b>&nbsp&nbsp<b style="color: #fff">=></b>&nbsp&nbsp<b style="color: #8f5"><a href="http://emscripten.org">Emscripten</a></b>&nbsp&nbsp<b style="color: #fff">=></b>&nbsp&nbsp<b style="color: #f58">JavaScript</b></p>
+          <hr>
+        </section>
+
+        <section>
+          <h2>Why is this useful?</h2>
+        </section>
+
+        <section>
+          <h2>JavaScript is Everywhere</h2>
+          <p>The only <b>standards-based</b> language in all web browsers</p>
+        </section>
+
+        <section>
+          <h2>Reuse existing code</h2>
+          <p><b>Automatically</b> convert to JavaScript</p>
+        </section>
+
+        <section>
+          <h2>Why is this fun?</h2>
+        </section>
+
+        <section>
+          <h2>Used for games</h2>
+          <p><b>Even AAA games!</b> We <a href="https://blog.mozilla.org/blog/2013/03/27/mozilla-is-unlocking-the-power-of-the-web-as-a-platform-for-gaming/">announced</a> last week that we worked with Epic to port their <b>Unreal Engine 3</b> to HTML5</p>
+          <hr>
+          <p>
+            <video src="epicvideo.webm" controls preload=auto poster="epicvideo.png" id="vid1">
+              Your browser does not support the <code>video</code> element.
+            </video>
+            <script>
+              document.getElementById('vid1').addEventListener('loadedmetadata', function() {
+                this.currentTime = 39;
+              }, false);
+            </script>
+
+            <!--iframe width="640" height="360" src="http://www.youtube.com/embed/XsyogXtyU9o?feature=oembed" frameborder="0" allowfullscreen></iframe-->
+          </p>
+        </section>
+
+        <section>
+          <h2>JavaScript is an odd target</h2>
+          <p>No <b>goto</b> statements, so invented the <b>Relooper</b> algorithm</p>
+          <hr>
+          <p>
+            <center><table width="100%"><tr><td width="45%">
+            <pre><code style="width: 100%"> block1:
+   if not cond: goto block2
+   ..
+   goto block1
+ block2:
+   return 5
+</code></pre>
+            </td><td width="10%"></td><td width="45%">
+            <pre><code>
+ while (cond) {
+   ..
+ }
+ return 5;
+
+</code></pre>
+            </td></tr></table></center>
+          </p>
+          <hr>
+          <p class="fragment">Many more interesting optimizations still to be done</p>
+        </section>
+
+        <section>
+          <h2>How fast is this stuff?</h2>
+          <p class="fragment">Quite fast already in modern JS engines, but needs to be <b>even faster</b></p>
+        </section>
+
+        <section>
+          <h2>asm.js</h2>
+          <hr>
+          <p><b style="color: #fda">asm.js is an extraordinarily optimizable,<br>low-level subset of JavaScript</b></p>
+          <hr>
+          <p>A <b>type system</b> for compiled code in JavaScript</p>
+            <pre class="fragment"><code> function f(x) {
+   x = x|0;
+   return (x+x+3)|0;
+ }
+</code></pre>
+          <p class="fragment">Makes it easy for JavaScript VMs to <b>detect types</b> and ensures they do not change unexpectedly</p>
+        </section>
+
+        <section>
+          <h2>Benchmarks</h2>
+          <img width="1122" height="453" src="macro4b.png">
+        </section>
+
+        <section>
+          <h2>Life before asm.js</h2>
+          <p><iframe width="800" height="800" src="ammo/noasm.html" id="before"></iframe></p>
+        </section>
+
+        <section>
+          <h2>Life after asm.js</h2>
+          <p><iframe width="800" height="800" src="ammo/ammo.html" id="after"></iframe></p>
+        </section>
+
+        <section>
+          <h2>That's it!</h2>
+          <br>
+          <br>
+          <p>For questions, please find us later:</p>
+          <p><a href="http://emscripten.org">emscripten</a> - Alon</p>
+          <p><a href="http://asmjs.org">asm.js</a> - Luke, Dave, Alon</p>
+        </section>
+      </div>
+
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+
+    <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: 'sky', //Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'fade', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+
+          // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>
