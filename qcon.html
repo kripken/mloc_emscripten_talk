@@ -35,7 +35,7 @@
         color: #369;
       }
       b {
-        color: #ca0;
+        color: #a39;
       }
     </style>
 
@@ -88,7 +88,7 @@
         </section>
 
         <section>
-          <h3><b>Compiling to JavaScript</b></h3>
+          <h3><b>1. Compile Code to JS</b></h3>
           <p>
             <ul>
               <li>C/C++: Emscripten, Mandreel</li>
@@ -102,18 +102,51 @@
         </section>
 
         <section>
-          <h3><b>Compiling VMs to JavaScript</b></h3>
+          <h3><b>Demos: C++ w/ Emscripten</b></h3>
+        </section>
+
+        <section>
+          <h3><b>2. Compile VMs to JS</b></h3>
           <p>Use a C/C++ to JavaScript compiler on the C/C++ VM of a language</p>
           <p>Avoid writing a new VM or compiler for the language</p>
         </section>
 
         <section>
-          <h3><b>lua.vm.js demo</b></h3>
+          <h3><b>Demo: lua.vm.js</b></h3>
           <p>..</p>
         </section>
 
         <section>
-          <h3><b>Ok, other languages can run, but how do they connect?</b></h3>
+          <h3><b>Connecting Languages</b></h3>
+          <p class="fragment">What do other platforms/environments do?</p>
+        </section>
+
+        <section>
+          <h3><b>Embedding APIs for C/C++</b></h3>
+          <p>Embed Python, Lua, etc. into a C/C++ project, for use as a scripting language</p>
+          <p>C APIs let you run code in the scripting language, perform operations on its objects, etc.</p>
+          <pre><code contenteditable>  // C code
+  PyRun_SimpleString("print 'hello from python!'");</code></pre>
+        </section>
+
+        <section>
+          <h3><b>Create C/C++ Modules</b></h3>
+          <p>Access C/C++ code from Python, Lua, etc.</p>
+          <pre><code contenteditable>  // C
+  #include "boost/python.hpp"
+  char const* greet() {
+    return "hello from C!";
+  }
+  BOOST_PYTHON_MODULE(greeter) {
+    boost::python::def("greet", greet);
+  }
+</code></pre>
+          <hr>
+          <pre><code contenteditable>  # Python
+  >>> import greeter
+  >>> greeter.greet()
+  hello from C!
+</code></pre>
         </section>
 
         <section>
