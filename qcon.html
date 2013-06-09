@@ -131,12 +131,7 @@
         </section>
 
         <section>
-          <h3><b>C and JavaScript</b></h3>
-        </section>
-
-        <section>
-          <h3><b>C => JavaScript</b></h3>
-          <p>Writing a C API in JS</p>
+          <h3><b>C/C++ and JavaScript</b></h3>
         </section>
 
         <section>
@@ -146,6 +141,25 @@
   int main() {
     // Call JS from C
     emscripten_run_script("alert('hello from C!')");
+    return 0;
+  }
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>C => JavaScript</b></h3>
+          <p>Writing a C API in JS (emcc --js-library)</p>
+            <pre><code contenteditable>  // JS library file
+  var MyLibrary = {
+    js_func: function(x) { alert('you sent ' + x) }
+  };
+  mergeInto(LibraryManager.library, MyLibrary);
+</code></pre>
+          <hr>
+          <pre><code contenteditable>  // C code
+  extern "C" { void js_func(int x, int y); }
+  int main() {
+    js_func(3);
     return 0;
   }
 </code></pre>
@@ -165,7 +179,20 @@
                      [10, 20]); // arguments
   // returns 30
 </code></pre>
-        <b>cwrap too!</b>
+        </section>
+
+        <section>
+          <h3><b>JavaScript => C</b></h3>
+          <p><b>cwrap</b> is useful for multiple calls
+          <pre><code contenteditable>  // Call C from JS
+  var c_add = cwrap('c_add', // name
+                    'number', // return type
+                    ['number', 'number']); // argument types
+
+  console.log(c_add(10, 20)); // 30
+  console.log(c_add(20, 30)); // 50
+</code></pre>
+        <p>Wrapper behaves just like a normal JS function</p>
         </section>
 
         <section>
