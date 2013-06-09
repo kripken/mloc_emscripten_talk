@@ -61,11 +61,16 @@
 
         <section>
           <h3><b>JS is great</b></h3>
-          <p>Other languages are great in other ways. Existing code. etc. Use cases? Demos here?</p>
+          <p>Other languages are great in other ways
+            <ul>
+              <li>Existing code</li>
+              <li>Developer preference</li>
+            </ul>
+           </p>
         </section>
 
         <section>
-          <h3><b>Another world out there</b></h3>
+          <h3><b>The world out there</b></h3>
           <p>
             <ul>
               <li>C, C++</li>
@@ -84,32 +89,83 @@
 
         <section>
           <h3><b>Compiling to JavaScript</b></h3>
-          <p>List of compilers</p>
+          <p>
+            <ul>
+              <li>C/C++: Emscripten, Mandreel</li>
+              <li>Java: GWT</li>
+              <li>C#: JSIL</li>
+              <li>Python: pyjs</li>
+              <li>Lua: lua.js</li>
+              <li>..</li>
+            </ul>
+          </p>
         </section>
 
         <section>
           <h3><b>Compiling VMs to JavaScript</b></h3>
-          <p>Lua example</p>
+          <p>Use a C/C++ to JavaScript compiler on the C/C++ VM of a language</p>
+          <p>Avoid writing a new VM or compiler for the language</p>
         </section>
 
         <section>
-          <h3><b>They can run, but how do they connect?</b></h3>
+          <h3><b>lua.vm.js demo</b></h3>
+          <p>..</p>
+        </section>
+
+        <section>
+          <h3><b>Ok, other languages can run, but how do they connect?</b></h3>
+        </section>
+
+        <section>
+          <h3><b>Connect them to the DOM</b></h3>
           <p>Lua scripting a web page example</p>
         </section>
 
         <section>
           <h3><b>How about connecting them to each other?</b></h3>
-          <p>.</p>
         </section>
 
         <section>
-          <h3><b>Lua / JavaScript</b></h3>
+          <h3><b>Lua JavaScript</b></h3>
           <p>Dual-repl example?</p>
         </section>
 
         <section>
-          <h3><b>C / JavaScript</b></h3>
-          <p>ccall, emscripten_run_script, define C APIs in JS</p>
+          <h3><b>C and JavaScript</b></h3>
+        </section>
+
+        <section>
+          <h3><b>C => JavaScript</b></h3>
+          <p>Writing a C API in JS</p>
+        </section>
+
+        <section>
+          <h3><b>C => JavaScript</b></h3>
+          <p>Emscripten provides APIs for this on the C side</p>
+            <pre><code contenteditable>  #include "emscripten.h"
+  int main() {
+    // Call JS from C
+    emscripten_run_script("alert('hello from C!')");
+    return 0;
+  }
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>JavaScript => C</b></h3>
+          <p>Emscripten provides APIs for this on the JS side too</p>
+            <pre><code contenteditable>  // C file that was compiled to JS
+  int c_add(int x, int y) { return x+y; }
+</code></pre>
+          <hr>
+          <pre><code contenteditable>  // Call C from JS
+  var result = ccall('c_add', // name
+                     'number', // return type
+                     ['number', 'number'], // argument types
+                     [10, 20]); // arguments
+  // returns 30
+</code></pre>
+        <b>cwrap too!</b>
         </section>
 
         <section>
