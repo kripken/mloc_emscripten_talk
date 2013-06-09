@@ -132,7 +132,7 @@
         <section>
           <h3><b>Create C/C++ Modules</b></h3>
           <p>Access C/C++ code from Python, Lua, etc.</p>
-          <pre><code contenteditable>  // C
+          <pre><code contenteditable>  // C++ with Boost.Python
   #include "boost/python.hpp"
   char const* greet() {
     return "hello from C!";
@@ -147,6 +147,11 @@
   >>> greeter.greet()
   hello from C!
 </code></pre>
+        </section>
+
+        <section>
+          <h3><b>Object <=> Object in different languages</b></h3>
+          <p>Example? Are Jython objects normal Java objects?</p>
         </section>
 
         <section>
