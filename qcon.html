@@ -226,8 +226,36 @@
         </section>
 
         <section>
-          <h3><b>C++ / JavaScript</b></h3>
-          <p>embind</p>
+          <h3><b>C++ => JS</b></h3>
+          <p><b>Embind</b>, written by IMVU, glues together C++ and JavaScript</p>
+          <pre><code contenteditable>  // Access JS objects in C++ like C++ objects
+  #include "emscripten/val.h"
+  using namespace emscripten;
+  int main() {
+    val Math = val::global("Math");
+    return Math.call<int>("abs", -10); // returns 10
+  }
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>JS => C++</b></h3>
+          <p>Embind can also go the other way</p>
+          <pre><code contenteditable>  // C++ library
+  #include "emscripten/bind.h"
+  using namespace emscripten;
+  float lerp(float a, float b, float t) {
+      return (1 - t) * a + t * b;
+  }
+  EMSCRIPTEN_BINDINGS(my_module) {
+      function("lerp", &lerp);
+  }
+</code></pre>
+          <hr>
+          <pre><code contenteditable>  // Use it in JS
+  alert(Module.lerp(1, 2, 0.5)); // shows 1.5
+</code></pre>
+          Similar to earlier, but can also do C++ <b>classes</b>. EXPAND
         </section>
 
         <section>
