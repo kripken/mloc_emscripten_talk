@@ -321,20 +321,36 @@
           <p class="fragment">Now let's see some stuff that is specific to the web</p>
         </section>
 
+
+
+
+
+
+
+
+        <!-- Lua scripting example -->
+
         <section>
-          <h3><b>Lua scripting a web page</b></h3>
+          <h3><b>Lua scripting on the web</b></h3>
           <p>The time in milliseconds, reported by Lua:</p>
           <b><p id="lua_output"></p></b>
 
-<script src="qcon_data/lua.vm.js"></script>
-
-<script type="text/lua">
-js.global.setInterval(function()
-  js.global.document.getElementById('lua_output').innerHTML = js.global.Date.now()
-end, 1000)
-</script>
-
+          <script src="qcon_data/lua.vm.js"></script>
+          <script type="text/lua">
+          js.global.setInterval(function()
+            js.global.document.getElementById('lua_output').innerHTML = js.global.Date.now()
+          end, 1000)
+          </script>
         </section>
+
+        <!-- Lua scripting example -->
+
+
+
+
+
+
+
 
         <section>
           <h3><b>Lua JavaScript</b></h3>
