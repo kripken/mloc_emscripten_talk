@@ -145,7 +145,16 @@
         </section>
 
         <section>
+          <h3><b>Performance</b></h3>
+          <p><ul>
+            <li>JavaScript can be very close to native speed, about 1x-3x slower</li>
+            <li>C/C++ compiled to JavaScript can outperform handwritten JavaScript, which is another possible motivation to compile to JavaScript</li>
+          </ul></p>
+        </section>
+
+        <section>
           <h3><b>We can run other languages on the web, by running them in JavaScript</b></h3>
+          <p>All modern web browsers have fast JavaScript engines and support for JavaScript typed arrays, which is exactly what we need for compiled code</p>
         </section>
 
         <section>
@@ -164,7 +173,7 @@
         <section>
           <h3><b>Embedding APIs for C/C++</b></h3>
           <p>Embed Python, Lua, etc. into a C/C++ project, for use as a scripting language</p>
-          <p>C APIs let you run code in the scripting language, perform operations on its objects, etc.</p>
+          <p>C APIs let you run code in the scripting language:</p>
           <pre><code contenteditable>  // C code
   PyRun_SimpleString("print 'hello from python!'");</code></pre>
           <p>Other APIs let you create Python objects and operate on them from C</p>
@@ -279,16 +288,14 @@
           <pre><code contenteditable>  // C++ library
   #include "emscripten/bind.h"
   using namespace emscripten;
-  float lerp(float a, float b, float t) {
-      return (1 - t) * a + t * b;
-  }
+  int add (int a, int b) { return a+b; }
   EMSCRIPTEN_BINDINGS(my_module) {
       function("lerp", &lerp);
   }
 </code></pre>
           <hr>
           <pre><code contenteditable>  // Use it in JS
-  alert(Module.lerp(1, 2, 0.5)); // shows 1.5
+  alert(Module.add(10, 20)); // shows 30
 </code></pre>
         </section>
 
@@ -300,14 +307,14 @@
     char *name;
   public:
     Cat(char *name_) : name(name_) {}
-    void Meow() { printf("%d meows\n", name);
+    void meow() { printf("%d meows\n", name);
   };
   // Embind glue to wrap the class should be here
 </code></pre>
           <hr>
           <pre><code contenteditable>  // JavaScript
-  var cat = new Module.Cat("Socks");
-  alert(cat.meow()); // shows "Socks meows"
+  var myCat = new Module.Cat("Fluffy");
+  alert(myCat.meow()); // shows "Fluffy meows"
 </code></pre>
         </section>
 
