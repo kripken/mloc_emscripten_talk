@@ -6,7 +6,7 @@
 
     <title>JavaScript + Other Languages</title>
 
-    <meta name="description" content="Big Web App? Compile It!">
+    <meta name="description" content="JavaScript + Other Languages">
     <meta name="author" content="Alon Zakai">
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -129,13 +129,19 @@
 
         <section>
           <h3><b>2. Compile VMs to JS</b></h3>
-          <p>Use a C/C++ to JavaScript compiler on the C/C++ VM of a language</p>
+          <p>Use a C/C++ to JavaScript compiler on the C/C++ Virtual Machine (VM) of a language</p>
           <p>Avoid writing a new VM or compiler for the language</p>
         </section>
 
         <section>
           <h3><b>Demo: lua.vm.js</b></h3>
           <p>..</p>
+        </section>
+
+        <section>
+          <h3><b>Performance</b></h3>
+          <img src="asm_jun_10_2013.png">
+          <p><small>(JS engines and Emscripten from June 10th 2013, run on a 64-bit linux machine)</small></p>
         </section>
 
         <section>
@@ -341,6 +347,7 @@
             js.global.document.getElementById('lua_output').innerHTML = js.global.Date.now()
           end, 1000)
           </script>
+
         </section>
 
         <!-- Lua scripting example -->
@@ -356,6 +363,14 @@
           <h3><b>Lua JavaScript</b></h3>
           <p>Dual-repl example?</p>
         </section>
+
+        <section>
+          <h3><b>Summary</b></h3>
+          <p class="fragment">We can use languages other than JavaScript on the web, by <b>compiling</b> them to JavaScript</p>
+          <p class="fragment">Those languages can interact with JavaScript, allowing <b>mixed-language</b> projects</p>
+          <p class="fragment">JavaScript VMs are, in effect, <b>multilanguage VMs</b></p>
+        </section>
+
       </div>
     </div>
 
