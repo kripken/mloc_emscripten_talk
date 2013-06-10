@@ -49,7 +49,7 @@
       <div class="slides">
 
         <section>
-          <h2><b>JavaScript + Other<br>Languages</b></h2>
+          <h2><b>JavaScript <div style="color: #c4b">+</div> Other<br>Languages</b></h2>
           <h3>Alon Zakai (Mozilla)</h3>
           <h3><b>QCon</b></h3>
         </section>
@@ -315,22 +315,32 @@
         </section>
 
         <section>
-          <h3><b>We can run other languages on the web, by running them in JavaScript, and we can connect them to JavaScript</b></h3>
-          <p class="fragment">Let's see some uses!</p>
+          <h3><b>We can run other languages on the web, by running them in JavaScript</b></h3>
+          <h3><b>and we can connect them to JavaScript</b></h3>
+          <p>Very similar to what we saw earlier that other platforms can do</p>
+          <p class="fragment">Now let's see some stuff that is specific to the web</p>
         </section>
 
         <section>
-          <h3><b>Using the DOM from other languages</b></h3>
-          <p>Lua scripting a web page example</p>
+          <h3><b>Lua scripting a web page</b></h3>
+          <p>The time in milliseconds, reported by Lua:</p>
+          <b><p id="lua_output"></p></b>
+
+<script src="qcon_data/lua.vm.js"></script>
+
+<script type="text/lua">
+js.global.setInterval(function()
+  js.global.document.getElementById('lua_output').innerHTML = js.global.Date.now()
+end, 1000)
+</script>
+
         </section>
 
         <section>
           <h3><b>Lua JavaScript</b></h3>
           <p>Dual-repl example?</p>
         </section>
-
       </div>
-
     </div>
 
     <script src="lib/js/head.min.js"></script>
