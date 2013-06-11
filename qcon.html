@@ -297,7 +297,7 @@
         </section>
 
         <section>
-          <h3><b>C => JavaScript</b></h3>
+          <h3><b>C &nbsp; ==> &nbsp; JavaScript</b></h3>
           <p>Emscripten provides APIs for this on the C side</p>
             <pre><code contenteditable>  #include "emscripten.h"
   int main() {
@@ -309,7 +309,7 @@
         </section>
 
         <section>
-          <h3><b>C => JavaScript</b></h3>
+          <h3><b>C &nbsp; ==> &nbsp; JavaScript</b></h3>
           <p>Writing a C API in JS (emcc --js-library)</p>
             <pre><code contenteditable>  // JS library file
   mergeInto(LibraryManager.library, {
@@ -327,7 +327,7 @@
         </section>
 
         <section>
-          <h3><b>JavaScript => C</b></h3>
+          <h3><b>JavaScript &nbsp; ==> &nbsp; C</b></h3>
           <p>Emscripten provides APIs for this on the JS side too</p>
             <pre><code contenteditable>  // C file that was compiled to JS
   int c_add(int x, int y) { return x+y; }
@@ -343,7 +343,7 @@
         </section>
 
         <section>
-          <h3><b>JavaScript => C</b></h3>
+          <h3><b>JavaScript &nbsp; ==> &nbsp; C</b></h3>
           <p><b>cwrap</b> is useful for multiple calls
           <pre><code contenteditable>  // Call C from JS
   var c_add = cwrap('c_add', // name
@@ -357,7 +357,7 @@
         </section>
 
         <section>
-          <h3><b>C++ => JS</b></h3>
+          <h3><b>C++ &nbsp; ==> &nbsp; JS</b></h3>
           <p><b>Embind</b>, written by IMVU, glues together C++ and JavaScript</p>
           <pre><code contenteditable>  // Access JS objects in C++ like C++ objects
   #include "emscripten/val.h"
@@ -370,7 +370,7 @@
         </section>
 
         <section>
-          <h3><b>JS => C++</b></h3>
+          <h3><b>JS &nbsp; ==> &nbsp; C++</b></h3>
           <p>Embind can also go the other way</p>
           <pre><code contenteditable>  // C++ library
   #include "emscripten/bind.h"
@@ -387,7 +387,7 @@
         </section>
 
         <section>
-          <h3><b>JS => C++</b></h3>
+          <h3><b>JS &nbsp; ==> &nbsp; C++</b></h3>
           <p>Embind can also wrap C++ classes for JS</p>
           <pre><code contenteditable>  // C++ class
   class Cat {
