@@ -113,7 +113,7 @@
           <h3><b>Going through JavaScript</b></h3>
           <p>Might seem like an odd solution</p>
           <p class="fragment">But <b>replacing</b> JavaScript with anything else would slow down the web</p>
-          <p class="fragment">Adding <b>another VM</b> alongside JavaScript is complicated (cross-VM GC, etc.)</p>
+          <p class="fragment">Adding <b>another virtual machine (VM)</b> alongside JavaScript is complicated (cross-VM GC, etc.)</p>
           <p class="fragment"><b>Consensus to standardize</b> any such change would be very hard</p>
         </section>
 
@@ -122,7 +122,7 @@
           <p>It turns out to be <b>not</b> so odd a solution!</p>
           <p class="fragment">Running other languages in JavaScript <b>requires no standardization</b></p>
           <p class="fragment">Turns out <b>performance can be good</b> in many cases</p>
-          <p class="fragment">No new VM means <b>no new security attack surface</b></p>
+          <p class="fragment">No new VM means <b>no new attack surface</b> for exploits</p>
         </section>
 
         <section>
@@ -191,7 +191,7 @@
           <p>..</p>
           <div class="fragment">
           <h3><b>2. Compile VMs to JS</b></h3>
-          <p>Use a C/C++ to JavaScript compiler on the C/C++ Virtual Machine (VM) of a language</p>
+          <p>Use a C/C++ to JavaScript compiler on the C/C++ VM of a language</p>
           <p>Avoid writing a new VM or compiler for the language</p>
           </div>
         </section>
@@ -232,7 +232,6 @@
 
         <section>
           <h3><b>Embedding one language in another</b></h3>
-          <p>Often there is a primary language, and a secondary language is <b>embedded</b> in it</p>
           <img src="languages.png" style="border: 0; box-shadow: none;">
           <p>Primary language sets up the secondary one</p>
           <p>Still possible to communicate both ways</p>
@@ -275,7 +274,7 @@
     string name;
   public:
     Cat(string name_) : name(name_) {}
-    void meow() { printf("%d meows\n", name);
+    void meow() { printf("%s meows\n", name.c_str());
   };
   BOOST_PYTHON_MODULE(Cats) {
     class &lt;Cat&gt;("Cat").def("meow", &Cat::meow);
@@ -306,6 +305,8 @@
     return 0;
   }
 </code></pre>
+          <p>Note that this is <b>not</b> like we saw before with Python and C</p>
+          <p>There C <b>embedded</b> a Python VM and called it, here C is compiled <b>into JS</b>, and runs JS in the <b>"outside"</b> web page's VM</p>
         </section>
 
         <section>
@@ -318,9 +319,9 @@
 </code></pre>
           <hr>
           <pre><code contenteditable>  // C code
-  extern "C" { void js_func(int x, int y); }
+  extern "C" { void js_func(int x); }
   int main() {
-    js_func(3); // will cause alert(3)
+    js_func(3); // will cause alert('you sent 3')
     return 0;
   }
 </code></pre>
@@ -375,9 +376,9 @@
           <pre><code contenteditable>  // C++ library
   #include "emscripten/bind.h"
   using namespace emscripten;
-  int add (int a, int b) { return a+b; }
+  int c_add(int a, int b) { return a+b; }
   EMSCRIPTEN_BINDINGS(my_module) {
-      function("lerp", &lerp);
+      function("c_add", &c_add);
   }
 </code></pre>
           <hr>
@@ -394,10 +395,10 @@
     string name;
   public:
     Cat(string name_) : name(name_) {}
-    void meow() { printf("%d meows\n", name);
+    void meow() { printf("%s meows\n", name.c_str());
   };
   EMSCRIPTEN_BINDINGS(Cats) {
-    class_&lt;Cat&tt;("Cat").constructor<std::string>()
+    class_&lt;Cat>("Cat").constructor<std::string>()
                          .function("meow", &Cat::meow);
   }
 </code></pre>
@@ -419,10 +420,7 @@
         </section>
 
         <section>
-          <h3><b>We can run other languages on the web, by running them in JavaScript</b></h3>
-          <h3><b>and we can connect them to JavaScript</b></h3>
-          <p>Very similar to what we saw earlier that other platforms can do</p>
-          <p class="fragment">Now let's see some stuff that is specific to the web</p>
+          <h3><b>Examples</b></h3>
         </section>
 
 
@@ -459,8 +457,9 @@
 
 
         <section>
-          <h3><b>Lua JavaScript</b></h3>
-          <p>Dual-repl example?</p>
+          <h3><b>Not just C++</b></h3>
+          <p>We can also connect JavaScript and <b>dynamic</b> languages running in JavaScript</p>
+          <p><b><a href="qcon_data/dual_repl.html">Dual-REPL demo</a></b></p>
         </section>
 
         <section>
