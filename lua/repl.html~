@@ -40,23 +40,12 @@
           </button>
           <a class="brand" href="lua.vm.js.html">lua.vm.js</a>
           <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li><a href="lua.vm.js.html">Benchmarks+FAQ</a></li>
-              <li class="active"><a href="repl.html">REPL</a></li>
-              <li><a href="script_example.html">Script Example</a></li>
-            </ul>
           </div><!--/.nav-collapse -->
         </div>
       </div>
     </div>
 
     <div class="container">
-
-      <div class="hero-unit">
-        <h2>Lua REPL</h2>
-        <p>This is a <a href="http://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">REPL</a> for Lua. Press
-           the button to execute the code in the editor below. You can also modify the code and run it again.</p>
-      </div>
 
       <div class="row">
         <div class="span7" border=1>
