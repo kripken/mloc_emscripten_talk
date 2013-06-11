@@ -83,10 +83,10 @@
           <h3><b>Mixing Languages: examples</b></h3>
           <p>
             <ul>
-              <li>Script languages in spreadsheets (C/C++ + VBA, etc.)</li>
-              <li>Script languages in web browsers (C/C++ + JS)</li>
-              <li>Script languages in game engines (C/C++ + Lua, etc.)</li>
-              <li>High-performance libraries for script languages (Python + C/C++, etc.)</li>
+              <li>Script languages in <b>spreadsheets</b> (C/C++ and VBA, etc.)</li>
+              <li>Script languages in <b>web browsers</b> (C/C++ and JS)</li>
+              <li>Script languages in <b>game engines</b> (C/C++ and Lua, etc.)</li>
+              <li>High-performance <b>libraries for script languages</b> (Python and C/C++, etc.)</li>
             </ul>
           </p>
         </section>
@@ -110,9 +110,19 @@
         </section>
 
         <section>
-          <h3><b>Go through JavaScript</b></h3>
+          <h3><b>Going through JavaScript</b></h3>
           <p>Might seem like an odd solution</p>
-          <p class="fragment">But standardizing anything else would take an extreme amount of time and effort</p>
+          <p class="fragment">But <b>replacing</b> JavaScript with anything else would slow down the web</p>
+          <p class="fragment">Adding <b>another VM</b> alongside JavaScript is complicated (cross-VM GC, etc.)</p>
+          <p class="fragment"><b>Consensus to standardize</b> any such change would be very hard</p>
+        </section>
+
+        <section>
+          <h3><b>Going through JavaScript</b></h3>
+          <p>It turns out to be <b>not</b> so odd a solution!</p>
+          <p class="fragment">Running other languages in JavaScript <b>requires no standardization</b></p>
+          <p class="fragment">Turns out <b>performance can be good</b> in many cases</p>
+          <p class="fragment">No new VM means <b>no new security attack surface</b></p>
         </section>
 
         <section>
@@ -125,6 +135,7 @@
               <li>Python: pyjs</li>
               <li>Lua: lua.js</li>
               <li>..</li>
+              <li><a href="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">Jeremy Ashkenas's list</a> has many dozens</li>
             </ul>
           </p>
         </section>
@@ -142,19 +153,6 @@
           <ul>
             <li><b>Java (GWT)</b> used in <a href="http://www.blogger.com/">Blogger</a>, many enterprise apps</li>
             <li><b>C# (Script#)</b> used in <a href="http://office.microsoft.com/en-us/web-apps">Microsoft Office Web Apps</a></li>
-          </ul>
-        </section>
-
-        <section>
-          <h3><b>Plenty of Languages</b></h3>
-          <ul>
-            <li><a href="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">Jeremy Ashkenas's list</a> has many dozens</li>
-            <li class="fragment">Two main kinds:
-              <ul>
-                <li class="fragment"><b>Established</b> languages: C, C++, Java, C#, Python, etc.</li>
-                <li class="fragment"><b>New languages</b> intended for compilation to JavaScript: CoffeeScript, TypeScript, Dart, Roy, etc.</li>
-              </ul>
-            </li>
           </ul>
         </section>
 
@@ -190,9 +188,12 @@
 
         <section>
           <h3><b>1. Compile Code to JS</b></h3>
-          <h3><b class="fragment">2. Compile VMs to JS</b></h3>
-          <p class="fragment">Use a C/C++ to JavaScript compiler on the C/C++ Virtual Machine (VM) of a language</p>
-          <p class="fragment">Avoid writing a new VM or compiler for the language</p>
+          <p>..</p>
+          <div class="fragment">
+          <h3><b>2. Compile VMs to JS</b></h3>
+          <p>Use a C/C++ to JavaScript compiler on the C/C++ Virtual Machine (VM) of a language</p>
+          <p>Avoid writing a new VM or compiler for the language</p>
+          </div>
         </section>
 
         <section>
