@@ -161,7 +161,7 @@
           <p>For example, in Emscripten:</p>
           <ul>
             <br>
-            <p><b style="color: #f85">C/C++</b> &nbsp&nbsp <b style="color: #fff">=></b> &nbsp&nbsp <b style="color: #58f">LLVM</b> &nbsp&nbsp <b style="color: #fff">=></b> &nbsp&nbsp <b style="color: #8f5">Emscripten</b> &nbsp&nbsp <b style="color: #fff">=></b> &nbsp&nbsp <b style="color: #f58">JavaScript</b></p>
+            <p><b style="color: #085">C/C++</b> &nbsp <b>=></b> &nbsp <b style="color: #580">LLVM</b> &nbsp <b>=></b> &nbsp <b>Emscripten</b> &nbsp <b>=></b> &nbsp <b style="color: #058">JavaScript</b></p>
           </ul>
         </section>
 
@@ -203,7 +203,7 @@
           <p><b><a href="qt/QtDemo.html">Qt</a></b></p>
           <p><b><a href="lua/repl.html">Lua</a></b></p>
           <p><b><a href="xmlvm/index.html">Demo</a></b> using <a href="http://xmlvm.org/">XMLVM</a> and Emscripten</p>
-          <a href="http://emscripten.org"><img src="emscripten_switch_logo.png" width="35%" style="position: absolute; left: 600px; top: 300px; background-color: white"></a>
+          <a href="http://emscripten.org"><img src="emscripten_switch_logo.png" width="35%" style="position: absolute; left: 600px; top: 400px; background-color: white"></a>
         </section>
 
         <section>
@@ -268,13 +268,32 @@
         </section>
 
         <section>
-          <h3><b>That's all well and good</b></h3>
-          <p>Can we do this in <b>JavaScript</b>?</p>
-          <h3 class="fragment"><b>yes!</b></h3>
+          <h3><b>Python => C++</b></h3>
+          <p>Boost.Python can also wrap C++ classes for Python</p>
+          <pre><code contenteditable>  // C++ class
+  class Cat {
+    string name;
+  public:
+    Cat(string name_) : name(name_) {}
+    void meow() { printf("%d meows\n", name);
+  };
+  BOOST_PYTHON_MODULE(Cats) {
+    class &lt;Cat&gt;("Cat").def("meow", &Cat::meow);
+  }
+</code></pre>
+          <hr>
+          <pre><code contenteditable>  // Python
+  >>>> import Cats
+  >>>> my_cat = Cats.Cat('Fluffy')
+  >>>> print my_cat.meow()
+  Fluffy meows
+</code></pre>
         </section>
 
         <section>
-          <h3><b>C/C++ and JavaScript</b></h3>
+          <h3><b>That's all well and good</b></h3>
+          <p>Can we do this in <b>JavaScript</b>?</p>
+          <h3 class="fragment"><b>yes!</b></h3>
         </section>
 
         <section>
@@ -372,22 +391,26 @@
           <p>Embind can also wrap C++ classes for JS</p>
           <pre><code contenteditable>  // C++ class
   class Cat {
-    char *name;
+    string name;
   public:
-    Cat(char *name_) : name(name_) {}
+    Cat(string name_) : name(name_) {}
     void meow() { printf("%d meows\n", name);
   };
-  // Embind glue to wrap the class should be here
+  EMSCRIPTEN_BINDINGS(Cats) {
+    class_&lt;Cat&tt;("Cat").constructor<std::string>()
+                         .function("meow", &Cat::meow);
+  }
 </code></pre>
           <hr>
           <pre><code contenteditable>  // JavaScript
   var myCat = new Module.Cat("Fluffy");
   alert(myCat.meow()); // shows "Fluffy meows"
 </code></pre>
+          <p class="fragment">Very much like Boost.Python does for Python</p>
         </section>
 
         <section>
-          <h3><b>Embind C++ class wrapping</b></h3>
+          <h3><b>Challenges</b></h3>
           <p>
             <ul>
               <li>No way to know when a JS object is garbage-collected. Must call <b>cat.delete()</b> to properly clean it up</li>
@@ -414,7 +437,7 @@
         <section>
           <h3><b>Lua scripting on the web</b></h3>
           <p>The time in milliseconds, reported by Lua:</p>
-          <b><p id="lua_output"></p></b>
+          <b><p id="lua_output">.</p></b>
 
           <script src="qcon_data/lua.vm.js"></script>
           <script type="text/lua">
@@ -423,6 +446,7 @@
           end, 1000)
           </script>
 
+          <p class="fragment">View source if you don't believe ;)</p>
         </section>
 
         <!-- Lua scripting example -->
