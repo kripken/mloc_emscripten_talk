@@ -51,16 +51,6 @@
         <div class="span7" border=1>
           <textarea id="mytext">
 print('hello' .. ' ' .. 'world!') -- This is Lua!
-
-print(js.run('[0,1,2,3,4,5][3]')) -- Run JS from Lua
-
--- Interact with the page using Lua
-
-local screen = js.global.screen
-print("you haz " .. (screen.width*screen.height) .. " pixels")
-
-local window = js.global -- global object in JS is the window
-window.alert("hello from lua!")
 </textarea>
         </div>
         <div class="span5">
