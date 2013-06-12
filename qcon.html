@@ -256,30 +256,34 @@
         </section>
 
         <section>
-          <h3><b>Next up:</b></h3>
+          <h3><b>Next:</b></h3>
           <h3><b>Connecting Languages</b></h3>
           <p class="fragment">What do other platforms/environments do?</p>
         </section>
 
         <section>
-          <h3><b>Embedding one language in another</b></h3>
-          <img src="languages.png" style="border: 0; box-shadow: none;">
-          <p>Primary language sets up the secondary one</p>
-          <p>Still possible to communicate both ways</p>
+          <h3><b>Embedding in C/C++</b></h3>
+          <p>Main project is written in C/C++</p>
+          <p>VM for a scripting language (e.g., Python) is <b>also</b>written in C/C++</p>
+          <p>VM has a C/C++ API to <b>bridge</b> the two "worlds"</p>
         </section>
 
         <section>
-          <h3><b>Embedding APIs for C/C++</b></h3>
-          <p>Embed Python, Lua, etc. into a C/C++ project, for use as a scripting language</p>
-          <p>C APIs let you run code in the scripting language:</p>
+          <h3><b>Embedding Python in C</b></h3>
+          <p>Python makes it easy to run code in its VM:</p>
           <pre><code contenteditable>  // C code
   PyRun_SimpleString("print 'hello from python!'");</code></pre>
           <p>Other APIs let you create Python objects and operate on them from C</p>
         </section>
 
         <section>
-          <h3><b>Create C/C++ Modules</b></h3>
-          <p>Access C/C++ code from Python, Lua, etc.</p>
+          <h3><b>Embedding in C/C++</b></h3>
+          <p>Script language is just another module in the C/C++ project</p>
+          [FIGURE showing other modules: UI, Storage, etc.]
+        </section>
+
+        <section>
+          <h3><b>Python &nbsp; ==> &nbsp; C</b></h3>
           <pre><code contenteditable>  // C++ with Boost.Python
   #include "boost/python.hpp"
   char const* greet() {
@@ -298,7 +302,7 @@
         </section>
 
         <section>
-          <h3><b>Python => C++</b></h3>
+          <h3><b>Python &nbsp; ==> &nbsp; C++</b></h3>
           <p>Boost.Python can also wrap C++ classes for Python</p>
           <pre><code contenteditable>  // C++ class
   class Cat {
@@ -321,8 +325,8 @@
         </section>
 
         <section>
-          <h3><b>That's all well and good</b></h3>
-          <p>Can we do this in <b>JavaScript</b>?</p>
+          <h3><b>That's cool</b></h3>
+          <p>But can we do this in <b>JavaScript</b>?</p>
           <h3 class="fragment"><b>yes!</b></h3>
         </section>
 
@@ -336,26 +340,46 @@
     return 0;
   }
 </code></pre>
-          <p>Note that this is <b>not</b> like we saw before with Python and C</p>
-          <p>There C <b>embedded</b> a Python VM and called it, here C is compiled <b>into JS</b>, and runs JS in the <b>"outside"</b> web page's VM</p>
+          <p class="fragment">Looks similar to how we could call Python from C</p>
         </section>
 
         <section>
-          <h3><b>C &nbsp; ==> &nbsp; JavaScript</b></h3>
-          <p>Writing a C API in JS (emcc --js-library)</p>
-            <pre><code contenteditable>  // JS library file
+          <h3><b>But it's totally different!</b></h3>
+          <p>There C <b>embedded</b> a Python VM and called it, here C is compiled <b>into JS</b>, and runs JS in the <b>"outside"</b> web page's VM</p>
+          [FIGURE]
+        </section>
+
+        <section>
+          <h3><b>C &nbsp; ==> &nbsp; JavaScript (v2)</b></h3>
+          <p>Implement a C API in JS using <b>--js-library</b>:</p>
+            <pre><code contenteditable>  // myLib.js
   mergeInto(LibraryManager.library, {
     js_func: function(x) { alert('you sent ' + x) }
   });
 </code></pre>
           <hr>
-          <pre><code contenteditable>  // C code
-  extern "C" { void js_func(int x); }
+          <pre><code contenteditable>  // main.c (emcc main.c --js-library myLib.js)
+  void js_func(int x);
   int main() {
     js_func(3); // will cause alert('you sent 3')
     return 0;
   }
 </code></pre>
+        </section>
+
+        <section>
+          <h3><b>JavaScript &nbsp; ==> &nbsp; C</b></h3>
+          <p>Very efficient:</p>
+            <pre><code contenteditable>  // output.js
+  function _js_func(x) { // from JavaScript library
+    print('you sent ' + x);
+  }
+  function _main() { // compiled from C
+    _js_func(3);
+    return 0;
+  }
+</code></pre>
+          <p class="fragment">This is how emscripten implents SDL using 2D canvas and WebGL</p>
         </section>
 
         <section>
