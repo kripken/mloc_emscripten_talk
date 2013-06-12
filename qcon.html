@@ -384,7 +384,7 @@
 
         <section>
           <h3><b>JavaScript &nbsp; ==> &nbsp; C</b></h3>
-          <p>Emscripten provides APIs for this on the JS side too</p>
+          <p>Emscripten provides APIs on the JS side too</p>
             <pre><code contenteditable>  // C file that was compiled to JS
   int c_add(int x, int y) { return x+y; }
 </code></pre>
@@ -443,9 +443,8 @@
         </section>
 
         <section>
-          <h3><b>JS &nbsp; ==> &nbsp; C++</b></h3>
-          <p>Embind can also wrap C++ classes for JS</p>
-          <pre><code contenteditable>  // C++ class
+          <h3><b>JS &nbsp; ==> &nbsp; C++ classes</b></h3>
+          <pre><code contenteditable>  // C++ class wrapped by Embind
   class Cat {
     string name;
   public:
@@ -467,11 +466,8 @@
 
         <section>
           <h3><b>Challenges</b></h3>
-          <p>
-            <ul>
-              <li>No way to know when a JS object is garbage-collected. Must call <b>cat.delete()</b> to properly clean it up</li>
-            </ul>
-          </p>
+          <p>No way to know when a JS object is garbage-collected, must call <b>cat.delete()</b> to clean it up</p>
+          <p>Weak refs in JavaScript might help fix that</p>
         </section>
 
         <section>
@@ -540,7 +536,9 @@
           <h3><b>Summary</b></h3>
           <p class="fragment">We can use languages other than JavaScript on the web, by <b>compiling</b> them to JavaScript</p>
           <p class="fragment">Those languages can interact with JavaScript, allowing <b>mixed-language</b> projects</p>
-          <p class="fragment">JavaScript VMs are, in effect, <b>multilanguage VMs</b></p>
+          <p class="fragment">JavaScript VMs can be <b>multilanguage VMs</b></p>
+          <br>
+          <p class="fragment"><b style="color: #c11">Thanks for listening!</b></p>
         </section>
 
       </div>
