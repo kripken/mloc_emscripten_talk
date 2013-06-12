@@ -61,22 +61,15 @@
 
         <section>
           <h3><b>JavaScript is great</b></h3>
-          <p>
-            <ul>
-              <li>Runs in all browsers</li>
-              <li>Familiar syntax</li>
-              <li>Dynamic typing</li>
-            </ul>
-           </p>
+          <p>Runs in all browsers</p>
+          <p>Familiar syntax</p>
+          <p>Dynamic typing</p>
           <hr>
           <h3 class="fragment"><b>Other languages are great too</b></h3>
           <p>
-            <ul>
-              <li class="fragment">Existing code</li>
-              <li class="fragment">Developer tools</li>
-              <li class="fragment">Other forms of typing (static, etc.)</li>
-            </ul>
-           </p>
+          <p class="fragment">Existing code</p>
+          <p class="fragment">Developer tools</p>
+          <p class="fragment">Other forms of typing (static, etc.)</p>
         </section>
 
         <section>
@@ -110,13 +103,13 @@
           <h3><b>Going through JavaScript</b></h3>
           <p>Might seem like an odd solution</p>
           <p class="fragment">But <b>replacing</b> JavaScript with anything else would slow down the web</p>
-          <p class="fragment">Adding <b>another virtual machine (VM)</b> alongside JavaScript is complicated (cross-VM GC, etc.)</p>
+          <p class="fragment">Adding <b>another</b> virtual machine (VM) alongside JavaScript is complicated (cross-VM GC, etc.)</p>
           <p class="fragment"><b>Consensus to standardize</b> any such change would be very hard</p>
         </section>
 
         <section>
           <h3><b>Going through JavaScript</b></h3>
-          <p>It turns out to be <b>not</b> so odd a solution!</p>
+          <p>But it turns out to be <b>not</b> so odd!</p>
           <p class="fragment">Running other languages in JavaScript <b>requires no standardization</b></p>
           <p class="fragment">Turns out <b>performance can be good</b> in many cases</p>
           <p class="fragment">No new VM means <b>no new attack surface</b> for exploits</p>
@@ -126,12 +119,12 @@
           <h3><b>1. Compile Code to JS</b></h3>
           <p>
             <ul>
-              <li>C/C++: Emscripten, Mandreel</li>
-              <li>Java: Google Web Tooklit (GWT)</li>
-              <li>C#: JSIL</li>
-              <li>Python: pyjs</li>
-              <li>Lua: lua.js</li>
-              <li>..</li>
+              <li><b>C/C++</b>: Emscripten, Mandreel</li>
+              <li><b>Java</b>: Google Web Tooklit (GWT)</li>
+              <li><b>C#</b>: JSIL, Script#</li>
+              <li><b>Python</b>: pyjs</li>
+              <li><b>Lua</b>: lua.js</li>
+              <li><b>CoffeeScript</b></li>
               <li><a href="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">Jeremy Ashkenas's list</a> has many dozens</li>
             </ul>
           </p>
@@ -140,8 +133,8 @@
         <section>
           <h3><b>Compiling to JavaScript:<br>Nothing New!</b></h3>
           <ul>
-            <li>2006: <b>GWT</b>, Java to JS</li>
-            <li>2007: <b>pyjamas</b>, Python into JS</li>
+            <li>2006: <b>GWT</b> (Java)</li>
+            <li>2007: <b>pyjamas</b> (Python)</li>
           </ul>
         </section>
 
@@ -158,21 +151,20 @@
           <p>For example, in Emscripten:</p>
           <ul>
             <br>
-            <p><b style="color: #085">C/C++</b> &nbsp <b>=></b> &nbsp <b style="color: #580">LLVM</b> &nbsp <b>=></b> &nbsp <b>Emscripten</b> &nbsp <b>=></b> &nbsp <b style="color: #058">JavaScript</b></p>
+            <p><b style="color: #a42">C/C++</b> <b>=></b> <b style="color: #a91">LLVM</b> <b>=></b> <b style="color: #2a2">Emscripten</b> <b>=></b> <b style="color: #a24">JS</b></p>
           </ul>
         </section>
 
         <section>
-          <h3><b>Compilation Results</b></h3>
-          <p>For example, this C++ code
-          <pre><code contenteditable>  volatile float array[5000];
+          <h3><b>Compilation Example</b></h3>
+          <pre><code contenteditable>  volatile float array[5000]; // C++
   int main() {
     for (int i = 0; i < 5000; ++i) {
       array[i] += 1.0f;
     }
   }</code></pre>
-          <p>turns into this JavaScript code</p>
-          <pre><code contenteditable>  function main() {
+          <p><b>=></b></p>
+          <pre><code contenteditable>  function main() { // JavaScript
     var a = 0, b = 0;
     do {
       a = 8 + (b << 2) | 0;
@@ -180,28 +172,41 @@
       b = b + 1 | 0;
     } while ((b | 0) < 5000);
   }</code></pre>
-          <p class="fragment">JavaScript, but a low-level subset of it called <b><a href="http://asmjs.org">asm.js</a></b></p>
+          <p class="fragment">This is a subset of JS called <b><a href="http://asmjs.org">asm.js</a></b></p>
         </section>
 
         <section>
           <h3><b>asm.js</b></h3>
           <p>An <b>optimizable subset of JavaScript</b>, intended primary as a compiler target</p>
-          <p>The subset <b>avoids potential slowdowns</b>, like types changing at runtime, unpredictable property accesses, etc.</p>
-          <p>Defines only very <b>low-level</b> and <b>easy to optimize</b> operations</p>
+          <p class="fragment"><b>Avoids potential slowdowns</b> (types changing, GC pauses)</p>
+          <p class="fragment"><b>Low-level</b> and <b>easy to optimize</b></p>
         </section>
 
         <section>
           <h3><b>asm.js</b></h3>
-          <p>Every compiler - GWT, CoffeeScript, etc. - generates a particular subset of JavaScript</p>
-          <p>asm.js is (a formalizaton of) the subset that Emscripten and Mandreel have been generating for a few years now</p>
-          <p>Included in a popular benchmark, Google Octane</p>
+          <p>That asm.js example from before:</p>
+          <pre><code contenteditable>  function main() { // JavaScript
+    var a = 0, b = 0;
+    do {
+      a = 8 + (b << 2) | 0;
+      g[a >> 2] = +g[a >> 2] + 1.0;
+      b = b + 1 | 0;
+    } while ((b | 0) < 5000);
+  }</code></pre>
+          <p class="fragment">Integers remain integers</p>
+          <p class="fragment">"Memory" is a fast typed array</p>
         </section>
 
         <section>
           <h3><b>asm.js</b></h3>
-          <p>Since asm.js is just a subset of JavaScript, it does not need to be standardized nor to have a spec (just like GWT and CoffeeScript have neither)</p>
-          <p>Making asm.js fast is just a matter of <b>optimizing existing JavaScript engines</b></p>
-          <p>(Why does asm.js have a spec? Just to make it easy to generate and optimize for)</p>
+          <p><b>Every</b> compiler - GWT, CoffeeScript, etc. - generates a particular <b>subset</b> of JavaScript</p>
+          <p class="fragment">asm.js formalizes the <b>existing</b> subset that Emscripten and Mandreel have been generating for years, and appears in a popular benchmark, Google Octane</p>
+        </section>
+
+        <section>
+          <h3><b>asm.js</b></h3>
+          <p>Since asm.js is just a subset of JavaScript, it does <b>not</b> need to be standardized <b>nor</b> to have a spec (just like GWT and CoffeeScript have neither)</p>
+          <p class="fragment">(Why does asm.js have a spec? Just to make it easy to generate and optimize for)</p>
         </section>
 
         <section>
@@ -218,16 +223,6 @@
         </section>
 
         <section>
-          <h3><b>1. Compile Code to JS</b></h3>
-          <p>..</p>
-          <div class="fragment">
-          <h3><b>2. Compile VMs to JS</b></h3>
-          <p>Use a C/C++ to JavaScript compiler on the C/C++ VM of a language</p>
-          <p>Avoid writing a new VM or compiler for the language</p>
-          </div>
-        </section>
-
-        <section>
           <h3><b>Demos: C++ w/ Emscripten</b></h3>
           <p><b><a href="epic/EpicCitadel.html">Epic Citadel</a></b></p>
           <p><b><a href="banana/benchmark.html">BananaBread</a></b></p>
@@ -235,6 +230,16 @@
           <p><b><a href="lua/repl.html">Lua</a></b></p>
           <p><b><a href="xmlvm/index.html">Demo</a></b> using <a href="http://xmlvm.org/">XMLVM</a> and Emscripten</p>
           <a href="http://emscripten.org"><img src="emscripten_switch_logo.png" width="35%" style="position: absolute; left: 600px; top: 400px; background-color: white"></a>
+        </section>
+
+        <section>
+          <h3><b>1. Compile Code to JS</b></h3>
+          <p>..</p>
+          <div class="fragment">
+          <h3><b>2. Compile VMs to JS</b></h3>
+          <p>Use a C/C++ to JavaScript compiler on the C/C++ <b>VM</b> of a language</p>
+          <p>Avoid writing a new VM or compiler for the language</p>
+          </div>
         </section>
 
         <section>
@@ -469,12 +474,12 @@
           <p>The time in milliseconds, reported by Lua:</p>
           <b><p id="lua_output">.</p></b>
 
-          <script src="lua/lua.vm.js"></script>
+          <!--script src="lua/lua.vm.js"></script>
           <script type="text/lua">
           js.global.setInterval(function()
             js.global.document.getElementById('lua_output').innerHTML = js.global.Date.now()
           end, 1000)
-          </script>
+          </script-->
 
           <p class="fragment">View source if you don't believe ;)</p>
         </section>
