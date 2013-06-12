@@ -127,7 +127,7 @@
           <p>
             <ul>
               <li>C/C++: Emscripten, Mandreel</li>
-              <li>Java: GWT</li>
+              <li>Java: Google Web Tooklit (GWT)</li>
               <li>C#: JSIL</li>
               <li>Python: pyjs</li>
               <li>Lua: lua.js</li>
@@ -140,7 +140,7 @@
         <section>
           <h3><b>Compiling to JavaScript:<br>Nothing New!</b></h3>
           <ul>
-            <li>2006: <b>Google Web Toolkit (GWT)</b>, Java to JS</li>
+            <li>2006: <b>GWT</b>, Java to JS</li>
             <li>2007: <b>pyjamas</b>, Python into JS</li>
           </ul>
         </section>
@@ -184,6 +184,40 @@
         </section>
 
         <section>
+          <h3><b>asm.js</b></h3>
+          <p>An <b>optimizable subset of JavaScript</b>, intended primary as a compiler target</p>
+          <p>The subset <b>avoids potential slowdowns</b>, like types changing at runtime, unpredictable property accesses, etc.</p>
+          <p>Defines only very <b>low-level</b> and <b>easy to optimize</b> operations</p>
+        </section>
+
+        <section>
+          <h3><b>asm.js</b></h3>
+          <p>Every compiler - GWT, CoffeeScript, etc. - generates a particular subset of JavaScript</p>
+          <p>asm.js is (a formalizaton of) the subset that Emscripten and Mandreel have been generating for a few years now</p>
+          <p>Included in a popular benchmark, Google Octane</p>
+        </section>
+
+        <section>
+          <h3><b>asm.js</b></h3>
+          <p>Since asm.js is just a subset of JavaScript, it does not need to be standardized nor to have a spec (just like GWT and CoffeeScript have neither)</p>
+          <p>Making asm.js fast is just a matter of <b>optimizing existing JavaScript engines</b></p>
+          <p>(Why does asm.js have a spec? Just to make it easy to generate and optimize for)</p>
+        </section>
+
+        <section>
+          <h3><b>Performance</b></h3>
+          <img src="asm_jun_10_2013.png">
+          <p><small>(JS engines and Emscripten from June 10th 2013, run on a 64-bit linux machine)</small></p>
+        </section>
+
+        <section>
+          <h3><b>Performance</b></h3>
+          <p>C/C++ compiled to JavaScript can run <b>close to native speed</b></li>
+          <p><a href="http://j15r.com/blog/2013/04/25/Box2d_Revisited">Beats Java</a> in some cases</li>
+          <p class="fragment"><b>Fast enough</b> even for demanding use cases like 3D games</p>
+        </section>
+
+        <section>
           <h3><b>1. Compile Code to JS</b></h3>
           <p>..</p>
           <div class="fragment">
@@ -201,19 +235,6 @@
           <p><b><a href="lua/repl.html">Lua</a></b></p>
           <p><b><a href="xmlvm/index.html">Demo</a></b> using <a href="http://xmlvm.org/">XMLVM</a> and Emscripten</p>
           <a href="http://emscripten.org"><img src="emscripten_switch_logo.png" width="35%" style="position: absolute; left: 600px; top: 400px; background-color: white"></a>
-        </section>
-
-        <section>
-          <h3><b>Performance</b></h3>
-          <img src="asm_jun_10_2013.png">
-          <p><small>(JS engines and Emscripten from June 10th 2013, run on a 64-bit linux machine)</small></p>
-        </section>
-
-        <section>
-          <h3><b>Performance</b></h3>
-          <p>C/C++ compiled to JavaScript can run <b>close to native speed</b></li>
-          <p><a href="http://j15r.com/blog/2013/04/25/Box2d_Revisited">Beats Java</a> in some cases</li>
-          <p class="fragment"><b>Fast enough</b> even for demanding use cases like 3D games</p>
         </section>
 
         <section>
