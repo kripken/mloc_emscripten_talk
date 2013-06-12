@@ -46,16 +46,17 @@
     </div>
 
     <div class="container">
-      <p><a href="#" class="btn btn-primary btn-large " onclick="executeLua(myCodeMirror.getValue(), true); return false" id="the_button">Execute &raquo;</a></p>
+      <p><a href="#" class="btn btn-primary btn-large " onclick="executeLua(myCodeMirror.getValue(), true); return false" id="the_button">Execute Lua&raquo;</a></p>
       <hr>
       <div class="row">
         <div class="span7" border=1>
           <textarea id="mytext">
-print('hello' .. ' ' .. 'world!') -- This is Lua!
+-- This is Lua!
+
+print('hello' .. ' ' .. 'world!')
 </textarea>
         </div>
         <div class="span5">
-          <h4>output</h4>
           <pre id="output"></pre>
         </div>
       </div>
