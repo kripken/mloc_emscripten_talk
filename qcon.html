@@ -160,16 +160,15 @@
         </section-->
 
         <section>
-          <h3><b>Compilation Example</b></h3>
-          <pre><code contenteditable>  volatile float array[5000]; // C++
+          <pre><code contenteditable>  float array[5000]; // C++
   int main() {
     for (int i = 0; i < 5000; ++i) {
       array[i] += 1.0f;
     }
   }</code></pre>
-          <h3><b>&rArr;</b></h3>
-          <pre><code contenteditable>  var g = Float32Array(32768);
-  function main() { // JavaScript
+          <h3><b>&rArr; emscripten &rArr;</b></h3>
+          <pre><code contenteditable>  var g = Float32Array(32768); // JavaScript
+  function main() {
     var a = 0, b = 0;
     do {
       a = 8 + (b << 2) | 0;
@@ -190,8 +189,8 @@
         <section>
           <h3><b>asm.js</b></h3>
           <p>That asm.js example from before:</p>
-          <pre><code contenteditable>  var g = Float32Array(32768);
-  function main() { // JavaScript
+          <pre><code contenteditable>  var g = Float32Array(32768); // JavaScript
+  function main() {
     var a = 0, b = 0;
     do {
       a = 8 + (b << 2) | 0;
@@ -221,7 +220,7 @@
           <h3><b>Performance</b></h3>
           <p>C/C++ compiled to JavaScript can run <b>close to native speed</b></li>
           <p><a href="http://j15r.com/blog/2013/04/25/Box2d_Revisited">Beats Java</a> in some cases</li>
-          <p class="fragment"><b>No need to standardize</b> (just like other compilers: GWT, CoffeeScript, etc.), improves at the speed that JS engines improve: <strong>FAST</strong></p>
+          <p class="fragment"><b>No need to standardize</b> (asm.js is just like GWT, CoffeeScript, etc.), so improves at the speed that JS engines improve: <strong>FAST</strong></p>
           <p class="fragment"><b>Already</b> fast enough even for demanding use cases like <b><a href="epic/EpicCitadel.html">3D games</a></b></p>
         </section>
 
@@ -232,9 +231,10 @@
           <p>..</p>
           <div class="fragment">
           <h3><b>2. Compile a VM to JS</b></h3>
-          <p>Use a C/C++ to JavaScript compiler on the C/C++ <b>VM</b> of a language</p>
-          <p>Avoid writing a new VM or compiler</p>
-          <p><b><a href="lua/repl.html">Lua demo</a></b></p>
+          <p>We have C/C++ to JavaScript compilers</p>
+          <p class="fragment">We have <b>VMs</b> for many languages, written in C/C++</p>
+          <p class="fragment">We can <strong>compile them!</strong></p>
+          <p class="fragment"><b><a href="lua/repl.html">Lua demo</a></b></p>
           </div>
         </section>
 
