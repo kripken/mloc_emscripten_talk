@@ -170,7 +170,8 @@
     }
   }</code></pre>
           <h3><b>=></b></h3>
-          <pre><code contenteditable>  function main() { // JavaScript
+          <pre><code contenteditable>  var g = Float32Array(32768);
+  function main() { // JavaScript
     var a = 0, b = 0;
     do {
       a = 8 + (b << 2) | 0;
@@ -191,7 +192,8 @@
         <section>
           <h3><b>asm.js</b></h3>
           <p>That asm.js example from before:</p>
-          <pre><code contenteditable>  function main() { // JavaScript
+          <pre><code contenteditable>  var g = Float32Array(32768);
+  function main() { // JavaScript
     var a = 0, b = 0;
     do {
       a = 8 + (b << 2) | 0;
@@ -212,15 +214,8 @@
         </section>
 
         <section>
-          <h3><b>asm.js</b></h3>
-          <p>Subsets of JavaScript do <strong>not</strong> need to be standardized <strong>nor</strong> to have a spec</p>
-          <p>True for <b>GWT</b>, <b>CoffeeScript</b>, <b>asm.js</b>, etc.</p>
-          <p class="fragment">(Why <b>does</b> asm.js have a spec? Just to make it super-easy to generate and optimize for)</p>
-        </section>
-
-        <section>
           <h3><b>Performance</b></h3>
-          <img src="asm_jun_10_2013.png">
+          <a href="asm_jun_10_2013.png"><img src="asm_jun_10_2013.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></a>
           <p><small>(VMs and Emscripten from June 10th 2013, run on a 64-bit linux machine)</small></p>
         </section>
 
@@ -228,7 +223,7 @@
           <h3><b>Performance</b></h3>
           <p>C/C++ compiled to JavaScript can run <b>close to native speed</b></li>
           <p><a href="http://j15r.com/blog/2013/04/25/Box2d_Revisited">Beats Java</a> in some cases</li>
-          <p class="fragment">No need to standardize, improves at the speed that JS engines improve: <strong>FAST</strong></p>
+          <p class="fragment">No need to standardize (just like other compilers, GWT, CoffeeScript, etc.), improves at the speed that JS engines improve: <strong>FAST</strong></p>
           <p class="fragment"><b>Already</b> fast enough even for demanding use cases like 3D games in multiple browsers</p>
         </section>
 
@@ -546,9 +541,8 @@
 
         <section>
           <h3><b>Summary</b></h3>
-          <p class="fragment">We can use languages other than JavaScript on the web, by <b>compiling</b> them to JavaScript</p>
+          <p class="fragment">We can use languages <b>other</b> than JavaScript on the web, by running them <b>in</b> JavaScript</p>
           <p class="fragment">Those languages can interact with JavaScript, allowing <b>mixed-language</b> projects</p>
-          <p class="fragment">JavaScript VMs can be <b>multilanguage VMs</b></p>
           <br>
           <p class="fragment"><b style="color: #c11">Thanks for listening!</b></p>
         </section>
