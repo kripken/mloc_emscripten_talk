@@ -351,7 +351,7 @@
 
         <section>
           <h3><b>C &nbsp; ==> &nbsp; JavaScript (v2)</b></h3>
-          <p>Implement a C API in JS using <b>--js-library</b>:</p>
+          <p>Implement a C API in JS:</p>
             <pre><code contenteditable>  // myLib.js
   mergeInto(LibraryManager.library, {
     js_func: function(x) { alert('you sent ' + x) }
@@ -372,14 +372,14 @@
           <p>Very efficient:</p>
             <pre><code contenteditable>  // output.js
   function _js_func(x) { // from JavaScript library
-    print('you sent ' + x);
+    alert('you sent ' + x);
   }
   function _main() { // compiled from C
     _js_func(3);
     return 0;
   }
 </code></pre>
-          <p class="fragment">This is how emscripten implents SDL using 2D canvas and WebGL</p>
+          <p class="fragment">This is how emscripten implements SDL using HTML5 APIs</p>
         </section>
 
         <section>
@@ -443,7 +443,8 @@
         </section>
 
         <section>
-          <h3><b>JS &nbsp; ==> &nbsp; C++ classes</b></h3>
+          <h3><b>JS &nbsp; ==> &nbsp; C++</b></h3>
+          <p>Classes as well:</p>
           <pre><code contenteditable>  // C++ class wrapped by Embind
   class Cat {
     string name;
@@ -451,7 +452,7 @@
     Cat(string name_) : name(name_) {}
     void meow() { printf("%s meows\n", name.c_str());
   };
-  EMSCRIPTEN_BINDINGS(Cats) {
+  EMSCRIPTEN_BINDINGS(Cats) { // much like Boost.Python...
     class_&lt;Cat>("Cat").constructor<std::string>()
                          .function("meow", &Cat::meow);
   }
@@ -461,23 +462,27 @@
   var myCat = new Module.Cat("Fluffy");
   alert(myCat.meow()); // shows "Fluffy meows"
 </code></pre>
-          <p class="fragment">Very much like Boost.Python does for Python</p>
         </section>
 
         <section>
           <h3><b>Challenges</b></h3>
           <p>No way to know when a JS object is garbage-collected, must call <b>cat.delete()</b> to clean it up</p>
           <p>Weak refs in JavaScript might help fix that</p>
+          <div class="fragment">
+            <hr>
+            <p>But overall, <b>surprisingly easy</b> despite big differences in langages</p>
+          </div>
         </section>
 
         <section>
-          <h3><b>Examples</b></h3>
+          <h3><b>Final Examples</b></h3>
         </section>
 
         <section>
           <h3><b>Not just C++</b></h3>
           <p>We can also connect JavaScript and <b>dynamic</b> languages running in JavaScript</p>
           <p><b><a href="lua/repl.html">Dual-REPL demo</a></b></p>
+          <p class="fragment">In some ways this can be <b>easier</b></p>
         </section>
 
 
