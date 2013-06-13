@@ -249,7 +249,7 @@
           <h3><b>2. Compile VMs to JS</b></h3>
           <p>Use a C/C++ to JavaScript compiler on the C/C++ <b>VM</b> of a language</p>
           <p>Avoid writing a new VM or compiler</p>
-          <p>(This is how the Lua demo worked)</p>
+          <p>(This is how the <strong>Lua</strong> demo worked)</p>
           </div>
         </section>
 
@@ -284,6 +284,7 @@
           <h3><b>Embedding in C/C++</b></h3>
           <p>Script language is just another module in the C/C++ project</p>
           <img src="modules2.png" width="66%" style="border: 0; box-shadow: none;">
+          <p>(that happens to be a VM)</p>
         </section>
 
         <section>
@@ -307,7 +308,7 @@
 
         <section>
           <h3><b>Python &nbsp; ==> &nbsp; C++</b></h3>
-          <p>Boost.Python can also wrap C++ classes for Python</p>
+          <p>Boost.Python can also wrap C++ classes</p>
           <pre><code contenteditable>  // C++ class
   class Cat {
     string name;
@@ -329,14 +330,14 @@
         </section>
 
         <section>
-          <h3><b>That's cool</b></h3>
+          <h3><b>That's cool I guess</b></h3>
           <p>But can we do this in <b>JavaScript</b>?</p>
-          <h3 class="fragment"><b>yes!</b></h3>
+          <p class="fragment"><strong>YES!</strong></p>
         </section>
 
         <section>
           <h3><b>C &nbsp; ==> &nbsp; JavaScript</b></h3>
-          <p>Emscripten provides APIs for this on the C side</p>
+          <p>Emscripten provides APIs on the C side</p>
             <pre><code contenteditable>  #include "emscripten.h"
   int main() {
     // Call JS from C
@@ -350,7 +351,7 @@
         <section>
           <h3><b>But totally different!</b></h3>
           <img src="different2.png" style="border: 0; box-shadow: none;">
-          <p class="fragment">Difference doesn't matter though,<br>API is the same ;)</p>
+          <p class="fragment">Difference doesn't matter though,<br><b>API</b> is the same ;)</p>
         </section>
 
         <section>
@@ -383,7 +384,7 @@
     return 0;
   }
 </code></pre>
-          <p class="fragment">This is how emscripten implements SDL using HTML5 APIs</p>
+          <p class="fragment">This is how emscripten implements <b>C APIs</b> (like SDL) using <strong>HTML5 APIs</strong></p>
         </section>
 
         <section>
@@ -474,7 +475,7 @@
           <p>Weak refs in JavaScript might help fix that</p>
           <div class="fragment">
             <hr>
-            <p>But overall, <b>surprisingly easy</b> despite big differences in langages</p>
+            <p>But overall, <strong>surprisingly easy</strong> despite big differences in langages</p>
           </div>
         </section>
 
@@ -486,7 +487,7 @@
           <h3><b>Not just C++</b></h3>
           <p>We can also connect JavaScript and <b>dynamic</b> languages running in JavaScript</p>
           <p><b><a href="lua/repl.html">Dual-REPL demo</a></b></p>
-          <p class="fragment">In some ways this can be <b>easier</b></p>
+          <p class="fragment">In some ways this can be <strong>easier</strong></p>
         </section>
 
 
@@ -519,7 +520,7 @@
           end, 1000)
           </script>
 
-          <p class="fragment">View source if you don't believe ;)</p>
+          <p class="fragment"><strong>View source</strong> if you don't believe ;)</p>
         </section>
 
         <!-- Lua scripting example -->
