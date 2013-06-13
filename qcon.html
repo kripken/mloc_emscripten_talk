@@ -223,30 +223,31 @@
           <h3><b>Performance</b></h3>
           <p>C/C++ compiled to JavaScript can run <b>close to native speed</b></li>
           <p><a href="http://j15r.com/blog/2013/04/25/Box2d_Revisited">Beats Java</a> in some cases</li>
-          <p class="fragment">No need to standardize (just like other compilers, GWT, CoffeeScript, etc.), improves at the speed that JS engines improve: <strong>FAST</strong></p>
-          <p class="fragment"><b>Already</b> fast enough even for demanding use cases like 3D games in multiple browsers</p>
+          <p class="fragment"><b>No need to standardize</b> (just like other compilers: GWT, CoffeeScript, etc.), improves at the speed that JS engines improve: <strong>FAST</strong></p>
+          <p class="fragment"><b>Already</b> fast enough even for demanding use cases like <b><a href="epic/EpicCitadel.html">3D games</a></b></p>
         </section>
 
-        <section>
-          <h3><b>Demos: C++ w/ Emscripten</b></h3>
-          <hr>
-          <p><b><a href="epic/EpicCitadel.html">Epic Citadel</a></b></p>
-          <p><b><a href="banana/benchmark.html">BananaBread</a></b></p>
-          <p><b><a href="qt/QtDemo.html">Qt</a></b></p>
-          <p><b><a href="lua/repl.html">Lua</a></b></p>
-          <p><b><a href="xmlvm/index.html">Java</a></b> using <a href="http://xmlvm.org/">XMLVM</a> and Emscripten</p>
-          <hr>
-          <a href="http://emscripten.org"><img src="emscripten_switch_logo.png" width="40%" style="border: 0; box-shadow: none;"></a>
-        </section>
+          <!--a href="http://emscripten.org"><img src="emscripten_switch_logo.png" width="40%" style="border: 0; box-shadow: none;"></a-->
 
         <section>
           <h3><b>1. Compile Code to JS</b></h3>
           <p>..</p>
           <div class="fragment">
-          <h3><b>2. Compile VMs to JS</b></h3>
+          <h3><b>2. Compile a VM to JS</b></h3>
           <p>Use a C/C++ to JavaScript compiler on the C/C++ <b>VM</b> of a language</p>
           <p>Avoid writing a new VM or compiler</p>
-          <p>(This is how the <strong>Lua</strong> demo worked)</p>
+          <p><b><a href="lua/repl.html">Lua demo</a></b></p>
+          </div>
+        </section>
+
+        <section>
+          <h3><b>1. Compile Code to JS</b></h3>
+          <p>..</p>
+          <h3><b>2. Compile a VM to JS</b></h3>
+          <p>..</p>
+          <div class="fragment">
+          <h3><b>3. Chain compilers</b></h3>
+          <p><b><a href="xmlvm/index.html">Demo</a></b> of <strong>Java</strong> => C => <b>JavaScript</b>, using <a href="http://xmlvm.org/">XMLVM</a> and Emscripten</p>
           </div>
         </section>
 
@@ -257,8 +258,8 @@
         </section>
 
         <section>
-          <h3><b>Next:</b></h3>
-          <h3><b>Connecting Languages</b></h3>
+          <h3><b>Second half:</b></h3>
+          <h3><b>Connecting them all</b></h3>
           <p class="fragment">What do other platforms/environments do?</p>
         </section>
 
@@ -440,7 +441,7 @@
 </code></pre>
           <hr>
           <pre><code contenteditable>  // Use it in JS
-  alert(Module.add(10, 20)); // shows 30
+  alert(Module.c_add(10, 20)); // shows 30
 </code></pre>
         </section>
 
@@ -456,7 +457,7 @@
   };
   EMSCRIPTEN_BINDINGS(Cats) { // much like Boost.Python...
     class_&lt;Cat>("Cat").constructor<std::string>()
-                         .function("meow", &Cat::meow);
+                      .function("meow", &Cat::meow);
   }
 </code></pre>
           <hr>
@@ -468,7 +469,7 @@
 
         <section>
           <h3><b>Challenges</b></h3>
-          <p>No way to know when a JS object is garbage-collected, must call <b>cat.delete()</b> to clean it up</p>
+          <p>No way to know when a JS object is garbage-collected, must call <b>myCat.delete()</b> to clean it up</p>
           <p class="fragment">Weak refs in JavaScript might help fix that</p>
           <div class="fragment">
             <hr>
@@ -503,24 +504,25 @@
 
 
 
-        <!-- Lua scripting example -->
+  <!-- Lua scripting example -->
 
-        <section>
-          <h3><b>Lua scripting on the web</b></h3>
-          <p>The time in milliseconds, reported by Lua:</p>
-          <b><p id="lua_output">.</p></b>
+  <section>
+    <h3><b>Lua scripting<br>on the web</b></h3>
+    <p>The time in milliseconds, reported by Lua:</p>
+    <b><p id="lua_output">.</p></b>
 
-          <script src="lua/lua.vm.js"></script>
-          <script type="text/lua">
-          js.global.setInterval(function()
-            js.global.document.getElementById('lua_output').innerHTML = js.global.Date.now()
-          end, 1000)
-          </script>
+    <script src="lua/lua.vm.js"></script>
+    <script type="text/lua">
+    local window = js.global
+    window.setInterval(function()
+      window.document.getElementById('lua_output').innerHTML = window.Date.now()
+    end, 1000)
+    </script>
 
-          <p class="fragment"><strong>View source</strong> if you don't believe ;)</p>
-        </section>
+    <p class="fragment"><strong>View source</strong> if you don't believe ;)</p>
+  </section>
 
-        <!-- Lua scripting example -->
+  <!-- Lua scripting example -->
 
 
 
