@@ -167,7 +167,7 @@
       array[i] += 1.0f;
     }
   }</code></pre>
-          <h3><b>=></b></h3>
+          <h3><b>&rArr;</b></h3>
           <pre><code contenteditable>  var g = Float32Array(32768);
   function main() { // JavaScript
     var a = 0, b = 0;
@@ -245,7 +245,7 @@
           <p>..</p>
           <div class="fragment">
           <h3><b>3. Chain compilers</b></h3>
-          <p><b><a href="xmlvm/index.html">Demo</a></b> of <strong>Java</strong> => C => <b>JavaScript</b>, using <a href="http://xmlvm.org/">XMLVM</a> and Emscripten</p>
+          <p><b><a href="xmlvm/index.html">Demo</a></b> of <strong>Java</strong> &rArr; C &rArr; <b>JavaScript</b>, using <a href="http://xmlvm.org/">XMLVM</a> and Emscripten</p>
           </div>
         </section>
 
@@ -284,7 +284,7 @@
         </section>
 
         <section>
-          <h3><b>Python &nbsp; ==> &nbsp; C</b></h3>
+          <h3><b>Python &nbsp; &rArr; &nbsp; C</b></h3>
           <pre><code contenteditable>  // C++ with Boost.Python
   #include "boost/python.hpp"
   char const* greet() {
@@ -303,7 +303,7 @@
         </section>
 
         <section>
-          <h3><b>Python &nbsp; ==> &nbsp; C++</b></h3>
+          <h3><b>Python &nbsp; &rArr; &nbsp; C++</b></h3>
           <p>Boost.Python can also wrap C++ classes</p>
           <pre><code contenteditable>  // C++ class
   class Cat {
@@ -326,13 +326,13 @@
         </section>
 
         <section>
-          <h3><b>That's cool I guess</b></h3>
+          <h3><b>Ok...</b></h3>
           <p>But can we do this in <b>JavaScript</b>?</p>
           <p class="fragment"><strong>YES!</strong></p>
         </section>
 
         <section>
-          <h3><b>C &nbsp; ==> &nbsp; JavaScript</b></h3>
+          <h3><b>C &nbsp; &rArr; &nbsp; JavaScript</b></h3>
           <p>Emscripten provides APIs on the C side</p>
             <pre><code contenteditable>  #include "emscripten.h"
   int main() {
@@ -351,7 +351,7 @@
         </section>
 
         <section>
-          <h3><b>C &nbsp; ==> &nbsp; JavaScript (v2)</b></h3>
+          <h3><b>C &nbsp; &rArr; &nbsp; JavaScript (v2)</b></h3>
           <p>Implement a C API in JS:</p>
             <pre><code contenteditable>  // myLib.js
   mergeInto(LibraryManager.library, {
@@ -369,12 +369,14 @@
         </section>
 
         <section>
-          <h3><b>JavaScript &nbsp; ==> &nbsp; C</b></h3>
+          <h3><b>C &nbsp; &rArr; &nbsp; JavaScript (v2)</b></h3>
           <p>Very efficient:</p>
-            <pre><code contenteditable>  // output.js
+            <pre><code contenteditable>  // JavaScript output from last slide's files
+
   function _js_func(x) { // from JavaScript library
     alert('you sent ' + x);
   }
+
   function _main() { // compiled from C
     _js_func(3);
     return 0;
@@ -384,7 +386,7 @@
         </section>
 
         <section>
-          <h3><b>JavaScript &nbsp; ==> &nbsp; C</b></h3>
+          <h3><b>JavaScript &nbsp; &rArr; &nbsp; C</b></h3>
           <p>Emscripten provides APIs on the JS side too</p>
             <pre><code contenteditable>  // C file that was compiled to JS
   int c_add(int x, int y) { return x+y; }
@@ -400,7 +402,7 @@
         </section>
 
         <section>
-          <h3><b>JavaScript &nbsp; ==> &nbsp; C</b></h3>
+          <h3><b>JavaScript &nbsp; &rArr; &nbsp; C</b></h3>
           <p><b>cwrap</b> is useful for multiple calls
           <pre><code contenteditable>  // Call C from JS
   var c_add = cwrap('c_add', // name
@@ -414,7 +416,7 @@
         </section>
 
         <section>
-          <h3><b>C++ &nbsp; ==> &nbsp; JS</b></h3>
+          <h3><b>C++ &nbsp; &rArr; &nbsp; JS</b></h3>
           <p><b>Embind</b>, written by IMVU, glues together C++ and JavaScript</p>
           <pre><code contenteditable>  // Access JS objects in C++ like C++ objects
   #include "emscripten/val.h"
@@ -427,7 +429,7 @@
         </section>
 
         <section>
-          <h3><b>JS &nbsp; ==> &nbsp; C++</b></h3>
+          <h3><b>JS &nbsp; &rArr; &nbsp; C++</b></h3>
           <p>Embind can also go the other way</p>
           <pre><code contenteditable>  // C++ library
   #include "emscripten/bind.h"
@@ -444,7 +446,7 @@
         </section>
 
         <section>
-          <h3><b>JS &nbsp; ==> &nbsp; C++</b></h3>
+          <h3><b>JS &nbsp; &rArr; &nbsp; C++</b></h3>
           <p>Classes as well:</p>
           <pre><code contenteditable>  // C++ class wrapped by Embind
   class Cat {
@@ -468,7 +470,7 @@
         <section>
           <h3><b>Challenges</b></h3>
           <p>No way to know when a JS object is garbage-collected, must call <b>myCat.delete()</b> to clean it up</p>
-          <p class="fragment">Weak refs in JavaScript might help fix that</p>
+          <p class="fragment">Weak refs in JavaScript (ES7) might help fix that</p>
           <div class="fragment">
             <hr>
             <p>But overall, <strong>surprisingly easy</strong> despite big differences in languages</p>
