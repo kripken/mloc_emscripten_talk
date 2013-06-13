@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>JavaScript + Other Languages</title>
+
+    <meta name="description" content="JavaScript + Other Languages">
+    <meta name="author" content="Alon Zakai">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/sky.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <style type="text/css">
+      h2 b {
+        color: #048;
+      }
+      h3 b {
+        color: #369;
+      }
+      b {
+        color: #63a;
+      }
+      strong {
+        color: #c11;
+      }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+
+        <section>
+          <h2><b>JavaScript <div style="color: #c11">+</div> Other<br>Languages</b></h2>
+          <hr>
+          <h3>Alon Zakai (Mozilla)</h3>
+          <h3><b>QCon</b></h3>
+        </section>
+
+        <section>
+          <h3><b>Other Languages?</b></h3>
+          <p>Why? <strong>;)</strong></p>
+        </section>
+
+        <section>
+          <h3><b>JavaScript is great</b></h3>
+          <p>Runs in all browsers</p>
+          <p>Familiar syntax</p>
+          <p>Dynamic typing</p>
+          <hr>
+          <h3 class="fragment"><b>Other languages are<br>great too</b></h3>
+          <div class="fragment">
+          <p>Existing code</p>
+          <p>Developer tools</p>
+          <p>Static typing</p>
+          </div>
+        </section>
+
+        <section>
+          <h3><b>Mixing Languages:<br>examples</b></h3>
+          <p class="fragment"><b>Spreadsheets</b>: C/C++ and VBA, etc</p>
+          <p class="fragment"><b>Web browsers</b>: C/C++ and JavaScript</p>
+          <p class="fragment"><b>Game engines</b>: C/C++ and Lua, etc.</p>
+          <p class="fragment"><b>Libraries for scripting languages</b>: Python and C/C++ modules like NumPy, etc.</p>
+        </section>
+
+        <section>
+          <h3><b>Mixing Languages</b></h3>
+          <p>When useful, gives you the <b>best parts</b> of <strong>multiple languages</strong></p>
+        </section>
+
+        <!--section>
+          <h3><b>Direct vs indirect connections</b></h3>
+          <p>We are talking about <strong>directly</strong> connecting two languages: They run together in the same app</p>
+          <p class="fragment">Also possible to <b>indirectly</b> connect them (through a database, through a network connection, etc.)</p>
+        </section-->
+
+        <section>
+          <h3><b>The Web</b></h3>
+          <p class="fragment">JavaScript is the <b>only</b> standards-based language in web browsers</p>
+          <p class="fragment">If we want to run other languages on the web, we need to go <strong>through</strong> JavaScript</p>
+          <br>
+          <img src="browser-logos.png" style="border: 0; box-shadow: none;">
+        </section>
+
+        <section>
+          <h3><b>Going through JavaScript</b></h3>
+          <p>Might seem like an odd solution</p>
+          <p class="fragment">But <b>replacing</b> JavaScript with anything else would slow down the web</p>
+          <p class="fragment">Adding <b>another</b> virtual machine (VM) alongside JavaScript is complicated (cross-VM GC, etc.)</p>
+          <p class="fragment"><strong>Consensus to standardize</strong> any such change would be very hard</p>
+        </section>
+
+        <section>
+          <h3><b>Going through JavaScript</b></h3>
+          <p>But it turns out to be <strong>not</strong> so odd!</p>
+          <p class="fragment">Running other languages in JavaScript <b>requires no standardization</b></p>
+          <p class="fragment">Turns out <b>performance can be good</b> in many cases</p>
+          <p class="fragment">No new VM means <b>no new attack surface</b> for exploits</p>
+        </section>
+
+        <section>
+          <h3><b>1. Compile Code to JS</b></h3>
+          <p>
+            <ul>
+              <li><b>C/C++</b>: Emscripten, Mandreel</li>
+              <li><b>Java</b>: Google Web Toolkit (GWT)</li>
+              <li><b>C#</b>: JSIL, Script#</li>
+              <li><b>Python</b>: pyjs</li>
+              <li><b>Lua</b>: lua.js</li>
+              <li><b>CoffeeScript</b></li>
+              <li><a href="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">Jeremy Ashkenas's list</a> has many dozens</li>
+            </ul>
+          </p>
+        </section>
+
+        <section>
+          <h3><b>Compiling to JavaScript:<br>Nothing New!</b></h3>
+          <ul>
+            <li><strong>2006</strong>: <b>GWT</b> (Java)</li>
+            <li><strong>2007</strong>: <b>pyjamas</b> (Python)</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3><b>Adoption</b></h3>
+          <ul>
+            <li><strong>Java</strong> <b>(GWT)</b> used in <a href="http://www.blogger.com/">Blogger</a>, many enterprise apps</li>
+            <li><strong>C#</strong> <b>(Script#)</b> used in <a href="http://office.microsoft.com/en-us/web-apps">Microsoft Office Web Apps</a></li>
+          </ul>
+        </section>
+
+        <!--section>
+          <h3><b>How Compilation Works</h3></b>
+          <p>For example, in Emscripten:</p>
+          <hr>
+          <ul>
+            <p><b>C/C++</b> <strong>=></strong> <b>LLVM</b> <strong>=></strong> <b>Emscripten</b> <strong>=></strong> <b>JS</b></p>
+          </ul>
+          <hr>
+        </section-->
+
+        <section>
+          <h3><b>Compilation Example</b></h3>
+          <pre><code contenteditable>  volatile float array[5000]; // C++
+  int main() {
+    for (int i = 0; i < 5000; ++i) {
+      array[i] += 1.0f;
+    }
+  }</code></pre>
+          <h3><b>=></b></h3>
+          <pre><code contenteditable>  var g = Float32Array(32768);
+  function main() { // JavaScript
+    var a = 0, b = 0;
+    do {
+      a = 8 + (b << 2) | 0;
+      g[a >> 2] = +g[a >> 2] + 1.0;
+      b = b + 1 | 0;
+    } while ((b | 0) < 5000);
+  }</code></pre>
+          <p class="fragment">This is a subset of JS called <b><a href="http://asmjs.org">asm.js</a></b></p>
+        </section>
+
+        <section>
+          <h3><b>asm.js</b></h3>
+          <p>An <b>optimizable subset of JavaScript</b>, intended primary as a compiler target</p>
+          <p class="fragment"><b>Avoids potential slowdowns</b> (types changing, GC pauses)</p>
+          <p class="fragment"><strong>Low-level</strong> and <strong>easy to optimize</strong></p>
+        </section>
+
+        <section>
+          <h3><b>asm.js</b></h3>
+          <p>That asm.js example from before:</p>
+          <pre><code contenteditable>  var g = Float32Array(32768);
+  function main() { // JavaScript
+    var a = 0, b = 0;
+    do {
+      a = 8 + (b << 2) | 0;
+      g[a >> 2] = +g[a >> 2] + 1.0;
+      b = b + 1 | 0;
+    } while ((b | 0) < 5000);
+  }</code></pre>
+          <p class="fragment">Integers remain integers</p>
+          <p class="fragment">"Memory" is a fast typed array</p>
+        </section>
+
+        <section>
+          <h3><b>asm.js</b></h3>
+          <p><b>Every</b> compiler - GWT, CoffeeScript, etc. - generates a particular <b>subset</b> of JavaScript</p>
+          <p class="fragment">Emscripten and Mandreel <b>converged</b> on a useful subset for C/C++</p>
+          <p class="fragment">Added to a <b>popular benchmark</b>, Google Octane</p>
+          <p class="fragment">asm.js <strong>formalizes</strong> that subset</p>
+        </section>
+
+        <section>
+          <h3><b>Performance</b></h3>
+          <a href="asm_jun_10_2013.png"><img src="asm_jun_10_2013.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></a>
+          <p><small>(VMs and Emscripten from June 10th 2013, run on a 64-bit linux machine)</small></p>
+        </section>
+
+        <section>
+          <h3><b>Performance</b></h3>
+          <p>C/C++ compiled to JavaScript can run <b>close to native speed</b></li>
+          <p><a href="http://j15r.com/blog/2013/04/25/Box2d_Revisited">Beats Java</a> in some cases</li>
+          <p class="fragment"><b>No need to standardize</b> (just like other compilers: GWT, CoffeeScript, etc.), improves at the speed that JS engines improve: <strong>FAST</strong></p>
+          <p class="fragment"><b>Already</b> fast enough even for demanding use cases like <b><a href="epic/EpicCitadel.html">3D games</a></b></p>
+        </section>
+
+          <!--a href="http://emscripten.org"><img src="emscripten_switch_logo.png" width="40%" style="border: 0; box-shadow: none;"></a-->
+
+        <section>
+          <h3><b>1. Compile Code to JS</b></h3>
+          <p>..</p>
+          <div class="fragment">
+          <h3><b>2. Compile a VM to JS</b></h3>
+          <p>Use a C/C++ to JavaScript compiler on the C/C++ <b>VM</b> of a language</p>
+          <p>Avoid writing a new VM or compiler</p>
+          <p><b><a href="lua/repl.html">Lua demo</a></b></p>
+          </div>
+        </section>
+
+        <section>
+          <h3><b>1. Compile Code to JS</b></h3>
+          <p>..</p>
+          <h3><b>2. Compile a VM to JS</b></h3>
+          <p>..</p>
+          <div class="fragment">
+          <h3><b>3. Chain compilers</b></h3>
+          <p><b><a href="xmlvm/index.html">Demo</a></b> of <strong>Java</strong> => C => <b>JavaScript</b>, using <a href="http://xmlvm.org/">XMLVM</a> and Emscripten</p>
+          </div>
+        </section>
+
+        <section>
+          <h3><b>The plot so far</b></h3>
+          <p>We can run <b>many languages</b> on the web</p>
+          <p>By running them in <strong>JavaScript</strong></p>
+        </section>
+
+        <section>
+          <h3><b>Second half:</b></h3>
+          <h3><b>Connecting them all</b></h3>
+          <p class="fragment">What do other platforms/environments do?</p>
+        </section>
+
+        <section>
+          <h3><b>Embedding in C/C++</b></h3>
+          <p>Main project is written in C/C++</p>
+          <p>VM for a scripting language (e.g., Python) is <strong>also</strong> written in C/C++</p>
+          <p>VM has a C/C++ API to <b>bridge</b> the two "worlds"</p>
+        </section>
+
+        <section>
+          <h3><b>Embedding Python in C</b></h3>
+          <p>Python makes it easy to run code in its VM:</p>
+          <pre><code contenteditable>  // C code
+  PyRun_SimpleString("print 'hello from python!'");</code></pre>
+          <p>Other APIs let you create Python objects and operate on them from C</p>
+        </section>
+
+        <section>
+          <h3><b>Embedding in C/C++</b></h3>
+          <p>Script language is just another module in the C/C++ project</p>
+          <img src="modules2.png" width="66%" style="border: 0; box-shadow: none;">
+          <p>(it happens to be a VM)</p>
+        </section>
+
+        <section>
+          <h3><b>Python &nbsp; ==> &nbsp; C</b></h3>
+          <pre><code contenteditable>  // C++ with Boost.Python
+  #include "boost/python.hpp"
+  char const* greet() {
+    return "hello from C!";
+  }
+  BOOST_PYTHON_MODULE(greeter) {
+    boost::python::def("greet", greet);
+  }
+</code></pre>
+          <hr>
+          <pre><code contenteditable>  # Python
+  >>> import greeter
+  >>> greeter.greet()
+  hello from C!
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>Python &nbsp; ==> &nbsp; C++</b></h3>
+          <p>Boost.Python can also wrap C++ classes</p>
+          <pre><code contenteditable>  // C++ class
+  class Cat {
+    string name;
+  public:
+    Cat(string name_) : name(name_) {}
+    void meow() { printf("%s meows\n", name.c_str());
+  };
+  BOOST_PYTHON_MODULE(Cats) {
+    class &lt;Cat&gt;("Cat").def("meow", &Cat::meow);
+  }
+</code></pre>
+          <hr>
+          <pre><code contenteditable>  // Python
+  >>>> import Cats
+  >>>> my_cat = Cats.Cat('Fluffy')
+  >>>> print my_cat.meow()
+  Fluffy meows
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>That's cool I guess</b></h3>
+          <p>But can we do this in <b>JavaScript</b>?</p>
+          <p class="fragment"><strong>YES!</strong></p>
+        </section>
+
+        <section>
+          <h3><b>C &nbsp; ==> &nbsp; JavaScript</b></h3>
+          <p>Emscripten provides APIs on the C side</p>
+            <pre><code contenteditable>  #include "emscripten.h"
+  int main() {
+    // Call JS from C
+    emscripten_run_script("alert('hello from C!')");
+    return 0;
+  }
+</code></pre>
+          <p class="fragment">Similar to how we called Python from C...</p>
+        </section>
+
+        <section>
+          <h3><b>But totally different!</b></h3>
+          <img src="different2.png" style="border: 0; box-shadow: none;">
+          <p class="fragment">Difference doesn't matter though,<br><b>API</b> is the same ;)</p>
+        </section>
+
+        <section>
+          <h3><b>C &nbsp; ==> &nbsp; JavaScript (v2)</b></h3>
+          <p>Implement a C API in JS:</p>
+            <pre><code contenteditable>  // myLib.js
+  mergeInto(LibraryManager.library, {
+    js_func: function(x) { alert('you sent ' + x) }
+  });
+</code></pre>
+          <hr>
+          <pre><code contenteditable>  // main.c (emcc main.c --js-library myLib.js)
+  void js_func(int x);
+  int main() {
+    js_func(3); // will cause alert('you sent 3')
+    return 0;
+  }
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>JavaScript &nbsp; ==> &nbsp; C</b></h3>
+          <p>Very efficient:</p>
+            <pre><code contenteditable>  // output.js
+  function _js_func(x) { // from JavaScript library
+    alert('you sent ' + x);
+  }
+  function _main() { // compiled from C
+    _js_func(3);
+    return 0;
+  }
+</code></pre>
+          <p class="fragment">This is how emscripten implements <b>C APIs</b> (like SDL) using <strong>HTML5 APIs</strong></p>
+        </section>
+
+        <section>
+          <h3><b>JavaScript &nbsp; ==> &nbsp; C</b></h3>
+          <p>Emscripten provides APIs on the JS side too</p>
+            <pre><code contenteditable>  // C file that was compiled to JS
+  int c_add(int x, int y) { return x+y; }
+</code></pre>
+          <hr>
+          <pre><code contenteditable>  // Call C from JS
+  var result = ccall('c_add', // name
+                     'number', // return type
+                     ['number', 'number'], // argument types
+                     [10, 20]); // arguments
+  // returns 30
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>JavaScript &nbsp; ==> &nbsp; C</b></h3>
+          <p><b>cwrap</b> is useful for multiple calls
+          <pre><code contenteditable>  // Call C from JS
+  var c_add = cwrap('c_add', // name
+                    'number', // return type
+                    ['number', 'number']); // argument types
+
+  console.log(c_add(10, 20)); // 30
+  console.log(c_add(20, 30)); // 50
+</code></pre>
+        <p class="fragment">Wrapper behaves <strong>just like</strong> a normal JS function</p>
+        </section>
+
+        <section>
+          <h3><b>C++ &nbsp; ==> &nbsp; JS</b></h3>
+          <p><b>Embind</b>, written by IMVU, glues together C++ and JavaScript</p>
+          <pre><code contenteditable>  // Access JS objects in C++ like C++ objects
+  #include "emscripten/val.h"
+  using namespace emscripten;
+  int main() {
+    val Math = val::global("Math");
+    return Math.call<int>("abs", -10); // returns 10
+  }
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>JS &nbsp; ==> &nbsp; C++</b></h3>
+          <p>Embind can also go the other way</p>
+          <pre><code contenteditable>  // C++ library
+  #include "emscripten/bind.h"
+  using namespace emscripten;
+  int c_add(int a, int b) { return a+b; }
+  EMSCRIPTEN_BINDINGS(my_module) {
+      function("c_add", &c_add);
+  }
+</code></pre>
+          <hr>
+          <pre><code contenteditable>  // Use it in JS
+  alert(Module.c_add(10, 20)); // shows 30
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>JS &nbsp; ==> &nbsp; C++</b></h3>
+          <p>Classes as well:</p>
+          <pre><code contenteditable>  // C++ class wrapped by Embind
+  class Cat {
+    string name;
+  public:
+    Cat(string name_) : name(name_) {}
+    void meow() { printf("%s meows\n", name.c_str());
+  };
+  EMSCRIPTEN_BINDINGS(Cats) { // much like Boost.Python...
+    class_&lt;Cat>("Cat").constructor<std::string>()
+                      .function("meow", &Cat::meow);
+  }
+</code></pre>
+          <hr>
+          <pre><code contenteditable>  // JavaScript
+  var myCat = new Module.Cat("Fluffy");
+  alert(myCat.meow()); // shows "Fluffy meows"
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>Challenges</b></h3>
+          <p>No way to know when a JS object is garbage-collected, must call <b>myCat.delete()</b> to clean it up</p>
+          <p class="fragment">Weak refs in JavaScript might help fix that</p>
+          <div class="fragment">
+            <hr>
+            <p>But overall, <strong>surprisingly easy</strong> despite big differences in langages</p>
+          </div>
+        </section>
+
+        <section>
+          <h3><b>Final Examples</b></h3>
+        </section>
+
+        <section>
+          <h3><b>Not just C++</b></h3>
+          <p>We can also connect JavaScript and <b>dynamic</b> languages running in JavaScript</p>
+          <p><b><a href="lua/repl.html">Dual-REPL demo</a></b></p>
+          <p class="fragment">In some ways this can be <strong>easier</strong></p>
+        </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- Lua scripting example -->
+
+  <section>
+    <h3><b>Lua scripting<br>on the web</b></h3>
+    <p>The time in milliseconds, reported by Lua:</p>
+    <b><p id="lua_output">.</p></b>
+
+    <script src="lua/lua.vm.js"></script>
+    <script type="text/lua">
+    local window = js.global
+    window.setInterval(function()
+      window.document.getElementById('lua_output').innerHTML = window.Date.now()
+    end, 1000)
+    </script>
+
+    <p class="fragment"><strong>View source</strong> if you don't believe ;)</p>
+  </section>
+
+  <!-- Lua scripting example -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <section>
+          <h3><b>Summary</b></h3>
+          <p class="fragment">We can use languages <b>other</b> than JavaScript on the web, by running them <b>in</b> JavaScript</p>
+          <p class="fragment">Those languages can interact with JavaScript, allowing <b>mixed-language</b> projects</p>
+          <br>
+          <p class="fragment"><b style="color: #c11">Thanks for listening!</b></p>
+        </section>
+
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+
+    <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: 'sky', //Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'fade', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+
+          // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>
