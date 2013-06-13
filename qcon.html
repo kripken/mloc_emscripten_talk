@@ -53,7 +53,7 @@
 
         <section>
           <h2><b>JavaScript <div style="color: #c11">+</div> Other<br>Languages</b></h2>
-          <br>
+          <hr>
           <h3>Alon Zakai (Mozilla)</h3>
           <h3><b>QCon</b></h3>
         </section>
@@ -69,31 +69,32 @@
           <p>Familiar syntax</p>
           <p>Dynamic typing</p>
           <hr>
-          <h3 class="fragment"><b>Other languages are great too</b></h3>
-          <p>
-          <p class="fragment">Existing code</p>
-          <p class="fragment">Developer tools</p>
-          <p class="fragment">Other forms of typing (static, etc.)</p>
+          <h3 class="fragment"><b>Other languages are<br>great too</b></h3>
+          <div class="fragment">
+          <p>Existing code</p>
+          <p>Developer tools</p>
+          <p>Static typing</p>
+          </div>
         </section>
 
         <section>
-          <h3><b>Mixing Languages: examples</b></h3>
-          <p>
-            <ul>
-              <li class="fragment"><b>Spreadsheets</b>: C/C++ and VBA, etc</li>
-              <li class="fragment"><b>Web browsers</b>: C/C++ and JavaScript</li>
-              <li class="fragment"><b>Game engines</b>: C/C++ and Lua, etc.</li>
-              <li class="fragment"><b>Libraries for scripting languages</b>: Python and C/C++ modules like NumPy, etc.</li>
-            </ul>
-          </p>
+          <h3><b>Mixing Languages:<br>examples</b></h3>
+          <p class="fragment"><b>Spreadsheets</b>: C/C++ and VBA, etc</p>
+          <p class="fragment"><b>Web browsers</b>: C/C++ and JavaScript</p>
+          <p class="fragment"><b>Game engines</b>: C/C++ and Lua, etc.</p>
+          <p class="fragment"><b>Libraries for scripting languages</b>: Python and C/C++ modules like NumPy, etc.</p>
         </section>
 
         <section>
+          <h3><b>Mixing Languages</b></h3>
+          <p>When useful, gives you the <b>best parts</b> of <strong>multiple languages</strong></p>
+        </section>
+
+        <!--section>
           <h3><b>Direct vs indirect connections</b></h3>
           <p>We are talking about <strong>directly</strong> connecting two languages: They run together in the same app</p>
           <p class="fragment">Also possible to <b>indirectly</b> connect them (through a database, through a network connection, etc.)</p>
-        </section>
-
+        </section-->
 
         <section>
           <h3><b>The Web</b></h3>
@@ -124,7 +125,7 @@
           <p>
             <ul>
               <li><b>C/C++</b>: Emscripten, Mandreel</li>
-              <li><b>Java</b>: Google Web Tooklit (GWT)</li>
+              <li><b>Java</b>: Google Web Toolkit (GWT)</li>
               <li><b>C#</b>: JSIL, Script#</li>
               <li><b>Python</b>: pyjs</li>
               <li><b>Lua</b>: lua.js</li>
@@ -150,14 +151,15 @@
           </ul>
         </section>
 
-        <section>
+        <!--section>
           <h3><b>How Compilation Works</h3></b>
           <p>For example, in Emscripten:</p>
+          <hr>
           <ul>
-            <br>
             <p><b>C/C++</b> <strong>=></strong> <b>LLVM</b> <strong>=></strong> <b>Emscripten</b> <strong>=></strong> <b>JS</b></p>
           </ul>
-        </section>
+          <hr>
+        </section-->
 
         <section>
           <h3><b>Compilation Example</b></h3>
@@ -167,7 +169,7 @@
       array[i] += 1.0f;
     }
   }</code></pre>
-          <p><b>=></b></p>
+          <h3><b>=></b></h3>
           <pre><code contenteditable>  function main() { // JavaScript
     var a = 0, b = 0;
     do {
@@ -219,7 +221,7 @@
         <section>
           <h3><b>Performance</b></h3>
           <img src="asm_jun_10_2013.png">
-          <p><small>(JS engines and Emscripten from June 10th 2013, run on a 64-bit linux machine)</small></p>
+          <p><small>(VMs and Emscripten from June 10th 2013, run on a 64-bit linux machine)</small></p>
         </section>
 
         <section>
@@ -255,8 +257,8 @@
 
         <section>
           <h3><b>The plot so far</b></h3>
-          <p>We can run many languages on the web</p>
-          <p>By compiling them or their VMs to JavaScript</p>
+          <p>We can run <b>many languages</b> on the web</p>
+          <p>By running them in <strong>JavaScript</strong></p>
         </section>
 
         <section>
@@ -284,7 +286,7 @@
           <h3><b>Embedding in C/C++</b></h3>
           <p>Script language is just another module in the C/C++ project</p>
           <img src="modules2.png" width="66%" style="border: 0; box-shadow: none;">
-          <p>(that happens to be a VM)</p>
+          <p>(it happens to be a VM)</p>
         </section>
 
         <section>
@@ -414,7 +416,7 @@
   console.log(c_add(10, 20)); // 30
   console.log(c_add(20, 30)); // 50
 </code></pre>
-        <p>Wrapper behaves just like a normal JS function</p>
+        <p class="fragment">Wrapper behaves <strong>just like</strong> a normal JS function</p>
         </section>
 
         <section>
@@ -472,7 +474,7 @@
         <section>
           <h3><b>Challenges</b></h3>
           <p>No way to know when a JS object is garbage-collected, must call <b>cat.delete()</b> to clean it up</p>
-          <p>Weak refs in JavaScript might help fix that</p>
+          <p class="fragment">Weak refs in JavaScript might help fix that</p>
           <div class="fragment">
             <hr>
             <p>But overall, <strong>surprisingly easy</strong> despite big differences in langages</p>
