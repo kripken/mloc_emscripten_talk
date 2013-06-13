@@ -2,13 +2,13 @@
   font-family: 'Quicksand';
   font-style: normal;
   font-weight: 400;
-  src: local('Quicksand Regular'), local('Quicksand-Regular'), url(/sKd0EMYPAh5PYCRKSryvW6CWcynf_cDxXwCLxiixG1c.woff) format('truetype');
+  src: local('Quicksand Regular'), local('Quicksand-Regular'), url(../../sK.woff) format('truetype');
 }
 @font-face {
   font-family: 'Quicksand';
   font-style: normal;
   font-weight: 700;
-  src: local('Quicksand Bold'), local('Quicksand-Bold'), url(/32nyIRHyCu6iqEka_hbKsonF5uFdDttMLvmWuJdhhgs.woff) format('truetype');
+  src: local('Quicksand Bold'), local('Quicksand-Bold'), url(../../32.woff) format('truetype');
 }
 /**
  * Sky theme for reveal.js.
