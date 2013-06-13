@@ -145,10 +145,8 @@
 
         <section>
           <h3><b>Adoption</b></h3>
-          <ul>
-            <li><strong>Java</strong> <b>(GWT)</b> used in <a href="http://www.blogger.com/">Blogger</a>, many enterprise apps</li>
-            <li><strong>C#</strong> <b>(Script#)</b> used in <a href="http://office.microsoft.com/en-us/web-apps">Microsoft Office Web Apps</a></li>
-          </ul>
+          <p><strong>Java</strong> <b>(GWT)</b> used in <a href="http://www.blogger.com/">Blogger</a>, enterprise apps</p>
+          <p><strong>C#</strong> <b>(Script#)</b> used in <a href="http://office.microsoft.com/en-us/web-apps">Microsoft Office Web Apps</a></p>
         </section>
 
         <!--section>
@@ -473,7 +471,7 @@
           <p class="fragment">Weak refs in JavaScript might help fix that</p>
           <div class="fragment">
             <hr>
-            <p>But overall, <strong>surprisingly easy</strong> despite big differences in langages</p>
+            <p>But overall, <strong>surprisingly easy</strong> despite big differences in languages</p>
           </div>
         </section>
 
@@ -504,25 +502,26 @@
 
 
 
-  <!-- Lua scripting example -->
+<!-- Lua scripting example -->
 
-  <section>
-    <h3><b>Lua scripting<br>on the web</b></h3>
-    <p>The time in milliseconds, reported by Lua:</p>
-    <b><p id="lua_output">.</p></b>
+<section>
+  <h3><b>Lua scripting<br>on the web</b></h3>
+  <p>The time in milliseconds, reported by Lua:</p>
+  <b><p id="lua_output">.</p></b>
 
-    <script src="lua/lua.vm.js"></script>
-    <script type="text/lua">
-    local window = js.global
-    window.setInterval(function()
-      window.document.getElementById('lua_output').innerHTML = window.Date.now()
-    end, 1000)
-    </script>
+  <script src="lua/lua.vm.js"></script>
+  <script type="text/lua">
+  local window = js.global
+  window.setInterval(function()
+    window.document.getElementById('lua_output').innerHTML = window.Date.now()
+  end, 1000)
+  </script>
 
-    <p class="fragment"><strong>View source</strong> if you don't believe ;)</p>
-  </section>
+  <p class="fragment"><strong>View source</strong>, search for <b>text/lua</b>
+  if you don't believe ;)</p>
+</section>
 
-  <!-- Lua scripting example -->
+<!-- Lua scripting example -->
 
 
 
