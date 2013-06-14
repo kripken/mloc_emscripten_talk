@@ -160,16 +160,15 @@
         </section-->
 
         <section>
-          <h3><b>Compilation Example</b></h3>
-          <pre><code contenteditable>  volatile float array[5000]; // C++
+          <pre><code contenteditable>  float array[5000]; // C++
   int main() {
     for (int i = 0; i < 5000; ++i) {
       array[i] += 1.0f;
     }
   }</code></pre>
-          <h3><b>&rArr;</b></h3>
-          <pre><code contenteditable>  var g = Float32Array(32768);
-  function main() { // JavaScript
+          <h3><b>&rArr; emscripten &rArr;</b></h3>
+          <pre><code contenteditable>  var g = Float32Array(32768); // JavaScript
+  function main() {
     var a = 0, b = 0;
     do {
       a = 8 + (b << 2) | 0;
@@ -190,8 +189,8 @@
         <section>
           <h3><b>asm.js</b></h3>
           <p>That asm.js example from before:</p>
-          <pre><code contenteditable>  var g = Float32Array(32768);
-  function main() { // JavaScript
+          <pre><code contenteditable>  var g = Float32Array(32768); // JavaScript
+  function main() {
     var a = 0, b = 0;
     do {
       a = 8 + (b << 2) | 0;
@@ -221,7 +220,7 @@
           <h3><b>Performance</b></h3>
           <p>C/C++ compiled to JavaScript can run <b>close to native speed</b></li>
           <p><a href="http://j15r.com/blog/2013/04/25/Box2d_Revisited">Beats Java</a> in some cases</li>
-          <p class="fragment"><b>No need to standardize</b> (just like other compilers: GWT, CoffeeScript, etc.), improves at the speed that JS engines improve: <strong>FAST</strong></p>
+          <p class="fragment"><b>No need to standardize</b> (asm.js is just like GWT, CoffeeScript, etc.), so improves at the speed that JS engines improve: <strong>FAST</strong></p>
           <p class="fragment"><b>Already</b> fast enough even for demanding use cases like <b><a href="epic/EpicCitadel.html">3D games</a></b></p>
         </section>
 
@@ -232,9 +231,11 @@
           <p>..</p>
           <div class="fragment">
           <h3><b>2. Compile a VM to JS</b></h3>
-          <p>Use a C/C++ to JavaScript compiler on the C/C++ <b>VM</b> of a language</p>
-          <p>Avoid writing a new VM or compiler</p>
-          <p><b><a href="lua/repl.html">Lua demo</a></b></p>
+          <p>We have <b>VMs</b> for many languages that are written in C/C++</p>
+          <p class="fragment">We have C/C++ to JavaScript compilers</p>
+          <p class="fragment">Hmmm...</p>
+          <p class="fragment">We can <strong>compile those VMs!</strong></p>
+          <p class="fragment"><b><a href="lua/repl.html">Lua demo</a></b></p>
           </div>
         </section>
 
@@ -245,14 +246,18 @@
           <p>..</p>
           <div class="fragment">
           <h3><b>3. Chain compilers</b></h3>
-          <p><b><a href="xmlvm/index.html">Demo</a></b> of <strong>Java</strong> &rArr; C &rArr; <b>JavaScript</b>, using <a href="http://xmlvm.org/">XMLVM</a> and Emscripten</p>
+          <p class="fragment">We have a Java to C compiler (<a href="http://xmlvm.org/">XMLVM</a>)</p>
+          <p class="fragment">We have C to JavaScript compilers</p>
+          <p class="fragment">Hmmm...</p>
+          <p class="fragment">We can <strong>chain those together!</strong></p>
+          <p class="fragment"><b><a href="xmlvm/index.html">Demo</a></b> of <b>Java</b> &rArr; C &rArr; <b>JavaScript</b></p>
           </div>
         </section>
 
         <section>
           <h3><b>The plot so far</b></h3>
           <p>We can run <b>many languages</b> on the web</p>
-          <p>By running them in <strong>JavaScript</strong></p>
+          <p>By running them <strong>in JavaScript</strong></p>
         </section>
 
         <section>
@@ -337,7 +342,7 @@
             <pre><code contenteditable>  #include "emscripten.h"
   int main() {
     // Call JS from C
-    emscripten_run_script("alert('hello from C!')");
+    emscripten_run_script("alert('hello!')");
     return 0;
   }
 </code></pre>
@@ -519,7 +524,7 @@
   end, 1000)
   </script>
 
-  <p class="fragment"><strong>View source</strong>, search for <b>text/lua</b>
+  <p class="fragment"><strong>View source</strong> and search for <strong>text/lua</strong>
   if you don't believe ;)</p>
 </section>
 
