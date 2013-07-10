@@ -60,8 +60,38 @@
 
         <section>
           <h3><b>The Web</b></h3>
+          <p class="fragment">You already use it!</p>
+          <br>
+          <img src="browser-logos.png" style="border: 0; box-shadow: none;">
+        </section>
+
+        <section>
+          <h3><b>The Web</b></h3>
+          <p>More has been moving to the <b>client</b> in recent years</p>
+          <p class="fragment">Limitations have been <strong>language support</strong> and <strong>performance</strong></p></p>
+          <br>
+          <img src="browser-logos.png" style="border: 0; box-shadow: none;">
+        </section>
+
+        <section>
+          <h3><b>Languages and Performance</b></h3>
+          <p>These are <b>related</b> issues: JavaScript used to be "slow"</p>
+          <p class="fragment">But code isn't everything:</p>
+          <p class="fragment">The <strong>DOM</strong> used to be "slow"</p>
+          <p class="fragment"><strong>Graphics</strong> used to be "slow"</p>
+        </section>
+
+        <section>
+          <h3><b>DOM and Graphics</b></h3>
+          <p>I won't focus on these, but:</p>
+          <p class="fragment"><b>Hardware acceleration</b> is now common in browsers</p>
+          <p class="fragment"><strong>WebGL</strong> support ships in Firefox and Chrome, will ship in Internet Explorer and Safari</p>
+        </section>
+
+        <section>
+          <h3><b>Code on The Web</b></h3>
           <p class="fragment">JavaScript is the <b>only</b> standards-based language in web browsers</p>
-          <p class="fragment">If we want to run other languages on the web, we need to go <strong>through</strong> JavaScript</p>
+          <p class="fragment">If we want to run other languages on the web we need to go <strong>through</strong> JavaScript</p>
           <br>
           <img src="browser-logos.png" style="border: 0; box-shadow: none;">
         </section>
@@ -179,7 +209,7 @@
         </section>
 
         <section>
-          <h3><b>Performance: Box2D</b></h3>
+          <h3><b>In Detail: Box2D</b></h3>
           <a href="http://j15r.com/blog/2013/07/05/Box2d_Addendum"><img src="box2d_graph_updated.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></a>
           <p><small>source: <a href="https://twitter.com/jgw">@jgw</a>, <a href="http://j15r.com/blog/2013/07/05/Box2d_Addendum">Box2D Addendum</a></small></p>
           <br>
@@ -190,7 +220,6 @@
         <section>
           <h3><b>Performance</b></h3>
           <p>C/C++ compiled to JavaScript can run <b>close to native speed</b></p>
-          <p>Beats Java</a> in some cases</p>
           <p class="fragment"><b>No need to standardize</b> (asm.js is just like GWT, CoffeeScript, etc.), so improves at the speed that JS engines improve: <strong>FAST</strong></p>
           <p class="fragment"><b>Already</b> fast enough even for demanding use cases like <b><a href="epic/EpicCitadel.html">3D games</a></b></p>
         </section>
@@ -198,31 +227,15 @@
           <!--a href="http://emscripten.org"><img src="emscripten_switch_logo.png" width="40%" style="border: 0; box-shadow: none;"></a-->
 
         <section>
-          <h3><b>1. Compile Code to JS</b></h3>
-          <p>..</p>
-          <div class="fragment">
-          <h3><b>2. Compile a VM to JS</b></h3>
-          <p>We have <b>VMs</b> for many languages that are written in C/C++</p>
-          <p class="fragment">We have C/C++ to JavaScript <b>compilers</b></p>
-          <p class="fragment">Hmmm...</p>
-          <p class="fragment">We can <strong>compile those VMs!</strong></p>
-          <p class="fragment"><b><a href="lua/repl.html">Lua demo</a></b></p>
-          </div>
-        </section>
-
-        <section>
-          <h3><b>1. Compile Code to JS</b></h3>
-          <p>..</p>
-          <h3><b>2. Compile a VM to JS</b></h3>
-          <p>..</p>
-          <div class="fragment">
-          <h3><b>3. Chain compilers</b></h3>
-          <p class="fragment">We have a <b>Java</b> to <b>C</b> compiler (<a href="http://xmlvm.org/">XMLVM</a>)</p>
-          <p class="fragment">We have <b>C</b> to <b>JavaScript</b> compilers</p>
-          <p class="fragment">Hmmm...</p>
-          <p class="fragment">We can <strong>chain those together!</strong></p>
-          <p class="fragment"><b><a href="xmlvm/index.html">Demo</a></b> of <b>Java</b> &rArr; C &rArr; <b>JavaScript</b></p>
-          </div>
+          <h3><b>Uses</b></h3>
+          <p>Not just for games, but for <strong>anything</strong> that needs raw computation</p>
+          <ul>
+            <li class="fragment"><b>Physics</b> engines like <a href="ammo/ammo.html">Bullet</a></li>
+            <li class="fragment"><b>3D plotting</b> using <a href="http://gnuplot.respawned.com/">GNU plot</a></li>
+            <li class="fragment"><b>2D graphing</b> using <a href="http://mdaines.github.io/viz.js/example.html">graphviz</a></li>
+            <li class="fragment"><b>PNG compression</b> using <a href="http://richardassar.github.io/pngcrush.js/">pngcrush</a></li>
+            <li class="fragment">Even <b>programming languages</b> like <a href="http://kripken.github.io/lua.vm.js/repl.html">Lua</a></li>
+          </ul>
         </section>
 
         <section>
