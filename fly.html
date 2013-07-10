@@ -195,7 +195,7 @@
         </section>
 
         <section>
-          <h3><b>asm.js</b></h3>
+          <h3><b>asm.js - Background</b></h3>
           <p><b>Every</b> compiler - GWT, CoffeeScript, etc. - generates a particular <b>subset</b> of JavaScript</p>
           <p class="fragment">Emscripten and Mandreel <b>converged</b> on a useful subset for C/C++</p>
           <p class="fragment">Added to a <b>popular benchmark</b>, Google Octane</p>
@@ -465,71 +465,6 @@
             <p>But overall, <strong>surprisingly easy</strong> despite big differences in languages</p>
           </div>
         </section>
-
-        <section>
-          <h3><b>Final Examples</b></h3>
-        </section>
-
-        <section>
-          <h3><b>Not just C++</b></h3>
-          <p>We can also connect JavaScript and <b>dynamic</b> languages running in JavaScript</p>
-          <p><b><a href="lua/repl.html">Dual-REPL demo</a></b></p>
-          <p class="fragment">In some ways this can be <strong>easier</strong></p>
-        </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- Lua scripting example -->
-
-<section>
-  <h3><b>Lua scripting<br>on the web</b></h3>
-  <p>The time in milliseconds, reported by Lua:</p>
-  <b><p id="lua_output">.</p></b>
-
-  <script src="lua/lua.vm.js"></script>
-  <script type="text/lua">
-  local window = js.global
-  window.setInterval(function()
-    window.document.getElementById('lua_output').innerHTML = window.Date.now()
-  end, 1000)
-  </script>
-
-  <p class="fragment"><strong>View source</strong> and search for <strong>text/lua</strong>
-  if you don't believe ;)</p>
-</section>
-
-<!-- Lua scripting example -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         <section>
           <h3><b>Summary</b></h3>
