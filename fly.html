@@ -67,7 +67,7 @@
 
         <section>
           <h3><b>The Web</b></h3>
-          <p>More has been moving to the <b>client</b> in recent years</p>
+          <p>More stuff has been moving to the <b>client</b> in recent years: AJAX, etc.</p>
           <p class="fragment">Limitations have been <strong>language support</strong> and <strong>performance</strong></p></p>
           <br>
           <img src="browser-logos.png" style="border: 0; box-shadow: none;">
@@ -76,16 +76,18 @@
         <section>
           <h3><b>Languages and Performance</b></h3>
           <p>These are <b>related</b> issues: JavaScript used to be "slow"</p>
-          <p class="fragment">But code isn't everything:</p>
-          <p class="fragment">The <strong>DOM</strong> used to be "slow"</p>
-          <p class="fragment"><strong>Graphics</strong> used to be "slow"</p>
+          <p class="fragment">Before we go into them, remember:<br><strong>Performance != JavaScript</strong></p>
+          <p class="fragment">The <b>DOM</b> used to be "slow"</p>
+          <p class="fragment"><b>Graphics</b> used to be "slow"</p>
         </section>
 
         <section>
           <h3><b>DOM and Graphics</b></h3>
           <p>I won't focus on these, but:</p>
-          <p class="fragment"><b>Hardware acceleration</b> is now common in browsers</p>
-          <p class="fragment"><strong>WebGL</strong> support ships in Firefox and Chrome, will ship in Internet Explorer and Safari</p>
+          <p class="fragment"><b>DOM access</b> is now very fast</p>
+          <p class="fragment"><b>Hardware acceleration</b> is now common</p>
+          <p class="fragment"><b>WebGL</b> support ships in Firefox and Chrome, will ship in Internet Explorer and Safari</p>
+          <p class="fragment">(<strong>Unless</strong> you need to support old browsers...)</p>
         </section>
 
         <section>
@@ -204,8 +206,8 @@
 
         <section>
           <h3><b>Performance</b></h3>
-          <a href="asm_jun_10_2013.png"><img src="asm_jun_10_2013.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></a>
-          <p><small>(VMs and Emscripten from June 10th 2013, run on a 64-bit linux machine)</small></p>
+          <a href="asm_jul_10_2013.png"><img src="asm_jul_10_2013.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></a>
+          <p><small>(VMs and Emscripten from July 10th 2013, run on 64-bit linux)</small></p>
         </section>
 
         <section>
@@ -213,18 +215,29 @@
           <a href="http://j15r.com/blog/2013/07/05/Box2d_Addendum"><img src="box2d_graph_updated.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></a>
           <p><small>source: <a href="https://twitter.com/jgw">@jgw</a>, <a href="http://j15r.com/blog/2013/07/05/Box2d_Addendum">Box2D Addendum</a></small></p>
           <br>
-          <p class="fragment">asm.js is <strong>faster</strong> than "normal" JavaScript on Internet Explorer, Chrome and Firefox</p>
+          <p class="fragment">asm.js is <strong>faster</strong> than "typical" JavaScript on Internet Explorer, Chrome and Firefox</p>
           <p class="fragment">asm.js on Firefox and Chrome is comparable to <b>Java</b></p>
+        </section>
+
+        <section>
+          <h3><b>asm.js - why it works</b></h3>
+          <p>Ensures that <b>types are not mixed up</b></p>
+          <p class="fragment">Makes it possible to reason about <b>global program structure</b></p>
+          <hr class="fragment">
+          <p class="fragment">Helps in <strong>existing</strong> JavaScript engines by making it simpler to detect types and avoid them changing later</p>
+          <p class="fragment">Makes <strong>ahead of time (AOT)</strong> compilation possible with asm.js-specific optimizations</p>
         </section>
 
         <section>
           <h3><b>Box2D: Progress</b></h3>
           <a href="asmprogress2.png"><img src="asmprogress2.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></a>
           <p><small>source: <a href="http://arewefastyet.com/#machine=12&view=breakdown&suite=asmjs-apps">arewefastyet.com</a></small></p>
+          <p class="fragment">Firefox (no asmjs/<b>without</b> AOT) and Chrome have gotten much faster</p>
+          <p class="fragment">Firefox <b>with</b> AOT is still ahead (for now?)</p>
         </section>
 
         <section>
-          <h3><b>Performance</b></h3>
+          <h3><b>Performance: Summary</b></h3>
           <p>C/C++ compiled to JavaScript can run <b>close to native speed</b></p>
           <p class="fragment"><b>No need to standardize</b> (asm.js is just like GWT, CoffeeScript, etc.), so improves at the speed that JS engines improve: <strong>FAST</strong></p>
           <p class="fragment"><b>Already</b> fast enough even for demanding use cases like <b><a href="epic/EpicCitadel.html">3D games</a></b></p>
@@ -245,9 +258,38 @@
         </section>
 
         <section>
-          <h3><b>The plot so far</b></h3>
-          <p>We can run <b>many languages</b> on the web</p>
-          <p>By running them <strong>in JavaScript</strong></p>
+          <h3><b>asm.js - Status</b></h3>
+          <p><b><a href="http://emscripten.org">Emscripten</a></b> can emit asm.js output</p>
+          <p class="fragment">asm.js code already works in <b>all modern browsers</b>: IE10, Chrome, Firefox, Safari</p>
+          <p class="fragment">Requires nothing more than normal JavaScript plus <b>typed arrays</b></p>
+          <p class="fragment">Early adopters are mainly in the games industry (Epic, etc.) but not only (Prezi, etc.)</p>
+        </section>
+
+        <section>
+          <h3><b>Using asm.js</b></h3>
+          <p class="fragment">Write performance-sensitive code in <b>C or C++</b></p>
+          <p class="fragment"><b>Compile</b> to asm.js using Emscripten</p>
+          <p class="fragment"><b>Interact</b> with other JavaScript</p>
+        </section>
+
+        <section>
+          <h3><b>Using Emscripten</b></h3>
+          <p><b>emcc</b> is a drop-in replacement for gcc/clang/etc.</p>
+
+          <pre style="background-color: #ccc">
+
+  $ cat hello.c
+  #include "stdio.h"
+  int main() { printf("hello world!\n"); }
+
+  $ emcc hello.c -o hello.js
+
+  $ node hello.js
+  hello world!
+
+</pre>
+
+          <p class="fragment">Can use C APIs like <b>SDL</b>, <b>OpenGL</b>, etc.</p>
         </section>
 
         <section>
