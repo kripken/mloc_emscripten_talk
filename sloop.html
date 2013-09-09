@@ -6,7 +6,7 @@
 
     <title>asm.js: Native Speed on the Web</title>
 
-    <meta name="description" content="JavaScript + Other Languages">
+    <meta name="description" content="Native Speed on the Web: JavaScript and asm.js">
     <meta name="author" content="Alon Zakai">
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,43 +52,62 @@
       <div class="slides">
 
         <section>
-          <h2><b>asm.js: <div style="color: #c11">Native Speed</div> on the Web</b></h2>
+          <h2>Native Speed on the Web: JavaScript and asm.js</h2>
           <br>
-          <h3>Alon Zakai (Mozilla)</h3>
+          <h3>Alon Zakai (Mozilla logo)</h3>
           <p><a href="http://twitter.com/#!/kripken">@kripken</a></p>
         </section>
 
         <section>
           <h3><b>The Web</b></h3>
-          <p class="fragment">You already use it!</p>
+          <p class="fragment">Biggest open platform</p>
+          <p class="fragment">Best way to reach users</p>
           <br>
           <img src="browser-logos.png" style="border: 0; box-shadow: none;">
+          html5 logo, w3c, etc.
         </section>
 
-        <section>
-          <h3><b>The Web</b></h3>
-          <p>More stuff has been moving to the <b>client</b> in recent years: AJAX, etc.</p>
-          <p class="fragment">Limitations have been <strong>language support</strong> and <strong>performance</strong></p></p>
-          <br>
-          <img src="browser-logos.png" style="border: 0; box-shadow: none;">
-        </section>
+But it's *slow*, isn't it?
 
-        <section>
-          <h3><b>Languages and Performance</b></h3>
-          <p>These are <b>related</b> issues: JavaScript used to be "slow"</p>
-          <p class="fragment">Before we go into them, remember:<br><strong>Performance != JavaScript</strong></p>
-          <p class="fragment">The <b>DOM</b> used to be "slow"</p>
-          <p class="fragment"><b>Graphics</b> used to be "slow"</p>
-        </section>
+Epic Citadel demo
+ * you might have seen this before
+ * [demo]
+ * This demo was released March 2013, 6 months ago
+   * At the time it basically only ran in Firefox Nightly; today it runs in stable releases of Firefox and Chrome
+   * At the time it took X seconds to start up, today on Firefox it takes X seconds. Over 1 million lines of compiled C++!
 
-        <section>
-          <h3><b>DOM and Graphics</b></h3>
-          <p>I won't focus on these, but:</p>
-          <p class="fragment"><b>DOM access</b> is now very fast</p>
-          <p class="fragment"><b>Hardware acceleration</b> is now common</p>
-          <p class="fragment"><b>WebGL</b> support ships in Firefox and Chrome, will ship in Internet Explorer and Safari</p>
-          <p class="fragment">(<strong>Unless</strong> you need to support old browsers...)</p>
-        </section>
+Current benchmark numbers
+ * asm.js benchmark suite
+ * box2d numbers
+
+The naysayers, "the web is slow":
+ * used to say "JS is 100x slower than native code" when it was interpreted
+ * used to say "JS is 10x slower than native code" when it was jitted
+ * today performance-intensive js code can run around 2x slower than native, so they currently say "any amount of slowdown compared to native is bad"
+ * each criticism was correct in its time, and note how they shrink
+
+What about other browsers than Firefox and Chrome?
+ * IE11 supports WebGL! And JS engine looks much improved. Not yet final, so not fair to benchmark, but informally I was impressed
+ * Safari is not standing still either, with FTL JIT on the way
+
+2x is not 1x, but it will continue to get there, through general optimizations. Missing bits:
+ * 32-bit floats
+  * possible today to optimize in some cases
+  * With accepted (?) Math.fround, can make others optimizable as well
+ * SIMD
+  * Exists in mono, dart, etc. - kind of clear what to do
+  * Proposal from John McC? from Google, Moz and In talking too
+ * threads
+  * web workers do not support shared state
+  * transfer can send data without an unnecessary copy
+  * full shared arrays? need consensus among all vendors to standardize such a new capability.
+
+So JS can run very fast today, and will continue to narrow down the difference from native
+ * But the web has some advantages as well!
+  * Very easy to integrate with web stuff
+   * demo of video in BananaBread
+   * demo of fps in fps
+    * that is one hardware accelerated fps and one pure software renderer, running together on a laptop with intel gpu and linux, not a hot rod
 
         <section>
           <h3><b>Code on The Web</b></h3>
