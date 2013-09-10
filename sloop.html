@@ -73,12 +73,15 @@ Epic Citadel demo
  * you might have seen this before
  * [demo]
  * This demo was released March 2013, 6 months ago
-   * At the time it basically only ran in Firefox Nightly; today it runs in stable releases of Firefox and Chrome
-   * At the time it took X seconds to start up, today on Firefox it takes X seconds. Over 1 million lines of compiled C++!
+   * At the time it only ran in Firefox; today it runs in releases of Firefox and Chrome
+   * At the time it took 20 seconds to start up (compile + engine startup, all to rendering) in Firefox 19 stable, ran at 40fps;
+     today on Firefox it takes 10 second and hits 60 fps. Chrome startup is slower, but it also hits 60fps
+     Over 1 million lines of compiled C++!
 
 Current benchmark numbers
  * asm.js benchmark suite
  * box2d numbers
+ * bullet [demo] with 500 boxes etc
 
 The naysayers, "the web is slow":
  * used to say "JS is 100x slower than native code" when it was interpreted
@@ -95,12 +98,12 @@ What about other browsers than Firefox and Chrome?
   * possible today to optimize in some cases
   * With accepted (?) Math.fround, can make others optimizable as well
  * SIMD
-  * Exists in mono, dart, etc. - kind of clear what to do
+  * Exists in mono, dart, etc. (&c/C++ of course) - kind of clear what to do
   * Proposal from John McC? from Google, Moz and In talking too
  * threads
   * web workers do not support shared state
   * transfer can send data without an unnecessary copy
-  * full shared arrays? need consensus among all vendors to standardize such a new capability.
+  * full shared arrays? need consensus among all vendors to standardize such a new capability. Nohting technical holds back just letting an ArrayBuffer be shared between threads.
 
 So JS can run very fast today, and will continue to narrow down the difference from native
  * But the web has some advantages as well!
