@@ -63,10 +63,10 @@
 
         <section>
           <h3><b>The Web</b></h3>
+          <img src="browser-logos.png" style="border: 0; box-shadow: none;">
+          <br>
           <p class="fragment">Biggest open and standards-based platform</p>
           <p class="fragment">Best way to reach users</p>
-          <br>
-          <img src="browser-logos.png" style="border: 0; box-shadow: none;">
           html5 logo, w3c, etc.
         </section>
 
@@ -78,35 +78,98 @@
           </div>
         </section>
 
-<!--
-Epic Citadel demo
- * you might have seen this before
- * [demo]
- * This demo was released March 2013, 6 months ago
-   * At the time it only ran in Firefox; today it runs in releases of Firefox and Chrome
-   * At the time it took 20 seconds to start up (compile + engine startup, all to rendering) in Firefox 19 stable, ran at 40fps;
-     today on Firefox it takes 10 second and hits 60 fps. Chrome startup is slower, but it also hits 60fps
-     Over 1 million lines of compiled C++!
+        <section>
+          <h3><b>Speed on the Web</b></h3>
+          <p class="fragment">Speed is determined by many things</p>
+          <p class="fragment">DOM, graphics, JavaScript</p>
+          <p class="fragment">This talk is mainly about JavaScript</p>
+        </section>
 
-The naysayers, "the web is slow":
- * used to say "JS is 100x slower than native code" when it was interpreted
- * used to say "JS is 10x slower than native code" when it was jitted
- * today performance-intensive js code can run around 2x slower than native, so they currently say "any amount of slowdown compared to native is bad"
- * each criticism was correct in its time, but note how they shrink
+        <section>
+          <h3><b>How fast is JavaScript?</b></h3>
+          <p class="fragment">The <b><a href="epic/EpicCitadel.html">Epic Citadel demo</a></b> is one way to measure that</p>
+          <p class="fragment">Over 1 million lines of C++ compiled to JavaScript using <a href="http://emscripten.org">Emscripten</a></p>
+          <p class="fragment">OpenGL renderer, compiled to use WebGL</p>
+        </section>
+
+        <section>
+          <h3><b>Epic Citadel: Progress</b></h3>
+          <p class="fragment">You may have seen the demo when it launched, 6 months ago (March 2013)</p>
+          <p class="fragment">The demo itself hasn't changed much since - but browsers have:</p>
+          <p class="fragment">Back then it only ran in Firefox, today it also runs in Chrome</p>
+          <p class="fragment">Back then it took 20 seconds to start up, today it takes 10 seconds</p>
+          <p class="fragment">Back then it ran at 40fps, today both Firefox and Chrome run at 60fps</p>
+        </section>
+
+        <section>
+          <h3><b>JavaScript Naysaying / Time</b></h3>
+          <p class="fragment">"JS is 100x slower than native code" (and it was, when it was just interpreted)</p>
+          <p class="fragment">"JS is 10x slower than native code" (and it was, when it was first JIT compiled)</p>
+          <p class="fragment">Today JS engines have sophisticated type-specializing JITs and are much faster, and critics say "any amount of slowdown compared to native is bad"</p>
+        </section>
+
+        <section>
+          <h3><b>Current Performance</b></h3>
+          <a href="benchmarks_sep_6_2013.png"><img src="benchmarks_sep_6_2013.png"></img></a>
+          <br>
+          <p><small>Emscripten benchmark suite (VMs and Emscripten from Sep 6 2013, run on 64-bit linux)</small></p>
+        </section>
+
+        <section>
+          <h3><b>asm.js</b></h3>
+          <p class="fragment">Those numbers are on <b>asm.js</b>, a subset of JavaScript that is easy to optimize</p>
+          <p class="fragment">Benchmarks we just saw show both Firefox and Chrome run between 1-3 times slower than native</p>
+          <hr class="fragment">
+          <pre class="fragment"><code contenteditable>  function asmCode(global, env, buffer) {
+    'use asm';
+    var HEAP = new global.Uint8Array(buffer);
+    function fib(x) {
+      x = x|0;
+      if ((x >>> 0) < 2) return 1;
+      return ((fib((x-2)|0)|0) + (fib((x-1)|0)|0))|0;
+    }
+    return fib;
+  }</code></pre>
+          <hr class="fragment">
+          <p class="fragment">HEAP cannot be replaced</p>
+          <p class="fragment">|0 trick ensures 32-bit ints</p>
+        </section>
+
+        <section>
+          <h3><b>asm.js - Background</b></h3>
+          <p class="fragment">Began as a research project at Mozilla</p>
+          <p class="fragment">Every compiler (CoffeeScript, Google Web Toolkit, etc.) generates a particular
+                              pattern of JS</p>
+          <p class="fragment">Emscripten and Mandreel compiled C++ to JS into a particular pattern as well</p>
+          <p class="fragment">asm.js is a rigorously-defined improvement on that pattern</p>
+        </section>
+
+        <section>
+          <h3><b>asm.js comparison</b></h3>
+          <p class="fragment">asm.js is <strong>faster</strong> than "typical" JavaScript on Internet Explorer, Chrome and Firefox</p>
+          <br>
+          <a class="fragment href="box2d_graph_updated2.png"><img src="box2d_graph_updated2.png" style=""></a>
+          <p class="fragment"><small>source: <a href="https://twitter.com/jgw">@jgw</a>, <a href="http://j15r.com/blog/2013/07/05/Box2d_Addendum">Box2D Addendum</a></small></p>
+          <br>
+          <p class="fragment">asm.js on Firefox and Chrome is comparable to <b>Java</b></p>
+        </section>
+
+        <section>
+          <h3><b>Box2D: Progress and AOT</b></h3>
+          <a href="asmprogress2.png"><img src="asmprogress2.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></a>
+          <p><small>source: <a href="http://arewefastyet.com/#machine=12&view=breakdown&suite=asmjs-apps">arewefastyet.com</a></small></p>
+          <p class="fragment">Red/orange is Ahead Of Time (AOT) compilation (using the asm.js type system)</p>
+          <p class="fragment">Just In Time (JIT) compilers catching up fast</p>
+          <p class="fragment">No point in time where asm.js is "supported" by a browser, asm.js is just a subset of JS that is being optimized like any other</p>
+          <p class="fragment">AOT is not necessary, but makes optimization easier and prevents recompilation overhead</p>
+        </section>
+
+<!--
 
 The 2x figure is on asm.js code:
- * asm.js is a subset of JavaScript, designed to be easily optimizable
-   * globals are captured so they don't change
-   * types don't change
  * Types never changing is a strict requirement; you want a compiler to generate this code, usually
    * can use asm.js for speed-intensive stuff like physics, JS for the rest
      * bullet [demo] with 500 boxes etc
- * emscripten benchmark suite numbers
-   * except for lua (link to bug), very good speed on both browsers
- * asm.js is faster than non-asm.js in most cases, on all browsers. needs no special support.
-   * box2d numbers
- * asm.js is just JavaScript and runs in all browsers, but its particular pattern makes it possible to compile AOT
-   * AOT has benefits like no compilation pauses during gameplay, but is not necessary
 
 What about other browsers than Firefox and Chrome?
  * IE11 supports WebGL! And JS engine looks much improved. Not yet final, so not fair to benchmark, but informally I was impressed
