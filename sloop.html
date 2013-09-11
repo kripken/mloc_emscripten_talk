@@ -179,6 +179,57 @@
           <p class="fragment">Not standing still: Experimenting with using <a href="https://bugs.webkit.org/show_bug.cgi?id=112840">LLVM as a JIT in JavaScriptCore</a>. Very interesting to watch!</p>
         </section>
 
+        <section>
+          <h3><b>Internet Explorer</b></h3>
+          <p class="fragment">IE11, currently in pre-release builds, looks very promising</p>
+          <p class="fragment">Too early to benchmark, but I've seen it beat Chrome and Firefox in some tests</p>
+          <p class="fragment">Supports WebGL!</p>
+        </section>
+
+        <section>
+          <h3><b>Big Picture</b></h3>
+          <p class="fragment">Overall JS speed is good and getting better</p>
+          <p class="fragment">Half the speed of native in many cases</p>
+          <p class="fragment">What are the remaining issues?</p>
+        </section>
+
+        <section>
+          <h3><b>32-bit Floats</b></h3>
+          <p class="fragment">JavaScript numbers are 64-bit doubles</p>
+          <p class="fragment">Often take more CPU cycles to compute (less of an issue on newer CPUs)</p>
+          <p class="fragment">Require more memory bandwidth</p>
+        </section>
+
+        <section>
+          <h3><b>32-bit Floats</b></h3>
+          <p class="fragment">Sometimes possible to do 32-bit math on 64-bit values as an optimization</p>
+          <pre class="fragment"><code contenteditable>  var floats = new Float32Array(calc());
+  floats[0] = floats[1] + floats[2];
+  floats[1] = floats[0] + floats[2];
+  floats[2] = floats[1] + floats[2];
+</code></pre>
+          <p class="fragment">Mathematically provable that those additions can be 32-bit</p>
+          <p class="fragment">So no reason JS engines cannot do this right now, and Firefox is working on it</p>
+        </section>
+
+        <section>
+          <h3><b>32-bit Floats</b></h3>
+          <p class="fragment">More general code fails though</p>
+          <pre class="fragment"><code contenteditable>  var floats = new Float32Array(calc());
+  floats[0] = floats[1] + floats[2] + 1;
+  floats[1] = floats[0] + floats[2] + 1;
+  floats[2] = floats[1] + floats[2] + 1;
+</code></pre>
+          <p class="fragment"><b>+1</b> prevents the optimization</p>
+          <p class="fragment">But ES6 (proposal for the next version of JS) includes <b>Math.fround</b>,
+                              which rounds to 32-bit precision</p>
+          <pre class="fragment"><code contenteditable>  var floats = new Float32Array(calc());
+  floats[0] = Math.fround(floats[1] + floats[2]) + 1;
+  floats[1] = Math.fround(floats[0] + floats[2]) + 1;
+  floats[2] = Math.fround(floats[1] + floats[2]) + 1;
+</code></pre>
+          <p class="fragment">Now optimizable!</p>
+        </section>
 
 <!--
 
@@ -187,13 +238,7 @@ The 2x figure is on asm.js code:
    * can use asm.js for speed-intensive stuff like physics, JS for the rest
      * bullet [demo] with 500 boxes etc
 
-What about other browsers than Firefox and Chrome?
- * IE11 supports WebGL! And JS engine looks much improved. Not yet final, so not fair to benchmark, but informally I was impressed
-
 2x is not 1x, but it will continue to get there, through general optimizations. Missing bits:
- * 32-bit floats
-  * possible today to optimize in some cases
-  * With accepted (?) Math.fround, can make others optimizable as well
  * SIMD
   * Exists in mono, dart, etc. (&c/C++ of course) - kind of clear what to do
   * Proposal from John McC? from Google, Moz and In talking too
