@@ -88,16 +88,25 @@ Epic Citadel demo
      today on Firefox it takes 10 second and hits 60 fps. Chrome startup is slower, but it also hits 60fps
      Over 1 million lines of compiled C++!
 
-Current benchmark numbers
- * asm.js benchmark suite
- * box2d numbers
- * bullet [demo] with 500 boxes etc
-
 The naysayers, "the web is slow":
  * used to say "JS is 100x slower than native code" when it was interpreted
  * used to say "JS is 10x slower than native code" when it was jitted
  * today performance-intensive js code can run around 2x slower than native, so they currently say "any amount of slowdown compared to native is bad"
  * each criticism was correct in its time, but note how they shrink
+
+The 2x figure is on asm.js code:
+ * asm.js is a subset of JavaScript, designed to be easily optimizable
+   * globals are captured so they don't change
+   * types don't change
+ * Types never changing is a strict requirement; you want a compiler to generate this code, usually
+   * can use asm.js for speed-intensive stuff like physics, JS for the rest
+     * bullet [demo] with 500 boxes etc
+ * emscripten benchmark suite numbers
+   * except for lua (link to bug), very good speed on both browsers
+ * asm.js is faster than non-asm.js in most cases, on all browsers. needs no special support.
+   * box2d numbers
+ * asm.js is just JavaScript and runs in all browsers, but its particular pattern makes it possible to compile AOT
+   * AOT has benefits like no compilation pauses during gameplay, but is not necessary
 
 What about other browsers than Firefox and Chrome?
  * IE11 supports WebGL! And JS engine looks much improved. Not yet final, so not fair to benchmark, but informally I was impressed
@@ -118,9 +127,10 @@ What about other browsers than Firefox and Chrome?
 So JS can run very fast today, and will continue to narrow down the difference from native
  * But the web has some advantages as well!
   * Very easy to integrate with web stuff
-   * demo of video in BananaBread
    * demo of fps in fps
     * that is one hardware accelerated fps and one pure software renderer, running together on a laptop with intel gpu and linux, not a hot rod
+   * and the integration between these two is less than 100 lines of code
+    * Doom runs in a worker, we proxy input events to it, get pixel data back. We push the pixel data to a WebGL texture. That's it!
 -->
 
         <section>
