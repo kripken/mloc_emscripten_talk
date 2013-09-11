@@ -156,13 +156,29 @@
 
         <section>
           <h3><b>Box2D: Progress and AOT</b></h3>
-          <a href="asmprogress2.png"><img src="asmprogress2.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></a>
+          <a href="asmprogress2.png"><img src="asmprogress2.png"></a>
           <p><small>source: <a href="http://arewefastyet.com/#machine=12&view=breakdown&suite=asmjs-apps">arewefastyet.com</a></small></p>
           <p class="fragment">Red/orange is Ahead Of Time (AOT) compilation (using the asm.js type system)</p>
           <p class="fragment">Just In Time (JIT) compilers catching up fast</p>
           <p class="fragment">No point in time where asm.js is "supported" by a browser, asm.js is just a subset of JS that is being optimized like any other</p>
           <p class="fragment">AOT is not necessary, but makes optimization easier and prevents recompilation overhead</p>
         </section>
+
+        <section>
+          <h3><b>But I use Safari or IE..?</b></h3>
+          <p class="fragment">I've been talking about Firefox and Chrome, but Safari and Internet Explorer are important too of course!</p>
+          <p class="fragment">We are talking about JavaScript here. All those browsers support it, and optimize it - only question is how fast and how soon</p>
+          <p class="fragment">So, how fast and how soon..?</p>
+        </section>
+
+        <section>
+          <h3><b>Some Safari Numbers</b></h3>
+          <a href="micro_w_s.png"><img src="micro_w_s.png"></a>
+          <br>
+          <p class="fragment">Very close on some, farther on others</p>
+          <p class="fragment">Not standing still: Experimenting with using <a href="https://bugs.webkit.org/show_bug.cgi?id=112840">LLVM as a JIT in JavaScriptCore</a>. Very interesting to watch!</p>
+        </section>
+
 
 <!--
 
@@ -173,7 +189,6 @@ The 2x figure is on asm.js code:
 
 What about other browsers than Firefox and Chrome?
  * IE11 supports WebGL! And JS engine looks much improved. Not yet final, so not fair to benchmark, but informally I was impressed
- * Safari is not standing still either, with FTL JIT on the way
 
 2x is not 1x, but it will continue to get there, through general optimizations. Missing bits:
  * 32-bit floats
