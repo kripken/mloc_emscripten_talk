@@ -41,7 +41,7 @@
         color: #c11;
       }
       img {
-        box-shadow: 15px 15px 15px rgba(0,0,0,0.5)
+        box-shadow: 10px 10px 10px rgba(0,0,0,0.5)
       }
     </style>
 
@@ -105,7 +105,7 @@
           <h3><b>JavaScript Naysaying / Time</b></h3>
           <p class="fragment">"JS is 100x slower than native code" (and it was, when it was just interpreted)</p>
           <p class="fragment">"JS is 10x slower than native code" (and it was, when it was first JIT compiled)</p>
-          <p class="fragment">Today JS engines have sophisticated type-specializing JITs and are much faster, and critics say "any amount of slowdown compared to native is bad"</p>
+          <p class="fragment">Today JS engines have sophisticated type-specializing JITs and are much faster, and critics say "any amount of slowdown compared to native is bad" (and that's true too)</p>
         </section>
 
         <section>
@@ -141,7 +141,7 @@
           <p class="fragment">Every compiler (CoffeeScript, Google Web Toolkit, etc.) generates a particular
                               pattern of JS</p>
           <p class="fragment">Emscripten and Mandreel compiled C++ to JS into a particular pattern as well</p>
-          <p class="fragment">asm.js is a rigorously-defined improvement on that pattern</p>
+          <p class="fragment">asm.js is a formal definition of that pattern, with some improvements</p>
         </section>
 
         <section>
@@ -151,7 +151,8 @@
           <a class="fragment href="box2d_graph_updated2.png"><img src="box2d_graph_updated2.png" style=""></a>
           <p class="fragment"><small>source: <a href="https://twitter.com/jgw">@jgw</a>, <a href="http://j15r.com/blog/2013/07/05/Box2d_Addendum">Box2D Addendum</a></small></p>
           <br>
-          <p class="fragment">asm.js on Firefox and Chrome is comparable to <b>Java</b></p>
+          <p class="fragment">Box2dWeb: Port of Box2D using "typical" JS<br>asm.js: Port of Box2D using asm.js</p>
+          <p class="fragment">Note also that asm.js on Firefox and Chrome is comparable to Java</p>
         </section>
 
         <section>
@@ -167,8 +168,6 @@
         <section>
           <h3><b>But I use Safari or IE..?</b></h3>
           <p class="fragment">I've been talking about Firefox and Chrome, but Safari and Internet Explorer are important too of course!</p>
-          <p class="fragment">We are talking about JavaScript here. All those browsers support it, and optimize it - only question is how fast and how soon</p>
-          <p class="fragment">So, how fast and how soon..?</p>
         </section>
 
         <section>
@@ -176,14 +175,20 @@
           <a href="micro_w_s.png"><img src="micro_w_s.png"></a>
           <br>
           <p class="fragment">Very close on some, farther on others</p>
-          <p class="fragment">Not standing still: Experimenting with using <a href="https://bugs.webkit.org/show_bug.cgi?id=112840">LLVM as a JIT in JavaScriptCore</a>. Very interesting to watch!</p>
+          <p class="fragment">Not standing still: Experimenting with using <a href="https://bugs.webkit.org/show_bug.cgi?id=112840">LLVM as a JIT</a></p>
         </section>
 
         <section>
           <h3><b>Internet Explorer</b></h3>
-          <p class="fragment">IE11, currently in pre-release builds, looks very promising</p>
-          <p class="fragment">Too early to benchmark, but I've seen it beat Chrome and Firefox in some tests</p>
+          <p class="fragment">IE11, currently in pre-release builds, looks promising</p>
+          <p class="fragment">Too early to benchmark, but I've seen it beat Chrome and Firefox in some JS tests</p>
           <p class="fragment">Supports WebGL!</p>
+        </section>
+
+        <section>
+          <h3><b>Safari and IE</b></h3>
+          <p class="fragment">All browsers, including those, support JavaScript and optimize it</p>
+          <p class="fragment">Only question is how fast and how soon</p>
         </section>
 
         <section>
@@ -196,7 +201,7 @@
         <section>
           <h3><b>32-bit Floats</b></h3>
           <p class="fragment">JavaScript numbers are 64-bit doubles</p>
-          <p class="fragment">Often take more CPU cycles to compute (less of an issue on newer CPUs)</p>
+          <p class="fragment">Often take more CPU cycles to compute</p>
           <p class="fragment">Require more memory bandwidth</p>
         </section>
 
@@ -209,7 +214,7 @@
   floats[2] = floats[1] + floats[2];
 </code></pre>
           <p class="fragment">Mathematically provable that those additions can be 32-bit</p>
-          <p class="fragment">So no reason JS engines cannot do this right now, and Firefox is working on it</p>
+          <p class="fragment">So no reason JS engines cannot do this right now, and Firefox is <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=888109">working on it</a></p>
         </section>
 
         <section>
@@ -229,15 +234,14 @@
   floats[2] = Math.fround(floats[1] + floats[2]) + 1;
 </code></pre>
           <p class="fragment">Now optimizable!</p>
-          <p class="fragment">Tests on Firefox show 10-20% speedups on relevant code</p>
+          <p class="fragment">Preliminary tests on Firefox show 10-20% speedups on relevant code</p>
         </section>
 
         <section>
           <h3><b>SIMD</b></h3>
-          <p class="fragment">SSE etc. can make certain types of code much faster</p>
+          <p class="fragment">CPUs have hardware support for SSE etc. which can make certain types of code much faster</p>
           <p class="fragment">C++ has various ways to support it, and some VMs do as well: Mono, Dart</p>
           <p class="fragment">John McCutchan from Google wrote a <a href="https://github.com/johnmccutchan/ecmascript_simd">proposal for SIMD in JS</a></p>
-          <p class="fragment">Collaboration is ongoing with Mozilla and Intel</p>
         </section>
 
         <section>
@@ -249,6 +253,7 @@
           <p class="fragment">Immutable 128-bit values</p>
           <p class="fragment">Relatively straightforward design, based on John's experience doing the same in Dart</p>
           <p class="fragment">Potentially big (e.g. 300% in some cases) speedups on certain types of code</p>
+          <p class="fragment">Collaboration is ongoing with Mozilla, Intel and others</p>
         </section>
 
         <section>
@@ -280,7 +285,7 @@
         <section>
           <h3><b>What you just saw</b></h3>
           <p class="fragment">BananaBread, a port of the Cube 2/Sauerbraten First Person Shooter (FPS) to JS+WebGL</p>
-          <p class="fragment">Boon, a fully open source FPS based on the Doom source code (PrBoom) + new art assets (Freedoom)</p>
+          <p class="fragment">Boon, a fully open source FPS based on the Doom source code (PrBoom) + free art assets (Freedoom)</p>
           <p class="fragment">Boon runs in a web worker, input events are proxied to it, output of software renderer is sent back</p>
           <p class="fragment">We push those pixels to a WebGL texture</p>
           <p class="fragment">Less than <a href="miniBoon.js">100 lines of code</a> to integrate the two</p>
