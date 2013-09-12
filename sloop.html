@@ -229,6 +229,44 @@
   floats[2] = Math.fround(floats[1] + floats[2]) + 1;
 </code></pre>
           <p class="fragment">Now optimizable!</p>
+          <p class="fragment">Tests on Firefox show 10-20% speedups on relevant code</p>
+        </section>
+
+        <section>
+          <h3><b>SIMD</b></h3>
+          <p class="fragment">SSE etc. can make certain types of code much faster</p>
+          <p class="fragment">C++ has various ways to support it, and some VMs do as well: Mono, Dart</p>
+          <p class="fragment">John McCutchan from Google wrote a <a href="https://github.com/johnmccutchan/ecmascript_simd">proposal for SIMD in JS</a></p>
+          <p class="fragment">Collaboration is ongoing with Mozilla and Intel</p>
+        </section>
+
+        <section>
+          <h3><b>SIMD</b></h3>
+          <pre class="fragment"><code contenteditable>  var x = new float32x4(1, 2, 3.14159, 22.5);
+  var y = new float32x4(0, 0, 1, 0);
+  var z = x.add(y);
+</code></pre>
+          <p class="fragment">Immutable 128-bit values</p>
+          <p class="fragment">Relatively straightforward design, based on John's experience doing the same in Dart</p>
+          <p class="fragment">Potentially big (e.g. 300% in some cases) speedups on certain types of code</p>
+        </section>
+
+        <section>
+          <h3><b>Threads</b></h3>
+          <p class="fragment">Web workers allow multiple CPU cores to be utilized</p>
+          <p class="fragment">Web workers can transfer typed arrays, avoiding copies</p>
+          <p class="fragment">But they can't read and write to the same data at once</p>
+          <p class="fragment">Good for preventing data races, but bad for some types of projects, for example
+                              model game engines are heavily multithreaded</p>
+        </section>
+
+        <section>
+          <h3><b>Threads</b></h3>
+          <p class="fragment">Various proposals exist for allowing more parallel computation on data, but no clear direction yet</p>
+          <p class="fragment">Would require all vendors to agree and standardize something new and complex</p>
+          <p class="fragment">Part of the challenge is figuring out how it fits in with the rest of the web, which does not currently have data races at all</p>
+          <p class="fragment">For example it would be technically simple to allow workers access to a shared typed array, but many feel this goes against
+                              the JS programming model</p>
         </section>
 
 <!--
@@ -237,15 +275,6 @@ The 2x figure is on asm.js code:
  * Types never changing is a strict requirement; you want a compiler to generate this code, usually
    * can use asm.js for speed-intensive stuff like physics, JS for the rest
      * bullet [demo] with 500 boxes etc
-
-2x is not 1x, but it will continue to get there, through general optimizations. Missing bits:
- * SIMD
-  * Exists in mono, dart, etc. (&c/C++ of course) - kind of clear what to do
-  * Proposal from John McC? from Google, Moz and In talking too
- * threads
-  * web workers do not support shared state
-  * transfer can send data without an unnecessary copy
-  * full shared arrays? need consensus among all vendors to standardize such a new capability. Nohting technical holds back just letting an ArrayBuffer be shared between threads.
 
 So JS can run very fast today, and will continue to narrow down the difference from native
  * But the web has some advantages as well!
