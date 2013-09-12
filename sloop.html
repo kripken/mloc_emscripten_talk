@@ -268,13 +268,16 @@
 
         <section>
           <h3><b>2. SIMD</b></h3>
-          <p class="fragment">CPUs have hardware support for SSE etc. which can make certain types of code much faster</p>
+          <p class="fragment">Single Instruction, Multiple Data (SIMD) lets CPUs run some very efficiently</p>
+          <a class="fragment" href="simd.jpg"><img src="simd.jpg"></a>
+          <p class="fragment"><small><a href="https://www.kernel.org/pub/linux/kernel/people/geoff/cell/ps3-linux-docs/CellProgrammingTutorial/BasicsOfSIMDProgramming.html">source</a></small></p>
+          <p class="fragment">Large amounts of CPU hardware are added to support SIMD</p>
           <p class="fragment">C++ has various ways to support it, and some VMs do as well: Mono, Dart</p>
-          <p class="fragment">John McCutchan from Google wrote a <a href="https://github.com/johnmccutchan/ecmascript_simd">proposal for SIMD in JS</a></p>
         </section>
 
         <section>
           <h3><b>SIMD</b></h3>
+          <p class="fragment">John McCutchan from Google wrote a <a href="https://github.com/johnmccutchan/ecmascript_simd">proposal for SIMD in JS</a></p>
           <pre class="fragment"><code contenteditable>  var x = new float32x4(1, 2, 3.14159, 22.5);
   var y = new float32x4(0, 0, 1, 0);
   var z = x.add(y);
