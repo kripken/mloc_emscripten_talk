@@ -98,8 +98,8 @@
 
         <section>
           <h3><b>Epic Citadel: Progress</b></h3>
-          <p class="fragment">Launched 6 months ago (March 2013)</p>
-          <p class="fragment">Browsers have improved since then:</p>
+          <p class="fragment">Launched March 2013</p>
+          <p class="fragment">Over 6 months, browsers have improved</p>
           <br>
           <table class="fragment">
             <th width="40%"><b>back then</b></th><th style="width: 1em"></th><th><strong>today</strong></th>
@@ -114,9 +114,9 @@
 
         <section>
           <h3><b>JavaScript Naysaying / Time</b></h3>
-          <p class="fragment">"JS is 100x slower than native code" (and it was, when it was just interpreted)</p>
-          <p class="fragment">"JS is 10x slower than native code" (and it was, when it was first JIT compiled)</p>
-          <p class="fragment">Today JS engines have sophisticated type-specializing JITs and are much faster, and critics say "any amount of slowdown compared to native is bad" (and that's true too)</p>
+          <p class="fragment">"JS is <b>100x</b> slower than native code" (and it was, when it was just interpreted)</p>
+          <p class="fragment">"JS is <b>10x</b> slower than native code" (and it was, when it was first JIT compiled)</p>
+          <p class="fragment">Today JS engines have sophisticated type-specializing JITs, and critics say "<strong>any</strong> slowdown compared is bad" (and that's true too)</p>
         </section>
 
         <section>
@@ -129,7 +129,7 @@
         <section>
           <h3><b>asm.js</b></h3>
           <p class="fragment">Those numbers are on <b>asm.js</b>, a subset of JavaScript that is easy to optimize</p>
-          <p class="fragment">Benchmarks we just saw show both Firefox and Chrome run between 1-3 times slower than native</p>
+          <p class="fragment">Benchmarks we just saw show both Firefox and Chrome run between <strong>1-3</strong> times slower than native</p>
           <hr class="fragment">
           <pre class="fragment"><code contenteditable>  function asmCode(global, env, buffer) {
     'use asm';
@@ -142,8 +142,8 @@
     return fib_like;
   }</code></pre>
           <hr class="fragment">
-          <p class="fragment">HEAP cannot be replaced</p>
-          <p class="fragment">|0 trick ensures 32-bit ints</p>
+          <p class="fragment"><b>HEAP</b> cannot be replaced</p>
+          <p class="fragment"><b>|0</b> trick ensures 32-bit ints</p>
         </section>
 
         <section>
@@ -156,15 +156,16 @@
         </section>
 
         <section>
-          <h3><b>asm.js comparison</b></h3>
-          <p class="fragment">asm.js is <strong>faster</strong> than "typical" JavaScript on Internet Explorer, Chrome and Firefox</p>
-          <br>
-          <p class="fragment">Box2D results</p>
-          <a class="fragment href="box2d_graph_updated2.png"><img src="box2d_graph_updated2.png" style=""></a>
+          <h3><b>Box2D results</b></h3>
+          <a class="fragment href="box2d_graph_updated2.png"><img src="box2d_graph_updated2.png"></a>
           <p class="fragment"><small>source: <a href="https://twitter.com/jgw">@jgw</a>, <a href="http://j15r.com/blog/2013/07/05/Box2d_Addendum">Box2D Addendum</a>; lower is better</small></p>
           <br>
-          <p class="fragment">Box2dWeb: Port of Box2D using "typical" JS<br>asm.js: Port of Box2D using asm.js</p>
-          <p class="fragment">Note also that asm.js on Firefox and Chrome is comparable to Java</p>
+          <table class="fragment" style="margin-left: auto; margin-right: auto;">
+            <tr><td>Box2dWeb</td><td width="5%"></td><td>Port of Box2D using "typical" JS</td></tr>
+            <tr><td>asm.js</td><td></td><td>Port of Box2D using asm.js</td></tr>
+          </table>
+          <br>
+          <p class="fragment">asm.js is <strong>faster</strong> than "typical" JavaScript on Internet Explorer, Chrome and Firefox</p>
         </section>
 
         <section>
