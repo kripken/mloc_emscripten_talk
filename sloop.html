@@ -123,12 +123,12 @@
           <pre class="fragment"><code contenteditable>  function asmCode(global, env, buffer) {
     'use asm';
     var HEAP = new global.Uint8Array(buffer);
-    function fib(x) {
+    function fib_like(x) {
       x = x|0;
-      if ((x >>> 0) < 2) return 1;
-      return ((fib((x-2)|0)|0) + (fib((x-1)|0)|0))|0;
+      if ((x >>> 0) < 2) return HEAP[x]|0;
+      return ((fib_like((x-2)|0)|0) + (fib_like((x-1)|0)|0))|0;
     }
-    return fib;
+    return fib_like;
   }</code></pre>
           <hr class="fragment">
           <p class="fragment">HEAP cannot be replaced</p>
@@ -148,8 +148,9 @@
           <h3><b>asm.js comparison</b></h3>
           <p class="fragment">asm.js is <strong>faster</strong> than "typical" JavaScript on Internet Explorer, Chrome and Firefox</p>
           <br>
+          <p class="fragment">Box2D results</p>
           <a class="fragment href="box2d_graph_updated2.png"><img src="box2d_graph_updated2.png" style=""></a>
-          <p class="fragment"><small>source: <a href="https://twitter.com/jgw">@jgw</a>, <a href="http://j15r.com/blog/2013/07/05/Box2d_Addendum">Box2D Addendum</a></small></p>
+          <p class="fragment"><small>source: <a href="https://twitter.com/jgw">@jgw</a>, <a href="http://j15r.com/blog/2013/07/05/Box2d_Addendum">Box2D Addendum</a>; lower is better</small></p>
           <br>
           <p class="fragment">Box2dWeb: Port of Box2D using "typical" JS<br>asm.js: Port of Box2D using asm.js</p>
           <p class="fragment">Note also that asm.js on Firefox and Chrome is comparable to Java</p>
@@ -158,11 +159,11 @@
         <section>
           <h3><b>Box2D: Progress and AOT</b></h3>
           <a href="asmprogress2.png"><img src="asmprogress2.png"></a>
-          <p><small>source: <a href="http://arewefastyet.com/#machine=12&view=breakdown&suite=asmjs-apps">arewefastyet.com</a></small></p>
+          <p><small>source: <a href="http://arewefastyet.com/#machine=12&view=breakdown&suite=asmjs-apps">arewefastyet.com</a>; x axis is time, y axis is milliseconds (lower is better)</small></p>
           <p class="fragment">Red/orange is Ahead Of Time (AOT) compilation (using the asm.js type system)</p>
           <p class="fragment">Just In Time (JIT) compilers catching up fast</p>
-          <p class="fragment">No point in time where asm.js is "supported" by a browser, asm.js is just a subset of JS that is being optimized like any other</p>
           <p class="fragment">AOT is not necessary, but makes optimization easier and prevents recompilation overhead</p>
+          <p class="fragment">No point in time where asm.js is "supported" by a browser, asm.js is just a subset of JS that is being optimized like any other</p>
         </section>
 
         <section>
@@ -199,7 +200,7 @@
         </section>
 
         <section>
-          <h3><b>32-bit Floats</b></h3>
+          <h3><b>1. 32-bit Floats</b></h3>
           <p class="fragment">JavaScript numbers are 64-bit doubles</p>
           <p class="fragment">Often take more CPU cycles to compute</p>
           <p class="fragment">Require more memory bandwidth</p>
@@ -238,7 +239,7 @@
         </section>
 
         <section>
-          <h3><b>SIMD</b></h3>
+          <h3><b>2. SIMD</b></h3>
           <p class="fragment">CPUs have hardware support for SSE etc. which can make certain types of code much faster</p>
           <p class="fragment">C++ has various ways to support it, and some VMs do as well: Mono, Dart</p>
           <p class="fragment">John McCutchan from Google wrote a <a href="https://github.com/johnmccutchan/ecmascript_simd">proposal for SIMD in JS</a></p>
@@ -257,12 +258,12 @@
         </section>
 
         <section>
-          <h3><b>Threads</b></h3>
+          <h3><b>3. Threads</b></h3>
           <p class="fragment">Web workers allow multiple CPU cores to be utilized</p>
           <p class="fragment">Web workers can transfer typed arrays, avoiding copies</p>
           <p class="fragment">But they can't read and write to the same data at once</p>
           <p class="fragment">Good for preventing data races, but bad for some types of projects, for example
-                              model game engines are heavily multithreaded</p>
+                              modern game engines are heavily multithreaded</p>
         </section>
 
         <section>
