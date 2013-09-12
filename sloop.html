@@ -291,9 +291,9 @@
         <section>
           <h3><b>3. Threads</b></h3>
           <p class="fragment">Web workers allow multiple CPU cores to be utilized</p>
-          <p class="fragment">Web workers can transfer typed arrays, avoiding copies</p>
-          <p class="fragment">But they can't read and write to the same data at once</p>
-          <p class="fragment">Good for preventing data races, but bad for some types of projects, for example
+          <p class="fragment">Workers can <b>transfer</b> typed arrays, avoiding copies</p>
+          <p class="fragment">But they can't read and write to the <b>same</b> data at once</p>
+          <p class="fragment"><strong>Good</strong> for preventing data races, but <strong>bad</strong> for some types of projects, for example
                               modern game engines are heavily multithreaded</p>
         </section>
 
@@ -302,8 +302,6 @@
           <p class="fragment">Various proposals exist for allowing more parallel computation on data, but no clear direction yet</p>
           <p class="fragment">Would require all vendors to agree and standardize something new and complex</p>
           <p class="fragment">Part of the challenge is figuring out how it fits in with the rest of the web, which does not currently have data races at all</p>
-          <p class="fragment">For example it would be technically simple to allow workers access to a shared typed array, but many feel this goes against
-                              the JS programming model</p>
         </section>
 
         <section>
@@ -316,12 +314,19 @@
 
         <section>
           <h3><b>What you just saw</b></h3>
-          <p class="fragment">BananaBread, a port of the Cube 2/Sauerbraten First Person Shooter (FPS) to JS+WebGL</p>
-          <p class="fragment">Boon, a fully open source FPS based on the Doom source code (PrBoom) + free art assets (Freedoom)</p>
-          <p class="fragment">Boon runs in a web worker, input events are proxied to it, output of software renderer is sent back</p>
+          <p class="fragment"><a href="https://github.com/kripken/BananaBread/">BananaBread</a>, a port of the <a href="http://sauerbraten.org/">Cube 2/Sauerbraten</a> First Person Shooter (FPS) to JS+WebGL</p>
+          <p class="fragment">Running inside it: <a href="https://github.com/kripken/boon">Boon</a>, another FPS</p>
+          <p class="fragment">Boon is based on the Doom source code (<a href="http://prboom.sourceforge.net/">PrBoom</a>) + <a href="http://www.nongnu.org/freedoom/">Freedoom</a> content</p>
+          <p class="fragment">All the code and art assets you saw are open source</p>
+        </section>
+
+        <section>
+          <h3><b>What you just saw (2)</b></h3>
+          <p class="fragment">Boon runs in a web worker</p>
+          <p class="fragment">Input events are proxied to it, output of software renderer is sent back</p>
           <p class="fragment">We push those pixels to a WebGL texture</p>
-          <p class="fragment">Less than <a href="miniBoon.js">100 lines of code</a> to integrate the two</p>
-          <p class="fragment">Easily 60fps on an average laptop with an Intel GPU and Linux - not a hot rod!</p>
+          <p class="fragment">Less than <a href="https://github.com/kripken/BananaBread/blob/experiments/cube2/miniBoon.js">100 lines of code</a> to integrate the two</p>
+          <p class="fragment">Both games run at once at full frame rate, on a very average laptop</p>
         </section>
 
         <section>
