@@ -209,9 +209,10 @@
 
         <section>
           <h3><b>Internet Explorer</b></h3>
-          <p class="fragment">IE11, currently in pre-release builds, looks promising</p>
-          <p class="fragment">Too early to benchmark, but I've seen it beat Chrome and Firefox in some JS tests</p>
+          <p class="fragment">IE11, currently in pre-release, looks promising</p>
+          <p class="fragment">Too early to benchmark, but I've seen it beat other browsers on some JS tests</p>
           <p class="fragment">Supports WebGL!</p>
+          <p class="fragment">Safe to assume typed arrays will be fast, which means asm.js will be fast</p>
         </section>
 
         <section>
@@ -232,6 +233,7 @@
           <p class="fragment">JavaScript numbers are 64-bit doubles</p>
           <p class="fragment">Often take more CPU cycles to compute</p>
           <p class="fragment">Require more memory bandwidth</p>
+          <p class="fragment">Preliminary tests on Firefox show 10-20% speed difference on relevant code</p>
         </section>
 
         <section>
@@ -248,13 +250,12 @@
 
         <section>
           <h3><b>32-bit Floats</b></h3>
-          <p class="fragment">More general code fails though</p>
+          <p class="fragment">A "fragile" optimization though</p>
           <pre class="fragment"><code contenteditable>  var floats = new Float32Array(calc());
-  floats[0] = floats[1] + floats[2] + 1;
-  floats[1] = floats[0] + floats[2] + 1;
-  floats[2] = floats[1] + floats[2] + 1;
+  floats[0] = floats[1] + floats[2] + 1; // can't
+  floats[1] = floats[0] + floats[2] + 1; // be
+  floats[2] = floats[1] + floats[2] + 1; // optimized
 </code></pre>
-          <p class="fragment"><b>+1</b> prevents the optimization</p>
           <p class="fragment">But ES6 (proposal for the next version of JS) includes <b>Math.fround</b>,
                               which rounds to 32-bit precision</p>
           <pre class="fragment"><code contenteditable>  var floats = new Float32Array(calc());
@@ -262,8 +263,7 @@
   floats[1] = Math.fround(floats[0] + floats[2]) + 1;
   floats[2] = Math.fround(floats[1] + floats[2]) + 1;
 </code></pre>
-          <p class="fragment">Now optimizable!</p>
-          <p class="fragment">Preliminary tests on Firefox show 10-20% speedups on relevant code</p>
+          <p class="fragment"><strong>Now it's optimizable!</strong></p>
         </section>
 
         <section>
