@@ -280,14 +280,14 @@
         <section>
           <h3><b>SIMD</b></h3>
           <p class="fragment">John McCutchan from Google wrote a <a href="https://github.com/johnmccutchan/ecmascript_simd">proposal for SIMD in JS</a></p>
-          <pre class="fragment"><code contenteditable>  var x = new float32x4(1, 2, 3.14159, 22.5);
-  var y = new float32x4(0, 0, 1, 0);
+          <pre class="fragment"><code contenteditable>  var x = float32x4(1, 2, 3.14159, 22.5);
+  var y = float32x4(0, 0, 1, 0);
   var z = x.add(y);
 </code></pre>
           <p class="fragment">Immutable 128-bit values</p>
           <p class="fragment">Relatively straightforward design, based on John's experience doing the same in Dart</p>
           <p class="fragment">Potentially big (e.g. 300% in some cases) speedups on certain types of code</p>
-          <p class="fragment">Collaboration is ongoing with Mozilla, Intel and others</p>
+          <p class="fragment">Collaboration is ongoing with Google, Mozilla, Intel and TC39</p>
         </section>
 
         <section>
