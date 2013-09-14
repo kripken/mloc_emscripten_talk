@@ -185,19 +185,17 @@
 
         <section>
           <h3><b>Safari</b></h3>
-          <img src="safari.png" style="box-shadow: none;">
+          <img src="safari.png" style="box-shadow: none; height: 3em">
           <p class="fragment">All browsers optimize JS, but decide which aspects to focus on at which times</p>
-          <p><small>Emscripten benchmark suite (VMs and Emscripten from Sep 6 2013, run on 64-bit ubuntu 12.10)</small></p>
           <div class="fragment">
-          <a href="sunspider.png"><img src="sunspider.png"></a>
+          <a href="sunspider.png"><img src="sunspider.png" style="height:7em"></a>
           <p><small>source: <a href="http://arewefastyet.com/#machine=12">arewefastyet.com</a>; x axis is time, y axis is milliseconds (lower is better)</small></p>
           </div>
-          <p class="fragment">Which benchmarks matter is debatable, of course</p>
         </section>
 
         <section>
           <h3><b>Safari</b></h3>
-          <a href="w_safari.png"><img src="w_safari.png"></a>
+          <a href="w_safari.png"><img src="w_safari.png" style="height: 10em"></a>
           <br>
           <p class="fragment">Very close on some, farther on others</p>
           <p class="fragment">Not standing still: Experimenting with using <a href="https://bugs.webkit.org/show_bug.cgi?id=112840">LLVM as a JIT</a></p>
@@ -205,7 +203,7 @@
 
         <section>
           <h3><b>Internet Explorer</b></h3>
-          <img src="ie.png" style="box-shadow: none;">
+          <img src="ie.png" style="box-shadow: none; height: 3em">
           <p class="fragment">IE11, currently in pre-release, looks promising</p>
           <p class="fragment">Too early to benchmark, but I've seen it beat other browsers on some JS tests</p>
           <p class="fragment">Supports WebGL!</p>
@@ -213,15 +211,9 @@
         </section>
 
         <section>
-          <h3><b>Safari and IE</b></h3>
-          <p class="fragment">All browsers, including those, support JavaScript and optimize it</p>
-          <p class="fragment">Only question is how fast and how soon</p>
-        </section>
-
-        <section>
           <h3><b>Big Picture</b></h3>
-          <p class="fragment">Overall JS speed is good and getting better</p>
-          <p class="fragment">Half the speed of native in many cases</p>
+          <p class="fragment">JS speed is good and getting better</p>
+          <p class="fragment">Can run at about half the speed of native code</p>
           <p class="fragment">What are the remaining issues?</p>
         </section>
 
