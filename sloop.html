@@ -66,18 +66,19 @@
 
         <section>
           <h3><b>The Web</b></h3>
-          <img src="browser-logos.png" style="border: 0; box-shadow: none;">
-          <img src="HTML5.png" style="border: 0; box-shadow: none;">
+          <img src="browser-logos.png" style="border: 0; box-shadow: none; height: 4em">
           <br>
           <p class="fragment">Biggest <b>open</b> and <b>standards-based</b> platform</p>
           <p class="fragment">Best way to reach users</p>
+          <br>
+          <img src="HTML5.png" style="border: 0; box-shadow: none; height: 4em">
         </section>
 
         <section>
           <h3><b>How fast is it?</b></h3>
           <br>
           <div class="fragment">
-            <img src="website_slow.jpg" width="50%">
+            <img src="website_slow.jpg" style="height: 12em">
           </div>
         </section>
 
@@ -93,24 +94,24 @@
           <p class="fragment">The <b><a href="epic/EpicCitadel.html">Epic Citadel demo</a></b> is one way to measure</p>
           <p class="fragment">Over <b>1 million lines of C++</b> compiled to JavaScript using <a href="http://emscripten.org">Emscripten</a></p>
           <p class="fragment">OpenGL renderer, compiled to use <b>WebGL</b></p>
-          <p class="fragment">Uses only standardized web technologies</p>
+          <p class="fragment">Uses only <strong>standard web technologies</strong></p>
         </section>
 
         <section>
           <h3><b>Epic Citadel: Progress</b></h3>
-          <p class="fragment">Launched March 2013</p>
-          <p class="fragment">Over 6 months, browsers have improved</p>
+          <p class="fragment">Launched March 2013, browsers improved since</p>
           <br>
           <table class="fragment">
             <th width="40%"><b>back then</b></th><th style="width: 1em"></th><th><strong>today</strong></th>
             <tr><td><hr></td><td></td><td><hr></td></tr>
-            <tr><td>only ran in Firefox</td><td></td><td>runs in Firefox &amp; Chrome</td></tr>
-            <tr><td></td><td><br style="display: block; margin: 0.2em 0;"></td><td></td></tr>
-            <tr><td>20 second startup</td><td></td><td>10 second startup</td></tr>
-            <tr><td></td><td><br style="display: block; margin: 0.2em 0;"></td><td></td></tr>
-            <tr><td>40fps</td><td></td><td>60fps in Firefox &amp; Chrome</td></tr>
+            <tr><td><div class="fragment">only ran in Firefox</div></td><td></td><td><div class="fragment">runs in Firefox &amp; Chrome</div></td></tr>
+            <tr><td></td><td><br style="display: block; margin: 0.1em 0;"></td><td></td></tr>
+            <tr><td><div class="fragment">20 second startup</div></td><td></td><td><div class="fragment">10 second startup</div></td></tr>
+            <tr><td></td><td><br style="display: block; margin: 0.1em 0;"></td><td></td></tr>
+            <tr><td><div class="fragment">40fps</div></td><td></td><td><div class="fragment">60fps in Firefox &amp; Chrome</div></td></tr>
           </table>
-          <img src="chrome_firefox.png" style="box-shadow: none;">
+          <br>
+          <img src="chrome_firefox.png" style="box-shadow: none; height: 4em">
           <!-- startup: all the time until the game begins to render frames, ignoring network stuff -->
         </section>
 
@@ -118,7 +119,7 @@
           <h3><b>JavaScript Naysaying / Time</b></h3>
           <p class="fragment">"JS is <b>100x</b> slower than native code" (and it was, when it was just interpreted)</p>
           <p class="fragment">"JS is <b>10x</b> slower than native code" (and it was, when it was first JIT compiled)</p>
-          <p class="fragment">Today JS engines have sophisticated type-specializing JITs, and critics say "<strong>any</strong> slowdown compared is bad" (and that's true too)</p>
+          <p class="fragment">Today JS engines have sophisticated type-specializing JITs, and critics say "<strong>any</strong> slowdown is bad" (and that's true too)</p>
         </section>
 
         <section>
@@ -131,7 +132,6 @@
         <section>
           <h3><b>asm.js</b></h3>
           <p class="fragment">Those numbers are on <b>asm.js</b>, a subset of JavaScript that is easy to optimize</p>
-          <p class="fragment">Benchmarks we just saw show both Firefox and Chrome run (<a href="http://code.google.com/p/v8/issues/detail?id=2873">mostly</a>) between <strong>1-3</strong> times slower than native</p>
           <hr class="fragment">
           <pre class="fragment"><code contenteditable>  function asmCode(global, env, buffer) {
     'use asm';
@@ -153,38 +153,30 @@
           <p class="fragment">Began as a research project at Mozilla</p>
           <p class="fragment">Every compiler (CoffeeScript, Google Web Toolkit, etc.) generates a particular
                               pattern of JS</p>
-          <p class="fragment">Emscripten and Mandreel compiled C++ to JS into a particular pattern as well</p>
-          <p class="fragment">asm.js is a formal definition of that pattern, with some improvements</p>
+          <p class="fragment">Emscripten and Mandreel converged on a pattern for compiled C++ in JS</p>
+          <p class="fragment">asm.js is a <b>formal definition</b> of that pattern, with some improvements</p>
         </section>
 
         <section>
           <h3><b>Box2D results</b></h3>
           <a class="fragment" href="box2d_graph_updated2.png"><img src="box2d_graph_updated2.png"></a>
-          <p class="fragment"><small>source: <a href="https://twitter.com/jgw">@jgw</a>, <a href="http://j15r.com/blog/2013/07/05/Box2d_Addendum">Box2D Addendum</a>; lower is better</small></p>
-          <br>
+          <p class="fragment"><small>source: <a href="https://twitter.com/jgw">@jgw</a>, <a href="http://j15r.com/blog/2013/07/05/Box2d_Addendum">Box2D Addendum</a>; axis is time slower than native, lower is better</small></p>
           <table class="fragment" style="margin-left: auto; margin-right: auto;">
-            <tr><td>Box2dWeb</td><td width="5%"></td><td>Port of Box2D using "typical" JS</td></tr>
-            <tr><td>asm.js</td><td></td><td>Port of Box2D using asm.js</td></tr>
+            <tr><td><b>Box2dWeb -</b></td><td width="5%"></td><td>Port of Box2D using "typical" JS</td></tr>
+            <tr><td><b>asm.js -</b></td><td></td><td>Port of Box2D using asm.js</td></tr>
           </table>
           <br>
           <p class="fragment">asm.js is <strong>faster</strong> than "typical" JavaScript on Internet Explorer, Chrome and Firefox</p>
         </section>
 
         <section>
-          <h3><b>Box2D: Progress and AOT</b></h3>
-          <a href="asmprogress2.png"><img src="asmprogress2.png"></a>
-          <p><small>source: <a href="http://arewefastyet.com/#machine=12&view=breakdown&suite=asmjs-apps">arewefastyet.com</a>; x axis is time, y axis is milliseconds (lower is better)</small></p>
-          <p class="fragment"><b>Ahead Of Time (AOT)</b> compilation is possible using the asm.js type system</p>
+          <h3><b>Box2D: AOT, Progress</b></h3>
+          <p>Types do not change, so <b>Ahead Of Time (AOT)</b> compilation is possible w/ asm.js type system</p>
+          <div class="fragment">
+            <a href="asmprogress2.png"><img src="asmprogress2.png" style="height: 7em"></a>
+            <p><small>source: <a href="http://arewefastyet.com/#machine=12&view=breakdown&suite=asmjs-apps">arewefastyet.com</a>; x axis is time, y axis is milliseconds (lower is better)</small></p>
+          </div>
           <p class="fragment">Not necessary, but makes optimization easier</p>
-          <p class="fragment">AOT being <b>possible</b> proves how <strong>optimizable</strong> asm.js is (no type changes)</p>
-        </section>
-
-        <section>
-          <h3><b>Box2D: Progress and AOT</b></h3>
-          <a href="asmprogress2.png"><img src="asmprogress2.png"></a>
-          <p><small>source: <a href="http://arewefastyet.com/#machine=12&view=breakdown&suite=asmjs-apps">arewefastyet.com</a>; x axis is time, y axis is milliseconds (lower is better)</small></p>
-          <p class="fragment">No point in time where asm.js is "supported" by a browser</p>
-          <p class="fragment">asm.js is just a subset of JS that is being optimized like JS always is</p>
         </section>
 
         <section>
@@ -273,7 +265,7 @@
 
         <section>
           <h3><b>2. SIMD</b></h3>
-          <p class="fragment">Single Instruction, Multiple Data (SIMD) lets CPUs run some very efficiently</p>
+          <p class="fragment">Single Instruction, Multiple Data (SIMD) - SSE, NEON, etc. - lets CPUs run some very efficiently</p>
           <a class="fragment" href="simd.jpg"><img src="simd.jpg"></a>
           <p class="fragment"><small><a href="https://www.kernel.org/pub/linux/kernel/people/geoff/cell/ps3-linux-docs/CellProgrammingTutorial/BasicsOfSIMDProgramming.html">source</a></small></p>
           <p class="fragment">Large amounts of CPU hardware are added to support SIMD</p>
@@ -285,7 +277,7 @@
           <p class="fragment">John McCutchan from Google wrote a <a href="https://github.com/johnmccutchan/ecmascript_simd">proposal for SIMD in JS</a></p>
           <pre class="fragment"><code contenteditable>  var x = float32x4(1, 2, 3.14159, 22.5);
   var y = float32x4(0, 0, 1, 0);
-  var z = x.add(y);
+  var z = SIMD.add(x, y);
 </code></pre>
           <p class="fragment">Immutable 128-bit values</p>
           <p class="fragment">Relatively straightforward design, based on John's experience doing the same in Dart</p>
