@@ -212,29 +212,29 @@
 
         <section>
           <h3><b>Big Picture</b></h3>
-          <p class="fragment">JS speed is good and getting better</p>
-          <p class="fragment">Can run at about half the speed of native code</p>
-          <p class="fragment">What are the remaining issues?</p>
+          <p class="fragment">JS speed is <b>good</b> and getting better</p>
+          <p class="fragment">Can run at about <b>half</b> the speed of native code</p>
+          <p class="fragment">What are the <strong>remaining issues</strong>?</p>
         </section>
 
         <section>
           <h3><b>1. 32-bit Floats</b></h3>
-          <p class="fragment">JavaScript numbers are 64-bit doubles</p>
+          <p class="fragment">JavaScript numbers are <b>64</b>-bit doubles</p>
           <p class="fragment">Often take more CPU cycles to compute</p>
           <p class="fragment">Require more memory bandwidth</p>
-          <p class="fragment">Preliminary tests on Firefox show 10-20% speed difference on relevant code</p>
+          <p class="fragment">Preliminary tests on Firefox show <strong>10-20%</strong> speed difference on relevant code</p>
         </section>
 
         <section>
           <h3><b>32-bit Floats</b></h3>
-          <p class="fragment">Sometimes possible to do 32-bit math on 64-bit values as an optimization</p>
+          <p class="fragment">Sometimes possible to do 32-bit math as an <b>optimization</b></p>
           <pre class="fragment"><code contenteditable>  var floats = new Float32Array(calc());
   floats[0] = floats[1] + floats[2];
   floats[1] = floats[0] + floats[2];
   floats[2] = floats[1] + floats[2];
 </code></pre>
           <p class="fragment">Mathematically provable that those additions can be 32-bit</p>
-          <p class="fragment">So no reason JS engines cannot do this right now, and Firefox is <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=888109">working on it</a></p>
+          <p class="fragment">No reason JS engines cannot do this right now (Firefox is <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=888109">working on it</a>)</p>
         </section>
 
         <section>
@@ -257,10 +257,10 @@
 
         <section>
           <h3><b>2. SIMD</b></h3>
-          <p class="fragment">Single Instruction, Multiple Data (SIMD) - SSE, NEON, etc. - lets CPUs run some very efficiently</p>
+          <p class="fragment">Single Instruction, Multiple Data: <b>SSE</b>, <b>NEON</b>, etc.</p>
           <a class="fragment" href="simd.jpg"><img src="simd.jpg"></a>
           <p class="fragment"><small><a href="https://www.kernel.org/pub/linux/kernel/people/geoff/cell/ps3-linux-docs/CellProgrammingTutorial/BasicsOfSIMDProgramming.html">source</a></small></p>
-          <p class="fragment">Large amounts of CPU hardware are added to support SIMD</p>
+          <p class="fragment">Large parts of CPUs dedicated to SIMD</p>
           <p class="fragment">C++ has various ways to support it, and some VMs do as well: Mono, Dart</p>
         </section>
 
@@ -271,10 +271,9 @@
   var y = float32x4(0, 0, 1, 0);
   var z = SIMD.add(x, y);
 </code></pre>
-          <p class="fragment">Immutable 128-bit values</p>
-          <p class="fragment">Relatively straightforward design, based on John's experience doing the same in Dart</p>
+          <p class="fragment"><b>Immutable</b> 128-bit values, designed for what CPUs provide</p>
           <p class="fragment">Potentially big (e.g. 300% in some cases) speedups on certain types of code</p>
-          <p class="fragment">Collaboration is ongoing with Google, Mozilla, Intel and TC39</p>
+          <p class="fragment"><strong>Collaboration</strong> is ongoing with Google, Mozilla, Intel and TC39</p>
         </section>
 
         <section>
@@ -282,45 +281,44 @@
           <p class="fragment">Web workers allow multiple CPU cores to be utilized</p>
           <p class="fragment">Workers can <b>transfer</b> typed arrays, avoiding copies</p>
           <p class="fragment">But they can't read and write to the <b>same</b> data at once</p>
-          <p class="fragment"><strong>Good</strong> for preventing data races, but <strong>bad</strong> for some types of projects, for example
-                              modern game engines are heavily multithreaded</p>
+          <p class="fragment"><strong>Good</strong> for preventing data races, but <strong>bad</strong> for some types of projects (for example,
+                              modern game engines are heavily multithreaded)</p>
         </section>
 
         <section>
           <h3><b>Threads</b></h3>
-          <p class="fragment">Various proposals exist for allowing more parallel computation on data, but no clear direction yet</p>
+          <p class="fragment">Various proposals, some experiments, but no clear direction yet</p>
           <p class="fragment">Would require all vendors to agree and standardize something new and complex</p>
-          <p class="fragment">Part of the challenge is figuring out how it fits in with the rest of the web, which does not currently have data races at all</p>
+          <p class="fragment">Part of the challenge is figuring out how it <b>fits in</b> with the rest of the web, which does <strong>not</strong> currently have data races at all</p>
         </section>
 
         <section>
-          <h3><b>Pre-Summary</b></h3>
-          <p class="fragment">JS is getting close to native speed, even if some hurdles remain</p>
-          <p class="fragment">But important to remember that the web is better than other platforms in many ways</p>
-          <p class="fragment">Size and reach</p>
-          <p class="fragment">Ability to combine content in interesting ways: [final demo]</p>
+          <p class="fragment">Aside from speed, the web has some <b>special advantages</b></p>
+          <p class="fragment"><a href="finaldemo/index.html"><strong>[final demo]</strong></p>
         </section>
 
         <section>
-          <h3><b>What you just saw</b></h3>
+          <h3><b>You can play an FPS <br>while you play an FPS</b></h3>
           <p class="fragment"><a href="https://github.com/kripken/BananaBread/">BananaBread</a>, a port of the <a href="http://sauerbraten.org/">Cube 2/Sauerbraten</a> First Person Shooter (FPS) to JS+WebGL</p>
-          <p class="fragment">Running inside it: <a href="https://github.com/kripken/boon">Boon</a>, another FPS</p>
-          <p class="fragment">Boon is based on the Doom source code (<a href="http://prboom.sourceforge.net/">PrBoom</a>) + <a href="http://www.nongnu.org/freedoom/">Freedoom</a> content</p>
-          <p class="fragment">All the code and art assets you saw are open source</p>
+          <p class="fragment">Running <strong>inside</strong> it: <a href="https://github.com/kripken/boon">Boon</a>, another FPS</p>
+          <p class="fragment">Boon = Doom code (<a href="http://prboom.sourceforge.net/">PrBoom</a>) + <a href="http://www.nongnu.org/freedoom/">Freedoom</a> content</p>
+          <p class="fragment">All code and content you saw are 100% open source</p>
         </section>
 
         <section>
-          <h3><b>What you just saw (2)</b></h3>
-          <p class="fragment">Boon runs in a web worker</p>
-          <p class="fragment">Input events are proxied to it, output of software renderer is sent back</p>
+          <h3><b>Tech Details</b></h3>
+          <p class="fragment">Boon runs in a <b>web worker</b></p>
+          <p class="fragment">Input events are <b>proxied</b> to it, output of software renderer is sent back</p>
           <p class="fragment">We push those pixels to a WebGL texture</p>
           <p class="fragment">Less than <a href="https://github.com/kripken/BananaBread/blob/experiments/cube2/miniBoon.js">100 lines of code</a> to integrate the two</p>
-          <p class="fragment">Both games run at once at full frame rate, on a very average laptop</p>
+          <p class="fragment">Both games run at once at <strong>60fps</strong> on a very average laptop</p>
         </section>
 
         <section>
           <h3><b>Summary</b></h3>
-          <p class="fragment">TODO</p>
+          <p class="fragment">Exciting times for the web!</p>
+          <p class="fragment">JS is <b>close and getting closer</b> to native speed, even if some hurdles remain</p>
+          <p class="fragment"><b>asm.js</b> is a subset of JS that can make it easier to get there</p>
           <div class="fragment">
             <hr>
             <p><b style="color: #c11">That's it! Questions?</b></p>
