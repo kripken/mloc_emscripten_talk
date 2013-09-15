@@ -70,6 +70,7 @@
           <br>
           <p class="fragment">Biggest <b>open</b> and <b>standards-based</b> platform</p>
           <p class="fragment">Best way to reach users</p>
+          <p class="fragment">Would be great if it were <strong>fast</strong> as well ;)</p>
           <br>
           <img src="HTML5.png" style="border: 0; box-shadow: none; height: 4em">
         </section>
@@ -119,20 +120,13 @@
           <h3><b>JavaScript Naysaying / Time</b></h3>
           <p class="fragment">"JS is <b>100x</b> slower than native code" (and it was, when it was just interpreted)</p>
           <p class="fragment">"JS is <b>10x</b> slower than native code" (and it was, when it was first JIT compiled)</p>
-          <p class="fragment">Today JS engines have sophisticated type-specializing JITs, and critics say "<strong>any</strong> slowdown is bad" (and that's true too)</p>
-        </section>
-
-        <section>
-          <h3><b>Current Performance</b></h3>
-          <a href="benchmarks.png"><img src="benchmarks.png"></img></a>
-          <br>
-          <p><small>Emscripten benchmark suite (VMs and Emscripten from Sep 13 2013, run on 64-bit ubuntu 12.04)</small></p>
+          <p class="fragment">Today JS engines are much faster, and critics say "<strong>any</strong> slowdown is bad" (and that's true too)</p>
         </section>
 
         <section>
           <h3><b>asm.js</b></h3>
-          <p class="fragment">Those numbers are on <b>asm.js</b>, a subset of JavaScript that is easy to optimize</p>
-          <hr class="fragment">
+          <p class="fragment">But JS engines don't always run at full speed</p>
+          <p class="fragment">Motivated <b>asm.js</b>, an <strong>easy to optimize</strong> subset of JS</p>
           <pre class="fragment"><code contenteditable>  function asmCode(global, env, buffer) {
     'use asm';
     var HEAP = new global.Uint8Array(buffer);
@@ -143,9 +137,15 @@
     }
     return fib_like;
   }</code></pre>
-          <hr class="fragment">
           <p class="fragment"><b>HEAP</b> cannot be replaced</p>
           <p class="fragment"><b>|0</b> trick ensures 32-bit ints</p>
+        </section>
+
+        <section>
+          <h3><b>asm.js Performance</b></h3>
+          <a href="benchmarks.png"><img src="benchmarks.png"></img></a>
+          <br>
+          <p><small>Emscripten benchmark suite (VMs and Emscripten from Sep 13 2013, run on 64-bit ubuntu 12.04)</small></p>
         </section>
 
         <section>
