@@ -86,12 +86,12 @@
           <h3><b>Speed on the Web</b></h3>
           <p class="fragment">Speed is determined by many things</p>
           <p class="fragment">DOM, graphics, JavaScript</p>
-          <p class="fragment">This talk is mainly about <b>JavaScript</b></p>
+          <p class="fragment">This talk is about <b>JavaScript</b></p>
         </section>
 
         <section>
           <h3><b>How fast is JavaScript?</b></h3>
-          <p class="fragment">The <b><a href="epic/EpicCitadel.html">Epic Citadel demo</a></b> is one way to measure</p>
+          <p class="fragment">The <b><a href="http://www.unrealengine.com/html5/">Epic Citadel demo</a></b> is one way to measure</p>
           <p class="fragment">Over <b>1 million lines of C++</b> compiled to JavaScript using <a href="http://emscripten.org">Emscripten</a></p>
           <p class="fragment">OpenGL renderer, compiled to use <b>WebGL</b></p>
           <p class="fragment">Uses only <strong>standard web technologies</strong></p>
@@ -111,7 +111,7 @@
             <tr><td><div class="fragment">40fps</div></td><td></td><td><div class="fragment">60fps in Firefox &amp; Chrome</div></td></tr>
           </table>
           <br>
-          <img src="chrome_firefox.png" style="box-shadow: none; height: 4em">
+          <img src="chrome_firefox.png" style="box-shadow: none; height: 3em">
           <!-- startup: all the time until the game begins to render frames, ignoring network stuff -->
         </section>
 
@@ -204,17 +204,15 @@
         <section>
           <h3><b>Internet Explorer</b></h3>
           <img src="ie.png" style="box-shadow: none; height: 3em">
-          <p class="fragment">IE11, currently in pre-release, looks promising</p>
-          <p class="fragment">Too early to benchmark, but I've seen it beat other browsers on some JS tests</p>
-          <p class="fragment">Supports WebGL!</p>
-          <p class="fragment">Safe to assume typed arrays will be fast, which means asm.js will be fast</p>
+          <p class="fragment">IE11, currently in pre-release, looks <b>promising</b> - I've seen it beat other browsers on some JS tests</p>
+          <p class="fragment">Supports <strong>WebGL!</strong></p>
+          <p class="fragment">So safe to assume typed arrays will be fast, which means <b>asm.js</b> will be fast</p>
         </section>
 
         <section>
           <h3><b>Big Picture</b></h3>
-          <p class="fragment">JS speed is <b>good</b> and getting better</p>
-          <p class="fragment">Can run at about <b>half</b> the speed of native code</p>
-          <p class="fragment">What are the <strong>remaining issues</strong>?</p>
+          <p class="fragment">JS can run at about <b>half</b> the speed of native code</p>
+          <p class="fragment">Why just half - what are the <strong>remaining issues</strong>?</p>
         </section>
 
         <section>
@@ -319,15 +317,6 @@
           <p><b style="color: #c11">That's it!</b> <b>Questions?</b></p>
         </section>
         </section>
-
-<!--
-
-The 2x figure is on asm.js code:
- * Types never changing is a strict requirement; you want a compiler to generate this code, usually
-   * can use asm.js for speed-intensive stuff like physics, JS for the rest
-     * bullet [demo] with 500 boxes etc
--->
-
       </div>
     </div>
 
