@@ -69,7 +69,7 @@
           <img src="browser-logos.png" style="border: 0; box-shadow: none; height: 4em">
           <br>
           <p class="fragment">Biggest <b>open</b> and <b>standards-based</b> platform</p>
-          <p class="fragment">Best way to reach users</p>
+          <p class="fragment">Great way to reach users</p>
           <p class="fragment">Would be great if it were <strong>fast</strong> as well ;)</p>
           <br>
           <img src="HTML5.png" style="border: 0; box-shadow: none; height: 4em">
@@ -117,15 +117,8 @@
         </section>
 
         <section>
-          <h3><b>JavaScript Naysaying / Time</b></h3>
-          <p class="fragment">"JS is <b>100x</b> slower than native code" (and it was, when it was just interpreted)</p>
-          <p class="fragment">"JS is <b>10x</b> slower than native code" (and it was, when it was first JIT compiled)</p>
-          <p class="fragment">Today JS engines are much faster, and critics say "<strong>any</strong> slowdown is bad" (and that's true too)</p>
-        </section>
-
-        <section>
           <h3><b>asm.js</b></h3>
-          <p class="fragment">But JS engines don't always run at full speed</p>
+          <p>But JS engines don't always run at full speed</p>
           <p class="fragment">Motivated <b>asm.js</b>, an <strong>easy to optimize</strong> subset of JS</p>
           <pre class="fragment"><code contenteditable>  function asmCode(global, env, buffer) {
     'use asm';
@@ -149,15 +142,6 @@
         </section>
 
         <section>
-          <h3><b>asm.js - Background</b></h3>
-          <p class="fragment">Began as a <b>research project</b> at Mozilla</p>
-          <p class="fragment"><b>Every</b> compiler (CoffeeScript, Google Web Toolkit, etc.) generates a particular
-                              pattern of JS</p>
-          <p class="fragment">Emscripten and Mandreel <b>converged</b> on a pattern for compiled <b>C++</b> in JS</p>
-          <p class="fragment">asm.js is a <strong>formal definition</strong> of that pattern, with some improvements</p>
-        </section>
-
-        <section>
           <h3><b>Box2D results</b></h3>
           <a class="fragment" href="box2d_graph_updated2.png"><img src="box2d_graph_updated2.png"></a>
           <p class="fragment"><small>source: <a href="https://twitter.com/jgw">@jgw</a>, <a href="http://j15r.com/blog/2013/07/05/Box2d_Addendum">Box2D Addendum</a>; axis is time slower than native, lower is better</small></p>
@@ -170,6 +154,15 @@
         </section>
 
         <section>
+          <h3><b>asm.js - Background</b></h3>
+          <p class="fragment">Began as a <b>research project</b> at Mozilla</p>
+          <p class="fragment"><b>Every</b> compiler (CoffeeScript, Google Web Toolkit, etc.) generates a particular
+                              pattern of JS</p>
+          <p class="fragment">Emscripten and Mandreel <b>converged</b> on a pattern for compiled <b>C++</b> in JS</p>
+          <p class="fragment">asm.js is a <strong>formal definition</strong> of that pattern, with some improvements</p>
+        </section>
+
+        <!--section>
           <h3><b>Box2D: AOT, Progress</b></h3>
           <p>Types do not change, so <b>Ahead Of Time (AOT)</b> compilation is possible w/ asm.js type system</p>
           <div class="fragment">
@@ -177,19 +170,22 @@
             <p><small>source: <a href="http://arewefastyet.com/#machine=12&view=breakdown&suite=asmjs-apps">arewefastyet.com</a>; x axis is time, y axis is milliseconds (lower is better)</small></p>
           </div>
           <p class="fragment">Not necessary, but makes optimization easier</p>
-        </section>
+        </section-->
 
         <section>
-          <h3><b>Cool story, but some of us<br>use Safari or IE..?</b></h3>
+          <p>Ok, near-native speed on <b>Firefox</b> and <b>Chrome</b>...</p>
+          <p>...but some of us use <strong>Safari</strong> or <strong>IE</strong>?</p>
         </section>
 
         <section>
           <h3><b>Safari</b></h3>
-          <img src="safari.png" style="box-shadow: none; height: 3em">
-          <p class="fragment">All browsers optimize JS, but decide which aspects to focus on at which times</p>
-          <div class="fragment">
-          <a href="sunspider.png"><img src="sunspider.png" style="height:7em"></a>
-          <p><small>source: <a href="http://arewefastyet.com/#machine=12">arewefastyet.com</a>; x axis is time, y axis is milliseconds (lower is better)</small></p>
+          <img src="safari.png" style="box-shadow: none; height: 3em; float: right; margin: 1em">
+          <div>
+            <p class="fragment">All browsers optimize JS, but decide which aspects to focus on at which times</p>
+            <div class="fragment">
+            <a href="sunspider.png"><img src="sunspider.png" style="height:7em"></a>
+            <p><small>source: <a href="http://arewefastyet.com/#machine=12">arewefastyet.com</a>; x axis is time, y axis is milliseconds (lower is better)</small></p>
+            </div>
           </div>
         </section>
 
@@ -203,7 +199,7 @@
 
         <section>
           <h3><b>Internet Explorer</b></h3>
-          <img src="ie.png" style="box-shadow: none; height: 3em">
+          <img src="ie.png" style="box-shadow: none; height: 3em; float: right; margin: 1em">
           <p class="fragment">IE11, currently in pre-release, looks <b>promising</b> - I've seen it beat other browsers on some JS tests</p>
           <p class="fragment">Supports <strong>WebGL!</strong></p>
           <p class="fragment">So safe to assume typed arrays will be fast, which means <b>asm.js</b> will be fast</p>
@@ -293,7 +289,7 @@
         <section>
           <p class="fragment">JS is <b>close and getting closer</b> to native speed, even if some hurdles remain</p>
           <p class="fragment">Aside from speed, the web has some <b>special advantages</b></p>
-          <p class="fragment"><a href="finaldemo/index.html"><strong>[for example]</strong></p>
+          <p class="fragment"><a href="finaldemo/index.html"><strong>[closing demo]</strong></p>
         </section>
 
         <section>
