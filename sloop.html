@@ -117,8 +117,7 @@
         </section>
 
         <section>
-          <h3><b>asm.js</b></h3>
-          <p>But JS engines don't always run at full speed</p>
+          <p>JS engines don't always run at full speed</p>
           <p class="fragment">Motivated <b>asm.js</b>, an <strong>easy to optimize</strong> subset of JS</p>
           <pre class="fragment"><code contenteditable>  function asmCode(global, env, buffer) {
     'use asm';
@@ -132,6 +131,7 @@
   }</code></pre>
           <p class="fragment"><b>HEAP</b> cannot be replaced</p>
           <p class="fragment"><b>|0</b> trick ensures 32-bit ints</p>
+          <p class="fragment"><b>Typed arrays</b></p>
         </section>
 
         <section>
@@ -230,7 +230,7 @@
   floats[2] = floats[1] + floats[2];
 </code></pre>
           <p class="fragment">Mathematically provable that those additions can be 32-bit</p>
-          <p class="fragment">No reason JS engines cannot do this right now (Firefox is <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=888109">working on it</a>)</p>
+          <p class="fragment">No reason JS engines cannot do this <strong>right now</strong> (and Firefox is <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=888109">working on it</a>)</p>
         </section>
 
         <section>
@@ -289,8 +289,9 @@
         </section>
 
         <section>
-          <p class="fragment">Putting aside speed, the web has some <b>advantages</b></p>
-          <p class="fragment"><a href="finaldemo/index.html"><strong>[closing demo]</strong></p>
+          <p class="fragment">Float32, SIMD, and threads are in progress, but <b>already</b> many apps run close to native speed</p>
+          <br>
+          <p class="fragment"><a href="finaldemo/index.html"><strong>One final demo</strong></a> before we finish up</p>
         </section>
 
         <section>
@@ -307,10 +308,10 @@
         <section>
           <h3><b>Demo Tech Details</b></h3>
           <p class="fragment">Boon runs in a <b>web worker</b></p>
-          <p class="fragment">Input events are <b>proxied</b> to it, output of software renderer is sent back</p>
+          <p class="fragment">Input events are <b>proxied</b> to it, output of (unoptimized) software renderer is sent back</p>
           <p class="fragment">We push those pixels to a <b>WebGL texture</b></p>
           <p class="fragment">Less than <a href="https://github.com/kripken/BananaBread/blob/experiments/cube2/miniBoon.js">100 lines of code</a> to integrate the two</p>
-          <p class="fragment">Both games run at once at <strong>60fps</strong> on a very average laptop</p>
+          <p class="fragment">Both games run at once at <strong>60fps</strong> on a very average laptop!</p>
         </section>
 
         <section>
