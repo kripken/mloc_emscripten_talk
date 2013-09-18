@@ -106,11 +106,11 @@
           <table class="fragment">
             <th width="40%"><b>back then</b></th><th style="width: 1em"></th><th><strong>today</strong></th>
             <tr><td><hr></td><td></td><td><hr></td></tr>
-            <tr><td><div class="fragment">only ran in Firefox</div></td><td></td><td><div class="fragment">runs in Firefox &amp; Chrome</div></td></tr>
+            <tr><td><div class="fragment">only ran in Firefox</div></td><td></td><td><div class="fragment">runs in Firefox, Chrome</div></td></tr>
             <tr><td></td><td><br style="display: block; margin: 0.1em 0;"></td><td></td></tr>
-            <tr><td><div class="fragment">20 second startup</div></td><td></td><td><div class="fragment">10 second startup</div></td></tr>
+            <tr><td><div class="fragment">20 sec. startup</div></td><td></td><td><div class="fragment">10 sec. startup</div></td></tr>
             <tr><td></td><td><br style="display: block; margin: 0.1em 0;"></td><td></td></tr>
-            <tr><td><div class="fragment">40fps</div></td><td></td><td><div class="fragment">60fps in Firefox &amp; Chrome</div></td></tr>
+            <tr><td><div class="fragment">40fps</div></td><td></td><td><div class="fragment">60fps in Firefox, Chrome</div></td></tr>
           </table>
           <br>
           <img src="chrome_firefox.png" style="box-shadow: none; height: 3em">
@@ -147,8 +147,8 @@
           <a class="fragment" href="box2d_graph_updated2.png"><img src="box2d_graph_updated2.png"></a>
           <p class="fragment"><small>source: <a href="https://twitter.com/jgw">@jgw</a>, <a href="http://j15r.com/blog/2013/07/05/Box2d_Addendum">Box2D Addendum</a>; axis is time slower than native, lower is better</small></p>
           <table class="fragment" style="margin-left: auto; margin-right: auto;">
-            <tr><td><b>Box2dWeb -</b></td><td width="5%"></td><td>Port of Box2D using "typical" JS</td></tr>
-            <tr><td><b>asm.js -</b></td><td></td><td>Port of Box2D using asm.js</td></tr>
+            <tr><td><b>Box2dWeb -</b></td><td width="5%"></td><td>Port using "typical" JS</td></tr>
+            <tr><td><b>asm.js -</b></td><td></td><td>Port using asm.js</td></tr>
           </table>
           <br>
           <p class="fragment">asm.js is <strong>faster</strong> than "typical" JavaScript on Internet Explorer, Chrome and Firefox</p>
@@ -175,7 +175,7 @@
 
         <section>
           <p>Ok, near-native speed on <b>Firefox</b> and <b>Chrome</b>...</p>
-          <p>...but some of us use <strong>Safari</strong> or <strong>IE</strong>?</p>
+          <p class="fragment">...but some of us use <strong>Safari</strong> or <strong>IE</strong>?</p>
         </section>
 
         <section>
@@ -275,9 +275,9 @@
 
         <section>
           <h3><b>3. Threads</b></h3>
-          <p class="fragment">Web workers allow multiple CPU cores to be utilized</p>
-          <p class="fragment">Workers can <b>transfer</b> typed arrays, avoiding copies</p>
-          <p class="fragment">But they can't read and write to the <b>same</b> data at once</p>
+          <p class="fragment">Web workers allow use of multiple CPU cores</p>
+          <p class="fragment">Can <b>transfer</b> typed arrays, no copying</p>
+          <p class="fragment">But threads can't read&amp;write to the <b>same</b> data</p>
           <p class="fragment"><strong>Good</strong> for preventing data races, but <strong>bad</strong> for some types of projects (for example,
                               modern game engines are heavily multithreaded)</p>
         </section>
@@ -294,7 +294,7 @@
           <br>
           <table width="100%">
             <tr>
-            <td><img class="fragment" src="ec.png" style="height: 5em;"></td>
+            <td><a href="http://www.unrealengine.com/html5/"><img class="fragment" src="ec.png" style="height: 5em;"></a></td>
             <td><a href="http://jsmess.textfiles.com/"><img class="fragment" src="jsmess.png" style="height: 5em"></a></td>
             <td><a href="ammo/ammo.html"><img class="fragment" src="bullet3.jpg" style="height: 5em;"></a></td>
             </tr>
@@ -306,12 +306,10 @@
         </section>
 
         <section>
-          <img src="fpsinfps.jpg" style="height: 8em; float: right; margin: 1em">
-          <div style="text-align: left">
-            <p class="fragment"><a href="https://github.com/kripken/BananaBread/">BananaBread</a>, a port of the <a href="http://sauerbraten.org/">Cube 2/Sauerbraten</a> First Person Shooter (FPS) to JS+WebGL</p>
-            <br>
+          <img src="fpsinfps.jpg" style="height: 8em">
+          <div style="">
+            <p class="fragment"><a href="https://github.com/kripken/BananaBread/">BananaBread</a>, a port of the <a href="http://sauerbraten.org/">Sauerbraten</a> First Person Shooter (FPS) to JS+WebGL</p>
             <p class="fragment">Running <strong>inside</strong> it: <a href="https://github.com/kripken/boon">Boon</a>, <b>another</b> FPS</p>
-            <br>
             <p class="fragment">Boon = Doom code (<a href="http://prboom.sourceforge.net/">PrBoom</a>) + <a href="http://www.nongnu.org/freedoom/">Freedoom</a> content</p>
           </div>
         </section>
