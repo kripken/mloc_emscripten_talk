@@ -156,10 +156,14 @@
 
         <section>
           <h3><b>asm.js - Background</b></h3>
+          <div style="margin: 1em"></div>
           <p class="fragment">Began as a <b>research project</b> at Mozilla</p>
+          <div style="margin: 1em"></div>
           <p class="fragment"><b>Every</b> compiler (CoffeeScript, Google Web Toolkit, etc.) generates a particular
                               pattern of JS</p>
+          <div style="margin: 1em"></div>
           <p class="fragment">Emscripten and Mandreel <b>converged</b> on a pattern for compiled <b>C++</b> in JS</p>
+          <div style="margin: 1em"></div>
           <p class="fragment">asm.js is a <strong>formal definition</strong> of that pattern, with some improvements</p>
         </section>
 
@@ -194,8 +198,10 @@
           <h3><b>Safari</b></h3>
           <a href="w_safari.png"><img src="w_safari.png" style="height: 10em"></a>
           <br>
+          <div style="margin: 1em"></div>
           <p class="fragment">Very close on some, farther on others</p>
-          <p class="fragment">Not standing still: Experimenting with using <a href="https://bugs.webkit.org/show_bug.cgi?id=112840">LLVM as a JIT</a></p>
+          <div style="margin: 1em"></div>
+          <p class="fragment">Experimenting with using <a href="https://bugs.webkit.org/show_bug.cgi?id=112840">LLVM as a JIT</a></p>
         </section>
 
         <section>
@@ -210,15 +216,21 @@
 
         <section>
           <h3><b>Big Picture</b></h3>
+          <div style="margin: 1em"></div>
           <p class="fragment">JS can run at about <b>half</b> the speed of native code</p>
+          <div style="margin: 1em"></div>
           <p class="fragment">Why just half - what are the <strong>remaining issues</strong>?</p>
         </section>
 
         <section>
           <h3><b>1. 32-bit Floats</b></h3>
+          <div style="margin: 1em"></div>
           <p class="fragment">JavaScript numbers are <b>64</b>-bit doubles</p>
+          <div style="margin: 1em"></div>
           <p class="fragment">Often take more CPU cycles to compute</p>
+          <div style="margin: 1em"></div>
           <p class="fragment">Require more memory bandwidth</p>
+          <div style="margin: 1em"></div>
           <p class="fragment">Preliminary tests on Firefox show <strong>10-20%</strong> speed difference on relevant code</p>
         </section>
 
@@ -231,6 +243,7 @@
   floats[2] = floats[1] + floats[2];
 </code></pre>
           <p class="fragment">Mathematically provable that those additions can be 32-bit</p>
+          <div style="margin: 1em"></div>
           <p class="fragment">No reason JS engines cannot do this <strong>right now</strong> (and Firefox is <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=888109">working on it</a>)</p>
         </section>
 
@@ -258,7 +271,7 @@
           <a class="fragment" href="simd.jpg"><img src="simd.jpg"></a>
           <p class="fragment"><small><a href="https://www.kernel.org/pub/linux/kernel/people/geoff/cell/ps3-linux-docs/CellProgrammingTutorial/BasicsOfSIMDProgramming.html">source</a></small></p>
           <p class="fragment">Large parts of CPUs dedicated to SIMD</p>
-          <p class="fragment">C++ has various ways to support it, and some VMs do as well: Mono, Dart</p>
+          <p class="fragment">Usable from C++, Mono, Dart, etc.</p>
         </section>
 
         <section>
@@ -269,23 +282,32 @@
   var z = SIMD.add(x, y);
 </code></pre>
           <p class="fragment"><b>Immutable</b> 128-bit values, designed for what CPUs provide</p>
+          <div style="margin: 1em"></div>
           <p class="fragment">Potentially big (e.g. 300% in some cases) speedups on certain types of code</p>
+          <div style="margin: 1em"></div>
           <p class="fragment"><strong>Collaboration</strong> is ongoing with Google, Mozilla, Intel and TC39</p>
         </section>
 
         <section>
           <h3><b>3. Threads</b></h3>
+          <div style="margin: 1em"></div>
           <p class="fragment">Web workers allow use of multiple CPU cores</p>
+          <div style="margin: 1em"></div>
           <p class="fragment">Can <b>transfer</b> typed arrays, no copying</p>
+          <div style="margin: 1em"></div>
           <p class="fragment">But threads can't read&amp;write to the <b>same</b> data</p>
+          <div style="margin: 1em"></div>
           <p class="fragment"><strong>Good</strong> for preventing data races, but <strong>bad</strong> for some types of projects (for example,
                               modern game engines are heavily multithreaded)</p>
         </section>
 
         <section>
           <h3><b>Threads</b></h3>
+          <div style="margin: 1em"></div>
           <p class="fragment">Various proposals, some experiments, but no clear direction yet</p>
+          <div style="margin: 1em"></div>
           <p class="fragment">Would require all vendors to agree and standardize something new and complex</p>
+          <div style="margin: 1em"></div>
           <p class="fragment">Part of the challenge is figuring out how it <b>fits in</b> with the rest of the web, which does <strong>not</strong> currently have data races at all</p>
         </section>
 
@@ -305,19 +327,26 @@
 
         <section>
           <img src="fpsinfps.jpg" style="height: 8em">
+          <div style="margin: 1em"></div>
           <div style="">
             <p class="fragment"><a href="https://github.com/kripken/BananaBread/">BananaBread</a>, a port of the <a href="http://sauerbraten.org/">Sauerbraten</a> First Person Shooter (FPS) to JS+WebGL</p>
+          <div style="margin: 1em"></div>
             <p class="fragment">Running <strong>inside</strong> it: <a href="https://github.com/kripken/boon">Boon</a>, <b>another</b> FPS</p>
-            <p class="fragment">Boon = Doom code (<a href="http://prboom.sourceforge.net/">PrBoom</a>) + <a href="http://www.nongnu.org/freedoom/">Freedoom</a> content</p>
+            <p class="fragment">(= Doom code (<a href="http://prboom.sourceforge.net/">PrBoom</a>) + <a href="http://www.nongnu.org/freedoom/">Freedoom</a> content)</p>
           </div>
         </section>
 
         <section>
           <h3><b>Demo Tech Details</b></h3>
+          <div style="margin: 1em"></div>
           <p class="fragment">Boon runs in a <b>web worker</b></p>
+          <div style="margin: 1em"></div>
           <p class="fragment">Input events are <b>proxied</b> to it, output of software renderer is sent back</p>
+          <div style="margin: 1em"></div>
           <p class="fragment">We push those pixels to a <b>WebGL texture</b></p>
+          <div style="margin: 1em"></div>
           <p class="fragment">Less than <a href="https://github.com/kripken/BananaBread/blob/experiments/cube2/miniBoon.js">100 lines of code</a> to integrate the two</p>
+          <div style="margin: 1em"></div>
           <p class="fragment">Both games run at once at <strong>60fps</strong> on a very average laptop!</p>
         </section>
 
