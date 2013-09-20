@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>asm.js: Native Speed on the Web</title>
+
+    <meta name="description" content="Native Speed on the Web: JavaScript and asm.js">
+    <meta name="author" content="Alon Zakai">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/sky.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <style type="text/css">
+      h2 b {
+        color: #048;
+      }
+      h3 b {
+        color: #369;
+      }
+      b {
+        color: #41c;
+      }
+      strong {
+        color: #c14;
+      }
+      img {
+        box-shadow: 10px 10px 10px rgba(0,0,0,0.5)
+      }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+
+        <section>
+          <h2><b style="color: #c14">Native Speed</b><b><br>on the Web</b></h2>
+          <p style="margin-top: 1em"> </p>
+          <h2><b style="color: #41c">JavaScript</b><b> &amp; </b><b style="color: #41c">asm.js</b></h2>
+          <br>
+          <h3>Alon Zakai</h3>
+          <p><a href="http://twitter.com/#!/kripken">@kripken</a></p>
+          <p><img src="mozilla_wordmark.png" style="box-shadow: none;" width="20%"></p>
+        </section>
+
+        <section>
+          <h3><b>The Web</b></h3>
+          <img src="browser-logos.png" style="border: 0; box-shadow: none; height: 4em">
+          <br>
+          <p class="fragment">Biggest <b>open</b> and <b>standards-based</b> platform</p>
+          <p class="fragment">Great way to reach users</p>
+          <p class="fragment">Would be great if it were <strong>fast</strong> as well ;)</p>
+          <br>
+          <img src="HTML5.png" style="border: 0; box-shadow: none; height: 4em">
+        </section>
+
+        <section>
+          <h3><b>How fast is it?</b></h3>
+          <br>
+          <div class="fragment">
+            <img src="website_slow.jpg" style="height: 12em">
+          </div>
+        </section>
+
+        <section>
+          <h3><b>Speed on the Web</b></h3>
+          <div style="margin: 1em"></div>
+          <p class="fragment">Speed is determined by many things</p>
+          <div style="margin: 1em"></div>
+          <p class="fragment"><b>DOM</b>, <b>graphics</b>, <b>JavaScript</b></p>
+          <div style="margin: 1em"></div>
+          <p class="fragment">This talk is about <strong>JavaScript</strong></p>
+        </section>
+
+        <section>
+          <h3><b>How fast is JavaScript?</b></h3>
+          <p class="fragment">The <b><a href="epic/EpicCitadel.html"><!--http://www.unrealengine.com/html5/"-->Epic Citadel demo</a></b> is one way to measure</p>
+          <p class="fragment">Large C++ codebase compiled to JS using <a href="http://emscripten.org">Emscripten</a></p>
+          <p class="fragment">Uses only <strong>standard web technologies</strong>, JS and WebGL</p>
+          <hr class="fragment">
+          <p class="fragment"><b>High-end native apps can run in JS!</b></p>
+        </section>
+
+        <section>
+          <h3><b>Epic Citadel: Progress</b></h3>
+          <p class="fragment">Launched March 2013, browsers improved since</p>
+          <br>
+          <table class="fragment">
+            <th width="40%"><b>back then</b></th><th style="width: 1em"></th><th><strong>today</strong></th>
+            <tr><td><hr></td><td></td><td><hr></td></tr>
+            <tr><td><div class="fragment">only ran in Firefox</div></td><td></td><td><div class="fragment">runs in Firefox, Chrome</div></td></tr>
+            <tr><td></td><td><br style="display: block; margin: 0.1em 0;"></td><td></td></tr>
+            <tr><td><div class="fragment">20 sec. startup</div></td><td></td><td><div class="fragment">10 sec. startup</div></td></tr>
+            <tr><td></td><td><br style="display: block; margin: 0.1em 0;"></td><td></td></tr>
+            <tr><td><div class="fragment">40fps</div></td><td></td><td><div class="fragment">60fps in Firefox, Chrome</div></td></tr>
+          </table>
+          <br>
+          <img src="chrome_firefox.png" style="box-shadow: none; height: 3em">
+          <!-- startup: all the time until the game begins to render frames, ignoring network stuff -->
+        </section>
+
+        <section>
+          <p>JS engines don't always run at full speed</p>
+          <p class="fragment">Motivated <b>asm.js</b>, an <strong>easy to optimize</strong> subset of JS</p>
+          <pre class="fragment"><code contenteditable>  function asmCode(global, env, buffer) {
+    'use asm';
+    var HEAP = new global.Uint8Array(buffer);
+    function fib_like(x) {
+      x = x|0;
+      if ((x >>> 0) < 2) return HEAP[x]|0;
+      return ((fib_like((x-2)|0)|0) + (fib_like((x-1)|0)|0))|0;
+    }
+    return fib_like;
+  }</code></pre>
+          <p class="fragment"><b>HEAP</b> cannot be replaced</p>
+          <p class="fragment"><b>|0</b> trick ensures 32-bit ints</p>
+          <p class="fragment"><b>Typed arrays</b></p>
+        </section>
+
+        <section>
+          <h3><b>asm.js Performance</b></h3>
+          <a href="benchmarks.png"><img src="benchmarks.png"></img></a>
+          <br>
+          <p><small>Emscripten benchmark suite (VMs and Emscripten from Sep 13 2013, run on 64-bit ubuntu 12.04)</small></p>
+        </section>
+
+        <section>
+          <h3><b>Box2D results</b></h3>
+          <a class="fragment" href="box2d_graph_updated2.png"><img src="box2d_graph_updated2.png"></a>
+          <p class="fragment"><small>source: <a href="https://twitter.com/jgw">@jgw</a>, <a href="http://j15r.com/blog/2013/07/05/Box2d_Addendum">Box2D Addendum</a>; axis is time slower than native, lower is better</small></p>
+          <table class="fragment" style="margin-left: auto; margin-right: auto;">
+            <tr><td><b>Box2dWeb -</b></td><td width="5%"></td><td>Port using "typical" JS</td></tr>
+            <tr><td><b>asm.js -</b></td><td></td><td>Port using asm.js</td></tr>
+          </table>
+          <br>
+          <p class="fragment">asm.js is <strong>faster</strong> than "typical" JavaScript on Internet Explorer, Chrome and Firefox</p>
+        </section>
+
+        <section>
+          <h3><b>asm.js - Background</b></h3>
+          <div style="margin: 1em"></div>
+          <p class="fragment">Began as a <b>research project</b> at Mozilla</p>
+          <div style="margin: 1em"></div>
+          <p class="fragment"><b>Every</b> compiler (CoffeeScript, Google Web Toolkit, etc.) generates a particular
+                              pattern of JS</p>
+          <div style="margin: 1em"></div>
+          <p class="fragment">Emscripten and Mandreel <b>converged</b> on a pattern for compiled <b>C++</b> in JS</p>
+          <div style="margin: 1em"></div>
+          <p class="fragment">asm.js is a <strong>formal definition</strong> of that pattern, with some improvements</p>
+        </section>
+
+        <!--section>
+          <h3><b>Box2D: AOT, Progress</b></h3>
+          <p>Types do not change, so <b>Ahead Of Time (AOT)</b> compilation is possible w/ asm.js type system</p>
+          <div class="fragment">
+            <a href="asmprogress2.png"><img src="asmprogress2.png" style="height: 7em"></a>
+            <p><small>source: <a href="http://arewefastyet.com/#machine=12&view=breakdown&suite=asmjs-apps">arewefastyet.com</a>; x axis is time, y axis is milliseconds (lower is better)</small></p>
+          </div>
+          <p class="fragment">Not necessary, but makes optimization easier</p>
+        </section-->
+
+        <section>
+          <p>Ok, near-native speed on <b>Firefox</b> and <b>Chrome</b>...</p>
+          <p class="fragment">...but some of us use <strong>Safari</strong> or <strong>IE</strong>?</p>
+        </section>
+
+        <section>
+          <h3><b>Safari</b></h3>
+          <img src="safari.png" style="box-shadow: none; height: 3em; float: right; margin: 1em">
+          <div>
+            <p class="fragment">All browsers optimize JS, but decide which aspects to focus on at which times</p>
+            <div class="fragment">
+            <a href="sunspider.png"><img src="sunspider.png" style="height:7em"></a>
+            <p><small>source: <a href="http://arewefastyet.com/#machine=12">arewefastyet.com</a>; x axis is time, y axis is milliseconds (lower is better)</small></p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3><b>Safari</b></h3>
+          <a href="w_safari.png"><img src="w_safari.png" style="height: 10em"></a>
+          <br>
+          <div style="margin: 1em"></div>
+          <p class="fragment">Very close on some, farther on others</p>
+          <div style="margin: 1em"></div>
+          <p class="fragment">Experimenting with using <a href="https://bugs.webkit.org/show_bug.cgi?id=112840">LLVM as a JIT</a></p>
+        </section>
+
+        <section>
+          <h3><b>Internet Explorer</b></h3>
+          <img src="ie.png" style="box-shadow: none; height: 3em; float: right; margin: 1em">
+          <p class="fragment">IE11, currently in pre-release, looks <b>promising</b> - I've seen it beat other browsers on some JS tests</p>
+          <br>
+          <p class="fragment">Supports <strong>WebGL!</strong></p>
+          <br>
+          <p class="fragment">So safe to assume typed arrays will be fast, which means <b>asm.js</b> will be fast</p>
+        </section>
+
+        <section>
+          <h3><b>Big Picture</b></h3>
+          <div style="margin: 1em"></div>
+          <p class="fragment">JS can run at about <b>half</b> the speed of native code</p>
+          <div style="margin: 1em"></div>
+          <p class="fragment">Why just half - what are the <strong>remaining issues</strong>?</p>
+        </section>
+
+        <section>
+          <h3><b>1. 32-bit Floats</b></h3>
+          <div style="margin: 1em"></div>
+          <p class="fragment">JavaScript numbers are <b>64</b>-bit doubles</p>
+          <div style="margin: 1em"></div>
+          <p class="fragment">Often take more CPU cycles to compute</p>
+          <div style="margin: 1em"></div>
+          <p class="fragment">Require more memory bandwidth</p>
+          <div style="margin: 1em"></div>
+          <p class="fragment">Preliminary tests on Firefox show <strong>10-20%</strong> speed difference on relevant code</p>
+        </section>
+
+        <section>
+          <h3><b>32-bit Floats</b></h3>
+          <p class="fragment">Sometimes possible to do 32-bit math as an <b>optimization</b></p>
+          <pre class="fragment"><code contenteditable>  var floats = new Float32Array(calc());
+  floats[0] = floats[1] + floats[2];
+  floats[1] = floats[0] + floats[2];
+  floats[2] = floats[1] + floats[2];
+</code></pre>
+          <p class="fragment">Mathematically provable that those additions can be 32-bit</p>
+          <div style="margin: 1em"></div>
+          <p class="fragment">No reason JS engines cannot do this <strong>right now</strong> (and Firefox is <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=888109">working on it</a>)</p>
+        </section>
+
+        <section>
+          <h3><b>32-bit Floats</b></h3>
+          <p class="fragment">A "fragile" optimization though</p>
+          <pre class="fragment"><code contenteditable>  var floats = new Float32Array(calc());
+  floats[0] = floats[1] + floats[2] + 1; // can't
+  floats[1] = floats[0] + floats[2] + 1; // be
+  floats[2] = floats[1] + floats[2] + 1; // optimized
+</code></pre>
+          <p class="fragment">But ES6 (proposal for the next version of JS) includes <b>Math.fround</b>,
+                              which rounds to 32-bit precision</p>
+          <pre class="fragment"><code contenteditable>  var floats = new Float32Array(calc());
+  floats[0] = Math.fround(floats[1] + floats[2]) + 1;
+  floats[1] = Math.fround(floats[0] + floats[2]) + 1;
+  floats[2] = Math.fround(floats[1] + floats[2]) + 1;
+</code></pre>
+          <p class="fragment"><strong>Now it's optimizable!</strong></p>
+        </section>
+
+        <section>
+          <h3><b>2. SIMD</b></h3>
+          <p class="fragment">Single Instruction, Multiple Data: <b>SSE</b>, <b>NEON</b>, etc.</p>
+          <a class="fragment" href="simd.jpg"><img src="simd.jpg"></a>
+          <p class="fragment"><small><a href="https://www.kernel.org/pub/linux/kernel/people/geoff/cell/ps3-linux-docs/CellProgrammingTutorial/BasicsOfSIMDProgramming.html">source</a></small></p>
+          <p class="fragment">Large parts of CPUs dedicated to SIMD</p>
+          <p class="fragment">Usable from C++, Mono, Dart, etc.</p>
+        </section>
+
+        <section>
+          <h3><b>SIMD</b></h3>
+          <p class="fragment">John McCutchan from Google wrote a <a href="https://github.com/johnmccutchan/ecmascript_simd">proposal for SIMD in JS</a></p>
+          <pre class="fragment"><code contenteditable>  var x = float32x4(1, 2, 3.14159, 22.5);
+  var y = float32x4(0, 0, 1, 0);
+  var z = SIMD.add(x, y);
+</code></pre>
+          <p class="fragment"><b>Immutable</b> 128-bit values, designed for what CPUs provide</p>
+          <div style="margin: 1em"></div>
+          <p class="fragment">Potentially big (e.g. 300% in some cases) speedups on certain types of code</p>
+          <div style="margin: 1em"></div>
+          <p class="fragment"><strong>Collaboration</strong> is ongoing with Google, Mozilla, Intel and TC39</p>
+        </section>
+
+        <section>
+          <h3><b>3. Threads</b></h3>
+          <div style="margin: 1em"></div>
+          <p class="fragment">Web workers allow use of multiple CPU cores</p>
+          <div style="margin: 1em"></div>
+          <p class="fragment">Can <b>transfer</b> typed arrays, no copying</p>
+          <div style="margin: 1em"></div>
+          <p class="fragment">But threads can't read&amp;write to the <b>same</b> data</p>
+          <div style="margin: 1em"></div>
+          <p class="fragment"><strong>Good</strong> for preventing data races, but <strong>bad</strong> for some types of projects (for example,
+                              modern game engines are heavily multithreaded)</p>
+        </section>
+
+        <section>
+          <h3><b>Threads</b></h3>
+          <div style="margin: 1em"></div>
+          <p class="fragment">Various proposals, some experiments, but no clear direction yet</p>
+          <div style="margin: 1em"></div>
+          <p class="fragment">Would require all vendors to agree and standardize something new and complex</p>
+          <div style="margin: 1em"></div>
+          <p class="fragment">Part of the challenge is figuring out how it <b>fits in</b> with the rest of the web, which does <strong>not</strong> currently have data races at all</p>
+        </section>
+
+        <section>
+          <p class="fragment"><b>Already</b> many apps run +- native speed</p>
+          <br>
+          <table width="100%">
+            <tr>
+            <td><a href="http://www.unrealengine.com/html5/"><img class="fragment" src="ec.png" style="height: 5em;"></a></td>
+            <td><a href="http://jsmess.textfiles.com/"><img class="fragment" src="jsmess.png" style="height: 5em"></a></td>
+            <td><a href="ammo/ammo.html"><img class="fragment" src="bullet3.jpg" style="height: 5em;"></a></td>
+            </tr>
+          </table>
+          <hr class="fragment">
+          <a class="fragment" href="finaldemo/game.html?low,low"><img src="fpsinfps.jpg" style="height: 6em"></a>
+        </section>
+
+        <section>
+          <img src="fpsinfps.jpg" style="height: 8em">
+          <div style="margin: 1em"></div>
+          <div style="">
+            <p class="fragment"><a href="https://github.com/kripken/BananaBread/">BananaBread</a>, a port of the <a href="http://sauerbraten.org/">Sauerbraten</a> First Person Shooter (FPS) to JS+WebGL</p>
+          <div style="margin: 1em"></div>
+            <p class="fragment">Running <strong>inside</strong> it: <a href="https://github.com/kripken/boon">Boon</a>, <b>another</b> FPS</p>
+            <p class="fragment">(= Doom code (<a href="http://prboom.sourceforge.net/">PrBoom</a>) + <a href="http://www.nongnu.org/freedoom/">Freedoom</a> content)</p>
+          </div>
+        </section>
+
+        <section>
+          <h3><b>Demo Tech Details</b></h3>
+          <div style="margin: 1em"></div>
+          <p class="fragment">Boon runs in a <b>web worker</b></p>
+          <div style="margin: 1em"></div>
+          <p class="fragment">Input events are <b>proxied</b> to it, output of software renderer is sent back</p>
+          <div style="margin: 1em"></div>
+          <p class="fragment">We push those pixels to a <b>WebGL texture</b></p>
+          <div style="margin: 1em"></div>
+          <p class="fragment">Less than <a href="https://github.com/kripken/BananaBread/blob/experiments/cube2/miniBoon.js">100 lines of code</a> to integrate the two</p>
+          <div style="margin: 1em"></div>
+          <p class="fragment">Both games run at once at <strong>60fps</strong> on a very average laptop</p>
+        </section>
+
+        <section>
+          <h3><b>Summary</b></h3>
+          <br>
+          <p class="fragment">JS is <b>close and getting closer</b> to native speed</p>
+          <br>
+          <p class="fragment">Even on missing pieces (SIMD, float32, etc.), <b>progress is happening</b></p>
+          <br><hr class="fragment"><br>
+          <p class="fragment"><b style="color: #c11">That's it! :) Questions?</b></p>
+        </section>
+        </section>
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+
+    <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: 'sky', //Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'fade', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+
+          // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>
