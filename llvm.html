@@ -139,6 +139,7 @@
           <h3><b>Emscripten's approach</b></h3>
           <p>Emit "low-level" JavaScript, very close to LLVM IR</p>
           <p>Avoid creating JS objects, arrays, closures, etc.</p>
+          <p>Do create normal JS calls and local variables as much as possible</p>
         </section>
 
         <section>
@@ -207,6 +208,30 @@
         </section>
 
         <section>
+          <h3><b>Why no backend?</b></h3>
+          <p>JS is such an odd target, maximal flexibility in codegen seemed crucial</p>
+          <p>Helped prototype and test various models over the years</p>
+          <p>But final model is in fact fairly low-level and close to what an LLVM backend would emit</p>
+        </section>
+
+        <section>
+          <h3><b>Why no backend?</b></h3>
+          <p>Even so, not sure about feasibility of doing some things in an LLVM backend:</p>
+          <p>(I am sure anything is possible with enough work, question is practicality)</p>
+          <p>Expressionizer, with precise JS semantics</p>
+          <p>Variable consolidation, but not real regalloc, different goals (JS engine will regalloc anyhow)</p>
+          <p>Misc stuff like function calls using normal JS and not the C stack</p>
+        </section>
+
+        <section>
+          <h3><b>Why no backend?</b></h3>
+          <p>At least 3 compilers from LLVM to JS, each with a different approach:</p>
+          <p>Mandreel: LLVM backend using tblgen, selection DAG (like SPARC backend)</p>
+          <p>Duetto: Backend doing passes on LLVM Module object (like C++ backend)</p>
+          <p>Emscripten: External backend that reads LLVM bitcode and has its own IR</p>
+        </section>
+
+        <section>
           <h3><b>Emscripten Compiler</b></h3>
           <p>Parse LLVM assembly into Emscripten internal IR</p>
           <p>Legalize</p>
@@ -217,7 +242,7 @@
         <section>
           <h3><b>Emscripten Optimizer</b></h3>
           <p>Parse JS (using UglifyJS)</p>
-          <p>Expressionize - model JS semantics exactly (sometimes surprising)</p>
+          <p>Expressionize - model JS semantics exactly (sometimes surprising), easier on JS AST</p>
           <p>Registerize</p>
           <p>Miscellaneous peephole optimizations</p>
         </section>
