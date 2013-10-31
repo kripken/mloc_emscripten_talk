@@ -255,16 +255,20 @@
         </section>
 
         <section>
-* Challenges/Opportunities in current emscripten
-  * Compilation speed
-  * Legalization
-  * Upstream parts? Relooper? Rewrite more to C++? Can a tblgen backend achieve the full stuff we already do?
+          <h3><b>Issues</b></h3>
+          <p>Thoughts, comments on the following would be very welcome!</p>
+<p>
+  * Compilation speed - takes a few minutes for a full rebuild of a million lines of code
+  * Upstream parts? Relooper is in C++ and already used by other projects (e.g. Duetto)?
+  * SHould we write more to C++? Perhaps an LLVM backend (which kind)?
   * list of things we can do for wins:
     * optimize llvm-link
     * optimize our useage of opt, opt and dis to a single binary, no serializing
       * clang => opt => llvm-dis => compiler => optimizer
     * minifier LLVM IR pass
+</p>
         </section>
+
 
 
 
