@@ -199,15 +199,33 @@
     * Optimizations that make our lives difficult, e.g. load i64, bitcast to double, then work on that - bad for us
         </section>
 
+        <section>
+          <h3><b>Emscripten Architecture</b></h3>
+          <p>LLVM assembly => Emscripten Compiler => Emscripten Optimizer</p>
+          <p>Compiler and optimizer are written in JavaScript</p>
+          <p>NOT an LLVM backend (discussion of mandreel and duetto approaches)</p>
+        </section>
+
+        <section>
+          <h3><b>Emscripten Compiler</b></h3>
+          <p>Parse LLVM assembly into Emscripten internal IR</p>
+          <p>Legalize</p>
+          <p>Emit blocks by generating JS for each LLVM instruction separately</p>
+          <p>Reloop - generate loops and ifs from basic blocks</p>
+        </section>
+
+        <section>
+          <h3><b>Emscripten Optimizer</b></h3>
+          <p>Parse JS (using UglifyJS)</p>
+          <p>Expressionize - model JS semantics exactly (sometimes surprising)</p>
+          <p>Registerize</p>
+          <p>Miscellaneous peephole optimizations</p>
+        </section>
+
 Points
 
 * Emscripten architecture
-  * clang => opt => llvm-dis => compiler => optimizer
-  * compiler details
-    * |0, relooper, longjmp, exceptions
-  * optimizer details
-    * expressionize and registerize, heavy reliance on JS semantics
-  * history: memory model, object model, and current emscriptne/madnreek => asm.js model
+  * longjmp, exceptions
   * misc features: simd inc. autovectorization, float32
 * Challenges/Opportunities in current emscripten
   * Compilation speed
@@ -216,6 +234,7 @@ Points
   * list of things we can do for wins:
     * optimize llvm-link
     * optimize our useage of opt, opt and dis to a single binary, no serializing
+      * clang => opt => llvm-dis => compiler => optimizer
     * minifier LLVM IR pass
 
         <section>
