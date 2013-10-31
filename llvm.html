@@ -78,6 +78,23 @@
           <hr>
         </section>
 
+Points
+
+* Why this is interesting
+  * high level language
+  * relooping (no gotos)
+  * exceptions, setjmp
+* Emscripten architecture
+  * clang => opt => llvm-dis => compiler => optimizer
+  * compiler details
+  * optimizer details
+  * history: memory model, object model, and current emscriptne/madnreek => asm.js model
+  * misc features: simd inc. autovectorization, float32
+* Challenges in current emscripten
+  * Compilation speed
+  * Upstream parts? Relooper? Rewrite more to C++? Can a tblgen backend achieve the full stuff we already do?
+* Demos: Epic citadel, mess|other emulator, llvm ir in browser, clang?
+
         <section>
           <h3><b>Code on The Web</b></h3>
           <p class="fragment">JavaScript is the <b>only</b> standards-based language in web browsers</p>
