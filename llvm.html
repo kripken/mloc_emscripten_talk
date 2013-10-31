@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>asm.js: Native Speed on the Web</title>
+
+    <meta name="description" content="JavaScript + Other Languages">
+    <meta name="author" content="Alon Zakai">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/sky.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <style type="text/css">
+      h2 b {
+        color: #048;
+      }
+      h3 b {
+        color: #369;
+      }
+      b {
+        color: #63a;
+      }
+      strong {
+        color: #c11;
+      }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+
+        <section>
+          <h2><b>asm.js: <div style="color: #c11">Native Speed</div> on the Web</b></h2>
+          <br>
+          <h3>Alon Zakai (Mozilla)</h3>
+          <p><a href="http://twitter.com/#!/kripken">@kripken</a></p>
+        </section>
+
+        <section>
+          <h3><b>The Web</b></h3>
+          <p class="fragment">You already use it!</p>
+          <br>
+          <img src="browser-logos.png" style="border: 0; box-shadow: none;">
+        </section>
+
+        <section>
+          <h3><b>The Web</b></h3>
+          <p>More stuff has been moving to the <b>client</b> in recent years: AJAX, etc.</p>
+          <p class="fragment">Limitations have been <strong>language support</strong> and <strong>performance</strong></p></p>
+          <br>
+          <img src="browser-logos.png" style="border: 0; box-shadow: none;">
+        </section>
+
+        <section>
+          <h3><b>Languages and Performance</b></h3>
+          <p>These are <b>related</b> issues: JavaScript used to be "slow"</p>
+          <p class="fragment">Before we go into them, remember:<br><strong>Performance != JavaScript</strong></p>
+          <p class="fragment">The <b>DOM</b> used to be "slow"</p>
+          <p class="fragment"><b>Graphics</b> used to be "slow"</p>
+        </section>
+
+        <section>
+          <h3><b>DOM and Graphics</b></h3>
+          <p>I won't focus on these, but:</p>
+          <p class="fragment"><b>DOM access</b> is now very fast</p>
+          <p class="fragment"><b>Hardware acceleration</b> is now common</p>
+          <p class="fragment"><b>WebGL</b> support ships in Firefox and Chrome, will ship in Internet Explorer and Safari</p>
+          <p class="fragment">(<strong>Unless</strong> you need to support old browsers...)</p>
+        </section>
+
+        <section>
+          <h3><b>Code on The Web</b></h3>
+          <p class="fragment">JavaScript is the <b>only</b> standards-based language in web browsers</p>
+          <p class="fragment">If we want to run other languages on the web we need to go <strong>through</strong> JavaScript</p>
+          <br>
+          <img src="browser-logos.png" style="border: 0; box-shadow: none;">
+        </section>
+
+        <section>
+          <h3><b>Going through JavaScript</b></h3>
+          <p>Might seem like an odd solution</p>
+          <p class="fragment">But <b>replacing</b> JavaScript with anything else would slow down the web</p>
+          <p class="fragment">Adding <b>another</b> virtual machine (VM) alongside JavaScript is complicated (cross-VM GC, etc.)</p>
+          <p class="fragment"><strong>Consensus to standardize</strong> any such change would be very hard</p>
+        </section>
+
+        <section>
+          <h3><b>Going through JavaScript</b></h3>
+          <p>But it turns out to be <strong>not</strong> so odd!</p>
+          <p class="fragment">Running other languages in JavaScript <b>requires no standardization</b></p>
+          <p class="fragment">Turns out <b>performance can be good</b> in many cases</p>
+          <p class="fragment">No new VM means <b>no new attack surface</b> for exploits</p>
+        </section>
+
+        <section>
+          <h3><b>1. Compile Code to JS</b></h3>
+          <p>
+            <ul>
+              <li><b>C/C++</b>: Emscripten, Mandreel</li>
+              <li><b>Java</b>: Google Web Toolkit (GWT)</li>
+              <li><b>C#</b>: JSIL, Script#</li>
+              <li><b>Python</b>: pyjs</li>
+              <li><b>Lua</b>: lua.js</li>
+              <li><b>CoffeeScript, TypeScript, Dart</b>, etc.</li>
+              <li><a href="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">Jeremy Ashkenas's list</a> has many dozens</li>
+            </ul>
+          </p>
+        </section>
+
+        <section>
+          <h3><b>Compiling to JavaScript:<br>Nothing New!</b></h3>
+          <ul>
+            <li><strong>2006</strong>: <b>GWT</b> (Java)</li>
+            <li><strong>2007</strong>: <b>pyjamas</b> (Python)</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3><b>Adoption</b></h3>
+          <p><strong>Java</strong> <b>(GWT)</b> used in <a href="http://www.blogger.com/">Blogger</a>, enterprise apps</p>
+          <p><strong>C#</strong> <b>(Script#)</b> used in <a href="http://office.microsoft.com/en-us/web-apps">Microsoft Office Web Apps</a></p>
+        </section>
+
+        <!--section>
+          <h3><b>How Compilation Works</h3></b>
+          <p>For example, in Emscripten:</p>
+          <hr>
+          <ul>
+            <p><b>C/C++</b> <strong>=></strong> <b>LLVM</b> <strong>=></strong> <b>Emscripten</b> <strong>=></strong> <b>JS</b></p>
+          </ul>
+          <hr>
+        </section-->
+
+        <section>
+          <pre><code contenteditable>  float array[5000]; // C++
+  int main() {
+    for (int i = 0; i < 5000; ++i) {
+      array[i] += 1.0f;
+    }
+  }</code></pre>
+          <h3><b>&rArr; emscripten &rArr;</b></h3>
+          <pre><code contenteditable>  var g = Float32Array(32768); // JavaScript
+  function main() {
+    var a = 0, b = 0;
+    do {
+      a = 8 + (b << 2) | 0;
+      g[a >> 2] = +g[a >> 2] + 1.0;
+      b = b + 1 | 0;
+    } while ((b | 0) < 5000);
+  }</code></pre>
+          <p class="fragment">This is a subset of JS called <b><a href="http://asmjs.org">asm.js</a></b></p>
+        </section>
+
+        <section>
+          <h3><b>asm.js</b></h3>
+          <p>An <b>optimizable subset of JavaScript</b>, intended primary as a compiler target</p>
+          <p class="fragment"><b>Avoids potential slowdowns</b> (types changing, GC pauses)</p>
+          <p class="fragment"><strong>Low-level</strong> and <strong>easy to optimize</strong></p>
+        </section>
+
+        <section>
+          <h3><b>asm.js</b></h3>
+          <p>That asm.js example from before:</p>
+          <pre><code contenteditable>  var g = Float32Array(32768); // JavaScript
+  function main() {
+    var a = 0, b = 0;
+    do {
+      a = 8 + (b << 2) | 0;
+      g[a >> 2] = +g[a >> 2] + 1.0;
+      b = b + 1 | 0;
+    } while ((b | 0) < 5000);
+  }</code></pre>
+          <p class="fragment">Integers remain integers</p>
+          <p class="fragment">"Memory" is a fast typed array</p>
+        </section>
+
+        <section>
+          <h3><b>asm.js - Background</b></h3>
+          <p><b>Every</b> compiler - GWT, CoffeeScript, etc. - generates a particular <b>subset</b> of JavaScript</p>
+          <p class="fragment">Emscripten and Mandreel <b>converged</b> on a useful subset for C/C++</p>
+          <p class="fragment">Added to a <b>popular benchmark</b>, Google Octane</p>
+          <p class="fragment">asm.js <strong>formalizes</strong> that subset</p>
+        </section>
+
+        <section>
+          <h3><b>Performance</b></h3>
+          <a href="asm_jul_10_2013.png"><img src="asm_jul_10_2013.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></a>
+          <p><small>(VMs and Emscripten from July 10th 2013, run on 64-bit linux)</small></p>
+        </section>
+
+        <section>
+          <h3><b>In Detail: Box2D</b></h3>
+          <a href="box2d_graph_updated2.png"><img src="box2d_graph_updated2.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></a>
+          <p><small>source: <a href="https://twitter.com/jgw">@jgw</a>, <a href="http://j15r.com/blog/2013/07/05/Box2d_Addendum">Box2D Addendum</a></small></p>
+          <br>
+          <p class="fragment">asm.js is <strong>faster</strong> than "typical" JavaScript on Internet Explorer, Chrome and Firefox</p>
+          <p class="fragment">asm.js on Firefox and Chrome is comparable to <b>Java</b></p>
+        </section>
+
+        <section>
+          <h3><b>asm.js - why it works</b></h3>
+          <p>Ensures that <b>types are not mixed up</b></p>
+          <p class="fragment">Makes it possible to reason about <b>global program structure</b></p>
+          <hr class="fragment">
+          <p class="fragment">Helps in <strong>existing</strong> JavaScript engines by making it simpler to detect types and avoid them changing later</p>
+          <p class="fragment">Makes <strong>ahead of time (AOT)</strong> compilation possible with asm.js-specific optimizations</p>
+        </section>
+
+        <section>
+          <h3><b>Box2D: Progress and AOT</b></h3>
+          <a href="asmprogress2.png"><img src="asmprogress2.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></a>
+          <p><small>source: <a href="http://arewefastyet.com/#machine=12&view=breakdown&suite=asmjs-apps">arewefastyet.com</a></small></p>
+          <p class="fragment">AOT (red/orange) still faster, but lead is decreasing</p>
+        </section>
+
+        <section>
+          <h3><b>Performance: Summary</b></h3>
+          <p>C/C++ compiled to JavaScript can run <b>close to native speed</b></p>
+          <p class="fragment"><b>No need to standardize</b> (asm.js is just like GWT, CoffeeScript, etc.), so improves at the speed that JS engines improve: <strong>FAST</strong></p>
+          <p class="fragment"><b>Already</b> fast enough even for demanding use cases like <b><a href="epic/EpicCitadel.html">3D games</a></b></p>
+        </section>
+
+          <!--a href="http://emscripten.org"><img src="emscripten_switch_logo.png" width="40%" style="border: 0; box-shadow: none;"></a-->
+
+        <section>
+          <h3><b>Uses</b></h3>
+          <p>Not just for games, but for <strong>anything</strong> that needs raw computation</p>
+          <ul>
+            <li class="fragment"><b>Physics</b> engines like <a href="ammo/ammo.html">Bullet</a></li>
+            <li class="fragment"><b>3D plotting</b> using <a href="http://gnuplot.respawned.com/">GNU plot</a></li>
+            <li class="fragment"><b>2D graphing</b> using <a href="http://mdaines.github.io/viz.js/example.html">graphviz</a></li>
+            <li class="fragment"><b>PNG compression</b> using <a href="http://richardassar.github.io/pngcrush.js/">pngcrush</a></li>
+            <li class="fragment">Even <b>programming languages</b> like <a href="http://kripken.github.io/lua.vm.js/repl.html">Lua</a></li>
+          </ul>
+        </section>
+
+        <section>
+          <h3><b>asm.js - Status</b></h3>
+          <p><b><a href="http://emscripten.org">Emscripten</a></b> can emit asm.js output</p>
+          <p class="fragment">asm.js code already works in <b>all modern browsers</b>: IE10, Chrome, Firefox, Safari</p>
+          <p class="fragment">Requires nothing more than normal JavaScript plus <b>typed arrays</b></p>
+          <p class="fragment"><strong>Early adopters</strong> are mainly in the games industry (Epic, etc.) but not only (Prezi, etc.)</p>
+        </section>
+
+        <section>
+          <h3><b>Using asm.js</b></h3>
+          <p class="fragment">Write performance-sensitive code in <b>C or C++</b></p>
+          <p class="fragment"><b>Compile</b> to asm.js using Emscripten</p>
+          <p class="fragment"><b>Interact</b> with other JavaScript</p>
+        </section>
+
+        <section>
+          <h3><b>Using Emscripten</b></h3>
+          <p><b>emcc</b> is a drop-in replacement for gcc/clang/etc.</p>
+
+          <pre style="background-color: #ccc">
+
+  $ cat hello.c
+  #include "stdio.h"
+  int main() { printf("hello world!\n"); }
+
+  $ emcc hello.c -o hello.js
+
+  $ node hello.js
+  hello world!
+
+</pre>
+
+          <p class="fragment">Can use C APIs like <b>libc</b>, <b>SDL</b>, <b>OpenGL</b>, etc.</p>
+        </section>
+
+        <section>
+          <h3><b>Interacting with<br>Compiled Code</b></h3>
+          <p class="fragment">What do other platforms/environments do?</p>
+        </section>
+
+        <section>
+          <h3><b>Embedding in C/C++</b></h3>
+          <p>Main project is written in C/C++</p>
+          <p>VM for a scripting language (e.g., Python) is <strong>also</strong> written in C/C++</p>
+          <p>VM has a C/C++ API to <b>bridge</b> the two "worlds"</p>
+        </section>
+
+        <section>
+          <h3><b>Embedding Python in C</b></h3>
+          <p>Python makes it easy to run code in its VM:</p>
+          <pre><code contenteditable>  // C code
+  PyRun_SimpleString("print 'hello from python!'");</code></pre>
+          <p>Other APIs let you create Python objects and operate on them from C</p>
+        </section>
+
+        <section>
+          <h3><b>Embedding in C/C++</b></h3>
+          <p>Script language is just another module in the C/C++ project</p>
+          <img src="modules2.png" width="66%" style="border: 0; box-shadow: none;">
+          <p>(it happens to be a VM)</p>
+        </section>
+
+        <section>
+          <h3><b>Python &nbsp; &rArr; &nbsp; C</b></h3>
+          <pre><code contenteditable>  // C++ with Boost.Python
+  #include "boost/python.hpp"
+  char const* greet() {
+    return "hello from C!";
+  }
+  BOOST_PYTHON_MODULE(greeter) {
+    boost::python::def("greet", greet);
+  }
+</code></pre>
+          <hr>
+          <pre><code contenteditable>  # Python
+  >>> import greeter
+  >>> greeter.greet()
+  hello from C!
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>Python &nbsp; &rArr; &nbsp; C++</b></h3>
+          <p>Boost.Python can also wrap C++ classes</p>
+          <pre><code contenteditable>  // C++ class
+  class Cat {
+    string name;
+  public:
+    Cat(string name_) : name(name_) {}
+    void meow() { printf("%s meows\n", name.c_str());
+  };
+  BOOST_PYTHON_MODULE(Cats) {
+    class &lt;Cat&gt;("Cat").def("meow", &Cat::meow);
+  }
+</code></pre>
+          <hr>
+          <pre><code contenteditable>  // Python
+  >>>> import Cats
+  >>>> my_cat = Cats.Cat('Fluffy')
+  >>>> print my_cat.meow()
+  Fluffy meows
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>Ok...</b></h3>
+          <p>But can we do this in <b>JavaScript</b>?</p>
+          <p class="fragment"><strong>YES!</strong></p>
+        </section>
+
+        <section>
+          <h3><b>C &nbsp; &rArr; &nbsp; JavaScript</b></h3>
+          <p>Emscripten provides APIs on the C side</p>
+            <pre><code contenteditable>  #include "emscripten.h"
+  int main() {
+    // Call JS from C
+    emscripten_run_script("alert('hello!')");
+    return 0;
+  }
+</code></pre>
+          <p class="fragment">Similar to how we called Python from C...</p>
+        </section>
+
+        <section>
+          <h3><b>But totally different!</b></h3>
+          <img src="different2.png" style="border: 0; box-shadow: none;">
+          <p class="fragment">Difference doesn't matter though,<br><b>API</b> is the same ;)</p>
+        </section>
+
+        <section>
+          <h3><b>C &nbsp; &rArr; &nbsp; JavaScript (v2)</b></h3>
+          <p>Implement a C API in JS:</p>
+            <pre><code contenteditable>  // myLib.js
+  mergeInto(LibraryManager.library, {
+    js_func: function(x) { alert('you sent ' + x) }
+  });
+</code></pre>
+          <hr>
+          <pre><code contenteditable>  // main.c (emcc main.c --js-library myLib.js)
+  void js_func(int x);
+  int main() {
+    js_func(3); // will cause alert('you sent 3')
+    return 0;
+  }
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>C &nbsp; &rArr; &nbsp; JavaScript (v2)</b></h3>
+          <p>Very efficient:</p>
+            <pre><code contenteditable>  // JavaScript output from last slide's files
+
+  function _js_func(x) { // from JavaScript library
+    alert('you sent ' + x);
+  }
+
+  function _main() { // compiled from C
+    _js_func(3);
+    return 0;
+  }
+</code></pre>
+          <p class="fragment">This is how emscripten implements <b>C APIs</b> (like SDL) using <strong>HTML5 APIs</strong></p>
+        </section>
+
+        <section>
+          <h3><b>JavaScript &nbsp; &rArr; &nbsp; C</b></h3>
+          <p>Emscripten provides APIs on the JS side too</p>
+            <pre><code contenteditable>  // C file that was compiled to JS
+  int c_add(int x, int y) { return x+y; }
+</code></pre>
+          <hr>
+          <pre><code contenteditable>  // Call C from JS
+  var result = ccall('c_add', // name
+                     'number', // return type
+                     ['number', 'number'], // argument types
+                     [10, 20]); // arguments
+  // returns 30
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>JavaScript &nbsp; &rArr; &nbsp; C</b></h3>
+          <p><b>cwrap</b> is useful for multiple calls
+          <pre><code contenteditable>  // Call C from JS
+  var c_add = cwrap('c_add', // name
+                    'number', // return type
+                    ['number', 'number']); // argument types
+
+  console.log(c_add(10, 20)); // 30
+  console.log(c_add(20, 30)); // 50
+</code></pre>
+        <p class="fragment">Wrapper behaves <strong>just like</strong> a normal JS function</p>
+        </section>
+
+        <section>
+          <h3><b>C++ &nbsp; &rArr; &nbsp; JS</b></h3>
+          <p><b>Embind</b>, written by IMVU, glues together C++ and JavaScript</p>
+          <pre><code contenteditable>  // Access JS objects in C++ like C++ objects
+  #include "emscripten/val.h"
+  using namespace emscripten;
+  int main() {
+    val Math = val::global("Math");
+    return Math.call<int>("abs", -10); // returns 10
+  }
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>JS &nbsp; &rArr; &nbsp; C++</b></h3>
+          <p>Embind can also go the other way</p>
+          <pre><code contenteditable>  // C++ library
+  #include "emscripten/bind.h"
+  using namespace emscripten;
+  int c_add(int a, int b) { return a+b; }
+  EMSCRIPTEN_BINDINGS(my_module) {
+      function("c_add", &c_add);
+  }
+</code></pre>
+          <hr>
+          <pre><code contenteditable>  // Use it in JS
+  alert(Module.c_add(10, 20)); // shows 30
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>JS &nbsp; &rArr; &nbsp; C++</b></h3>
+          <p>Classes as well:</p>
+          <pre><code contenteditable>  // C++ class wrapped by Embind
+  class Cat {
+    string name;
+  public:
+    Cat(string name_) : name(name_) {}
+    void meow() { printf("%s meows\n", name.c_str());
+  };
+  EMSCRIPTEN_BINDINGS(Cats) { // much like Boost.Python...
+    class_&lt;Cat>("Cat").constructor<std::string>()
+                      .function("meow", &Cat::meow);
+  }
+</code></pre>
+          <hr>
+          <pre><code contenteditable>  // JavaScript
+  var myCat = new Module.Cat("Fluffy");
+  alert(myCat.meow()); // shows "Fluffy meows"
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>Challenges</b></h3>
+          <p>No way to know when a JS object is garbage-collected, must call <b>myCat.delete()</b> to clean it up</p>
+          <p class="fragment">Weak refs in JavaScript (ES7) might help fix that</p>
+          <div class="fragment">
+            <hr>
+            <p>But overall, <strong>surprisingly easy</strong> despite big differences in languages</p>
+          </div>
+        </section>
+
+        <section>
+          <h3><b>Summary</b></h3>
+          <p class="fragment">In modern browsers we can run code at <b>near-native</b> speed</p>
+          <p class="fragment">Write in C/C++, compile to <b>asm.js</b></p>
+          <p class="fragment">Why spend money on servers? <b>;)</b></p>
+          <div class="fragment">
+            <hr>
+            <p><b style="color: #c11">That's it! Questions?</b></p>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+
+    <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: 'sky', //Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'fade', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+
+          // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>
