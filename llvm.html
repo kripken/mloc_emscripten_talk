@@ -191,23 +191,15 @@
         </section>
 
         <section>
-          <h3><b>Not the only model</b></h3>
+          <h3><b>Why so low-level?</b></h3>
           <p>Emscripten and other compilers to JS have experimented with "higher-level" output</p>
-          <p>Significant performance limitations</p>
-        </section>
-
-        <section>
-          <h3><b>????Optimizations</b></h3>
-          <p>LLVM: Underlying model allows e.g. reading an i32 and splitting it up, as opposed to reading two i16s</p>
-          <p>JS: Virtual machine, JITs, garbage collection, type profiling, etc.</p>
+          <p>For example, perhaps each LLVM structure could be a JS object?</p>
+          <p>But how would we take pointers to interior fields?</p>
+          <p>Must allow all LLVM optimizations, and those assume a memory model where e.g. it is ok to read an i32 and splitting it up, as opposed to reading two i16s</p>
+    * Optimizations that make our lives difficult, e.g. load i64, bitcast to double, then work on that - bad for us
         </section>
 
 Points
-
-* Why this is interesting / challenging
-  * llvm optimizations assume a C-like underlying model
-    * can load an i32 instead of two separate i16s for example
-    * Optimizations that make our lives difficult, e.g. load i64, bitcast to double, then work on that - bad for us
 
 * Emscripten architecture
   * clang => opt => llvm-dis => compiler => optimizer
