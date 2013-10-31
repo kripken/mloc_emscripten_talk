@@ -88,13 +88,123 @@
           <h3><b>Ok, how does this work?</b></h3>
         </section>
 
+        <section>
+          <h3><b>LLVM vs. JavaScript</b></h3>
+          <br>
+          <p>Some code samples from each:</p>
+          <pre><code>
+    %r = load i32* %p
+    %s = shl i32 %r 16
+    %t = call i32 @calc(i32 %r, i32 %s)
+    br label %next
+
+</code></pre>
+          <hr>
+          <pre><code>
+  var x = new MyClass('name', 5).chain(function() {
+    doMore({ x: 5, y: [1,2,3] });
+  });
+
+</code></pre>
+          <p>What could be more different? ;)</p>
+        </section>
+
+        <section>
+          <h3><b>Types</b></h3>
+          <p>LLVM: i8, i16, i32, float, double, etc.</p>
+          <p>JS: double, object, array, function, etc.</p>
+        </section>
+
+        <section>
+          <h3><b>Performance Model</b></h3>
+          <p>LLVM: Types and operations almost map 1-1 to CPU</p>
+          <p>JS: Virtual machine, JITs, garbage collection, type profiling, etc.</p>
+          <p>HOW DO I MAKE THIS FAST?!</p>
+        </section>
+
+        <section>
+          <h3><b>Control Flow</b></h3>
+          <p>LLVM: Functions, basic blocks and branches</p>
+          <p>JS: Functions, ifs, loops - no goto</p>
+        </section>
+
+        <section>
+          <h3><b>Variables</b></h3>
+          <p>LLVM: Local vars have function scope</p>
+          <p>JS: Local vars have function scope</p>
+          <p>OMG ITS THE SAME FOR ONCE</p>
+        </section>
+
+        <section>
+          <h3><b>Emscripten's approach</b></h3>
+          <p>Emit "low-level" JavaScript, very close to LLVM IR</p>
+          <p>Avoid creating JS objects, arrays, closures, etc.</p>
+        </section>
+
+        <section>
+          <h3><b>LLVM &rArr; JavaScript</b></h3>
+          <br>
+          <pre><code>
+  define i32 @func(i32* %p) {
+    %r = load i32* %p
+    %s = shl i32 %r 16
+    %t = call i32 @calc(i32 %r, i32 %s)
+    ret i32 %t
+  }
+
+</code></pre>
+          <hr>
+          <pre><code>
+  function func(p) {
+    var r = HEAP[p];
+    return calc(r, r << 16);
+  }
+
+</code></pre>
+        </section>
+
+        <section>
+          <pre><code contenteditable>  float array[5000]; // C++
+  int main() {
+    for (int i = 0; i < 5000; ++i) {
+      array[i] += 1.0f;
+    }
+  }</code></pre>
+          <h3><b>&rArr; emscripten &rArr;</b></h3>
+          <pre><code contenteditable>  var g = Float32Array(32768); // JavaScript
+  function main() {
+    var a = 0, b = 0;
+    do {
+      a = 8 + (b << 2) | 0;
+      g[a >> 2] = +g[a >> 2] + 1.0;
+      b = b + 1 | 0;
+    } while ((b | 0) < 5000);
+  }</code></pre>
+          <p class="fragment">This is a subset of JS called <b><a href="http://asmjs.org">asm.js</a></b></p>
+        </section>
+
+        <section>
+          <h3><b>asm.js</b></h3>
+          <p>An <b>optimizable subset of JavaScript</b>, intended primary as a compiler target</p>
+          <p class="fragment"><b>Avoids potential slowdowns</b> (types changing, GC pauses)</p>
+          <p class="fragment"><strong>Low-level</strong> and <strong>easy to optimize</strong></p>
+        </section>
+
+        <section>
+          <h3><b>Not the only model</b></h3>
+          <p>Emscripten and other compilers to JS have experimented with "higher-level" output</p>
+          <p>Significant performance limitations</p>
+        </section>
+
+        <section>
+          <h3><b>????Optimizations</b></h3>
+          <p>LLVM: Underlying model allows e.g. reading an i32 and splitting it up, as opposed to reading two i16s</p>
+          <p>JS: Virtual machine, JITs, garbage collection, type profiling, etc.</p>
+        </section>
+
 Points
 
 * Why this is interesting / challenging
-  * high level language
-  * relooping (no gotos)
-  * performance model is very different
-  * exceptions, setjmp
   * llvm optimizations assume a C-like underlying model
     * can load an i32 instead of two separate i16s for example
     * Optimizations that make our lives difficult, e.g. load i64, bitcast to double, then work on that - bad for us
@@ -102,7 +212,9 @@ Points
 * Emscripten architecture
   * clang => opt => llvm-dis => compiler => optimizer
   * compiler details
+    * |0, relooper, longjmp, exceptions
   * optimizer details
+    * expressionize and registerize, heavy reliance on JS semantics
   * history: memory model, object model, and current emscriptne/madnreek => asm.js model
   * misc features: simd inc. autovectorization, float32
 * Challenges/Opportunities in current emscripten
