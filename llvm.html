@@ -237,6 +237,7 @@
           <p>Legalize</p>
           <p>Emit blocks by generating JS for each LLVM instruction separately</p>
           <p>Reloop - generate loops and ifs from basic blocks</p>
+          <p>Special-case code to handle some tricky things, like longjmp using JS exceptions</p>
         </section>
 
         <section>
@@ -247,11 +248,13 @@
           <p>Miscellaneous peephole optimizations</p>
         </section>
 
-Points
+        <section>
+          <h3><b>Emscripten: Status</b></h3>
+          <p>Quite stable, used in production on very large codebases (Unreal Engine, etc.)</p>
+          <p>Improving in tandem with JS language - new features in JS can be used by Emscripten (e.g. SIMD - LLVM autovectorization works), and the needs of compilers to JS have been listened to in the JS standards bodies - E.g. Math.imul, Math.fround</p>
+        </section>
 
-* Emscripten architecture
-  * longjmp, exceptions
-  * misc features: simd inc. autovectorization, float32
+        <section>
 * Challenges/Opportunities in current emscripten
   * Compilation speed
   * Legalization
@@ -261,6 +264,15 @@ Points
     * optimize our useage of opt, opt and dis to a single binary, no serializing
       * clang => opt => llvm-dis => compiler => optimizer
     * minifier LLVM IR pass
+        </section>
+
+
+
+
+
+
+
+
 
         <section>
           <h3><b>Code on The Web</b></h3>
