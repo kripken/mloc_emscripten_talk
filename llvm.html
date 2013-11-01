@@ -124,7 +124,7 @@
         <section>
           <h3><b>Performance Model</b></h3>
           <p><b>LLVM</b>: Types and operations almost map 1-1 to CPU</p>
-          <p><b>JS</b>: Virtual machine, just in time compilers w/type profiling, garbage collection, etc.</p>
+          <p><b>JS</b>: Virtual machine (VM), just in time (JIT) compilers w/type profiling, garbage collection, etc.</p>
           <p>HOW DO I MAKE THIS FAST?!</p>
         </section>
 
@@ -318,51 +318,46 @@
         </section>
 
         <section>
-          <h3><b>Emscripten Optimizations</b></h3>
+          <h3><b>Optimizations: Summary</b></h3>
           <p>Reloop is simple and more generic (and our code is already used by other projects, e.g. Duetto)</p>
-          <p>Expressionize and Registerize require a precise modelling of JS semantics. Concern is we would need to basically add a JS AST into LLVM.</p>
+          <p>Expressionize and Registerize require a precise modelling of JS semantics. Concern is we would need to basically add a JS AST into LLVM. Or is there a good way in an LLVM backend?</p>
         </section>
 
         <section>
-          <h3><b>Emscripten - Status</b></h3>
-          <p>Quite stable, used in production on very large codebases (Unreal Engine, etc.)</p>
-          <p>Improving in tandem with JS language - new features in JS can be used by Emscripten (e.g. SIMD - LLVM autovectorization works), and the needs of compilers to JS have been listened to in the JS standards bodies - E.g. Math.imul, Math.fround</p>
+          <h3><b>JS as a compilation target</b></h3>
+          <p>Began as a slow interpreted language, became a JITed language</p>
+          <p>Emscripten and Mandreel output led to JS VM optimizations and asm.js</p>
+          <p>Also to some new JS language features (Math.imul, etc.)</p>
         </section>
 
         <section>
-          <h3><b>Issues</b></h3>
-          <p>Thoughts, comments on the following would be very welcome!</p>
-<p>
-  * Compilation speed - takes a few minutes for a full rebuild of a million lines of code
-  * Upstream parts? Relooper is in C++ and already used by other projects (e.g. Duetto)?
-  * SHould we write more to C++? Perhaps an LLVM backend (which kind)?
-  * list of things we can do for wins:
-    * optimize llvm-link
-    * optimize our useage of opt, opt and dis to a single binary, no serializing
-      * clang => opt => llvm-dis => compiler => optimizer
-    * minifier LLVM IR pass
-</p>
+          <h3><b>SIMD</b></h3>
+          <p><a href="https://github.com/johnmccutchan/ecmascript_simd">SIMD</a> is coming to JS</p>
+          <p>Emscripten supports LLVM vector types, so both C intrinsics and LLVM autovectorization work</p>
+          <p>When SIMD spec is finalized and JS engines support, it will be fast</p>
+        </section>
+
+        <section>
+          <h3><b>float32</b></h3>
+          <p>JS numbers are doubles, and hard to emulate 32-bit float's lower precision (and higher speed)</p>
+          <p>Math.fround is a new JS feature that rounds 64-bit doubles to 32-bit floats</p>
+          <pre><code>
+  var a = Math.fround(1.23456789);
+  var b = Math.fround(9.9E99);
+  print(Math.fround(a + b));
+</code></pre>
+          <p>JS engines can optimize that into 32-bit floats, no doubles. So Emscripten can emit JS that translates LLVM floats into floats in JS VMs</p>
         </section>
 
         <section>
           <h3><b>Summary</b></h3>
           <p class="fragment">LLVM bitcode can be compiled to JavaScript</p>
-          <p class="fragment">Allows LLVM bitcode to run in all browers</p>
-          <p class="fragment">And even at near-native speed, in most of them</p>
+          <p class="fragment">Allows LLVM bitcode to run in all browers, at high speeds</p>
           <div class="fragment">
             <hr>
             <p><b style="color: #c11">That's it! Questions?</b></p>
           </div>
         </section>
-
-
-
-
-
-
-
-
-
 
       </div>
     </div>
