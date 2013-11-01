@@ -233,8 +233,8 @@
           <p>There are least 3 such compilers:</p>
           <ul>
             <li>Mandreel: Typical LLVM backend, uses tblgen, selection DAG (like x86, ARM backends)</li>
-            <li>Duetto: Processes llvm::Module (like C++ backend)</li>
-            <li>Emscripten: Processes LLVM assembly</li>
+            <li>Duetto: Processes LLVM IR in llvm::Module (like C++ backend)</li>
+            <li>Emscripten: Processes LLVM IR in assembly</li>
           </ul>
           <p>What is the best approach today for this?</p>
         </section>
@@ -276,17 +276,17 @@
         <section>
           <h3><b>2. Registerize</b></h3>
           <pre><code>
-  var a = g(x);
-  var b = a + y;
-  var c = HEAP[b];
-  var d = HEAP[20];
+  var a = g(x) | 0; // integers 
+  var b = a + y | 0;
+  var c = HEAP[b] | 0;
+  var d = +HEAP[20]; // float
 
 </code></pre>
           <h3><b>&rArr;</b></h3>
           <pre><code>
   var a = g(x) | 0;
   a = a + y | 0;
-  a = HEAP[a];
+  a = HEAP[a] | 0;
   var b = +HEAP[20];
 
 </code></pre>
@@ -338,12 +338,17 @@
   var a = Math.fround(1.23456789);
   var b = Math.fround(9.9E99);
   print(Math.fround(a + b));
+
 </code></pre>
           <p>JS engines can optimize that into 32-bit floats, no doubles. So Emscripten can emit JS that translates LLVM floats into floats in JS VMs</p>
         </section>
 
         <section>
           <h3><b>SIMD</b></h3>
+          <p class="fragment">Single Instruction, Multiple Data: <b>SSE</b>, <b>NEON</b>, etc.</p>
+          <a class="fragment" href="simd.jpg"><img src="simd.jpg"></a>
+          <p class="fragment"><small><a href="https://www.kernel.org/pub/linux/kernel/people/geoff/cell/ps3-linux-docs/CellProgrammingTutorial/BasicsOfSIMDProgramming.html">source</a></small></p>
+          <p class="fragment">Large parts of CPUs dedicated to SIMD</p>
           <p><a href="https://github.com/johnmccutchan/ecmascript_simd">SIMD</a> is coming to JS</p>
           <p>Emscripten supports LLVM vector types, so both C intrinsics and LLVM autovectorization work</p>
           <p>When SIMD spec is finalized and JS engines support, it will be fast</p>
@@ -353,6 +358,7 @@
           <h3><b>Summary</b></h3>
           <p class="fragment">LLVM bitcode can be compiled to JavaScript</p>
           <p class="fragment">Allows LLVM bitcode to run in all browers, at high speeds</p>
+          <p class="fragment">Approach is seeing adoption on the web, by games companies, etc.</p>
           <div class="fragment">
             <hr>
             <p><b style="color: #c11">That's it! Questions?</b></p>
