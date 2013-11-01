@@ -142,15 +142,17 @@
         </section>
 
         <section>
-          <h3><b>Emscripten's approach</b></h3>
-          <p>Emit "low-level" JavaScript, very close to LLVM IR</p>
-          <p>Avoid creating JS objects, arrays, closures, etc.</p>
-          <p>Do create normal JS calls and local variables as much as possible</p>
+          <h3><b>Ok, how do we get<br>around these issues?</b></h3>
         </section>
 
         <section>
-          <h3><b>LLVM &rArr; JavaScript</b></h3>
-          <br>
+          <h3><b>Emscripten's approach</b></h3>
+          <p>Emit "low-level" JavaScript, close to LLVM IR</p>
+          <p>No JS objects, arrays, closures, etc.</p>
+          <p>But <b>do</b> emit normal JS calls, vars, etc.</p>
+        </section>
+
+        <section>
           <pre><code>
   define i32 @func(i32* %p) {
     %r = load i32* %p
@@ -160,7 +162,7 @@
   }
 
 </code></pre>
-          <hr>
+          <h3><b>&rArr; emscripten &rArr;</b></h3>
           <pre><code>
   function func(p) {
     var r = HEAP[p];
@@ -171,6 +173,7 @@
         </section>
 
         <section>
+          <p>Another example:</p>
           <pre><code contenteditable>  float array[5000]; // C++
   int main() {
     for (int i = 0; i < 5000; ++i) {
@@ -187,63 +190,87 @@
       b = b + 1 | 0;
     } while ((b | 0) < 5000);
   }</code></pre>
-          <p class="fragment">This is a subset of JS called <b><a href="http://asmjs.org">asm.js</a></b></p>
+          <p class="fragment">This "style" of code is a subset of JS called <b><a href="http://asmjs.org">asm.js</a></b></p>
         </section>
 
         <section>
-          <h3><b>asm.js</b></h3>
-          <p>An <b>optimizable subset of JavaScript</b>, intended primary as a compiler target</p>
-          <p class="fragment"><b>Avoids potential slowdowns</b> (types changing, GC pauses)</p>
-          <p class="fragment"><strong>Low-level</strong> and <strong>easy to optimize</strong></p>
+          <h3><b>asm.js: low-level JS</b></h3>
+          <p>asm.js is a subset of JS that is low-level and easy to optimize</p>
+          <p>Defined by a type system so easy to check if you fall in that subset</p>
+          <p>JS engines can optimize things like <code>|0</code> etc. into code about as efficient as native code</p>
+        </section>
+
+        <section>
+          <h3><b>Performance</b></h3>
+          <a href="asm_jul_10_2013.png"><img src="asm_jul_10_2013.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></a>
+          <p><small>(VMs and Emscripten from July 10th 2013, run on 64-bit linux)</small></p>
         </section>
 
         <section>
           <h3><b>Why so low-level?</b></h3>
-          <p>Emscripten and other compilers to JS have experimented with "higher-level" output</p>
-          <p>For example, perhaps each LLVM structure could be a JS object?</p>
-          <p>But how would we take pointers to interior fields?</p>
-          <p>Must allow all LLVM optimizations, and those assume a memory model where e.g. it is ok to read an i32 and splitting it up, as opposed to reading two i16s</p>
-    * Optimizations that make our lives difficult, e.g. load i64, bitcast to double, then work on that - bad for us
+          <p>Emscripten and other compilers to JS have experimented with "higher-level" output (e.g., each C++ object is a JS object), but low-level is faster:</p>
+          <p>Pointers are just numbers, not references to objects</p>
+          <p>Reads/writes on typed arrays can become literal reads/writes from memory</p>
+          <p>Low-level means memory model is identical to LLVM's, so can use all LLVM opts</p>
+        </section>
+
+        <section>
+          <h3><b>Downsides of low-level JS</b></h3>
+          <p>LLVM optimizer can load 2 floats as an i64, then bitcast the 32-bit chunks to floats (e.g. Box2D)</p>
+          <p>This is bad for JS since there is no fast way to bitcast ints to floats!</p>
+          <p>Emscripten works to optimize away such things</p>
         </section>
 
         <section>
           <h3><b>Emscripten Architecture</b></h3>
           <p>LLVM assembly => Emscripten Compiler => Emscripten Optimizer</p>
           <p>Compiler and optimizer are written in JavaScript</p>
-          <p>NOT an LLVM backend (discussion of mandreel and duetto approaches)</p>
+          <p>Wait, that's not an LLVM backend..?</p>
+        </section>
+
+        <section>
+          <h3><b>LLVM to JS Approaches</b></h3>
+          <p>There are least 3 such compilers:</p>
+          <ul>
+            <li>Mandreel: Typical LLVM backend, uses tblgen, selection DAG (like x86, ARM backends)</li>
+            <li>Duetto: Processes llvm::Module (like C++ backend)</li>
+            <li>Emscripten: Processes LLVM assembly</li>
+          </ul>
+          <p>What is the best approach today for this?</p>
         </section>
 
         <section>
           <h3><b>Why no backend?</b></h3>
-          <p>JS is such an odd target, maximal flexibility in codegen seemed crucial</p>
+          <p>JS is such an odd target, maximal flexibility in codegen seemed crucial in Emscripten</p>
           <p>Helped prototype and test various models over the years</p>
           <p>But final model is in fact fairly low-level and close to what an LLVM backend would emit</p>
+          <p>And Emscripten currently must do legalization on its own</p>
         </section>
 
         <section>
-          <h3><b>Why no backend?</b></h3>
-          <p>Even so, not sure about feasibility of doing some things in an LLVM backend:</p>
-          <p>(I am sure anything is possible with enough work, question is practicality)</p>
-          <p>Expressionizer, with precise JS semantics</p>
-          <p>Variable consolidation, but not real regalloc, different goals (JS engine will regalloc anyhow)</p>
-          <p>Misc stuff like function calls using normal JS and not the C stack</p>
+          <h3><b>LLVM backend?</b></h3>
+          <p>So perhaps an LLVM backend makes sense, and Emscripten can consider it</p>
+          <p>But JS differs from "typical" machine targets in many ways, in particular it has 3 crucial optimizations that we need to see how practical it is to do in an LLVM backend</p>
         </section>
 
         <section>
-          <h3><b>Why no backend?</b></h3>
-          <p>At least 3 compilers from LLVM to JS, each with a different approach:</p>
-          <p>Mandreel: LLVM backend using tblgen, selection DAG (like SPARC backend)</p>
-          <p>Duetto: Backend doing passes on LLVM Module object (like C++ backend)</p>
-          <p>Emscripten: External backend that reads LLVM bitcode and has its own IR</p>
-        </section>
+          <h3><b>1. Expressionize</b></h3>
+          <pre><code>
+  var a = g(x);
+  var b = a + y;
+  var c = HEAP[b];
+  var d = HEAP[20];
+  var e = x + y + z;
+  var f = h(d, e);
+  FUNCTION_TABLE[c] = f;
 
-        <section>
-          <h3><b>Emscripten: Compiler</b></h3>
-          <p>Parse LLVM assembly into Emscripten internal IR</p>
-          <p>Legalize</p>
-          <p>Emit blocks by generating JS for each LLVM instruction separately</p>
-          <p>Reloop - generate loops and ifs from basic blocks</p>
-          <p>Special-case code to handle some tricky things, like longjmp using JS exceptions</p>
+</code></pre>
+          <h3><b>&rArr;</b></h3>
+          <pre><code>
+  FUNCTION_TABLE[HEAP[g(x) + y] = h(HEAP[20], x + y + z);
+
+</code></pre>
+          <p>Must model JS order-of-operations precisely (sometimes surprising)</p>
         </section>
 
         <section>
@@ -294,11 +321,6 @@
 
 
 
-        <section>
-          <h3><b>Performance</b></h3>
-          <a href="asm_jul_10_2013.png"><img src="asm_jul_10_2013.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></a>
-          <p><small>(VMs and Emscripten from July 10th 2013, run on 64-bit linux)</small></p>
-        </section>
 
       </div>
     </div>
