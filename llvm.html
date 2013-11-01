@@ -270,15 +270,57 @@
   FUNCTION_TABLE[HEAP[g(x) + y] = h(HEAP[20], x + y + z);
 
 </code></pre>
-          <p>Must model JS order-of-operations precisely (sometimes surprising)</p>
+          <p>Must model JS semantics (order of operations, etc.) precisely (sometimes surprising!)</p>
         </section>
 
         <section>
-          <h3><b>Emscripten: Optimizer</b></h3>
-          <p>Parse JS (using UglifyJS)</p>
-          <p>Expressionize - model JS semantics exactly (sometimes surprising), easier on JS AST</p>
-          <p>Registerize</p>
-          <p>Miscellaneous peephole optimizations</p>
+          <h3><b>2. Registerize</b></h3>
+          <pre><code>
+  var a = g(x);
+  var b = a + y;
+  var c = HEAP[b];
+  var d = HEAP[20];
+
+</code></pre>
+          <h3><b>&rArr;</b></h3>
+          <pre><code>
+  var a = g(x) | 0;
+  a = a + y | 0;
+  a = HEAP[a];
+  var b = +HEAP[20];
+
+</code></pre>
+          <p>Looks like regalloc, but goal is different: Minimize # of total variables (in each type), not spills (JS VMs will do their own regalloc!)</p>
+        </section>
+
+        <section>
+          <h3><b>3. Reloop</b></h3>
+          <pre><code>
+  block1:
+    ; code1
+    br i1 %cond, %label block1, label %block2
+
+  block2:
+    ; code2
+    br %label block1
+
+</code></pre>
+          <h3><b>&rArr;</b></h3>
+          <pre><code>
+  while (1) {
+    do {
+      // code1
+    } while (cond);
+    // code2
+  }
+
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>Emscripten Optimizations</b></h3>
+          <p>Reloop is simple and more generic (and our code is already used by other projects, e.g. Duetto)</p>
+          <p>Expressionize and Registerize require a precise modelling of JS semantics. Concern is we would need to basically add a JS AST into LLVM.</p>
         </section>
 
         <section>
