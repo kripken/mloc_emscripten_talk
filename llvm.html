@@ -264,10 +264,11 @@
         <section>
           <h3><b>Low-level downsides</b></h3>
           <br>
-          <p>LLVM optimizer can load 2 floats as an i64, then bitcast the 32-bit chunks to floats (e.g. Box2D)</p>
-          <p class="fragment">This is bad for JS since there is no fast way to bitcast ints to floats!</p>
+          <p>LLVM optimizer sometimes surprises us</p>
+          <p class="fragment">E.g. load <b>2 floats</b> as <strong>i64</strong>, then <b>split&amp;bitcast</b></p>
+          <p class="fragment">Bad for JS since no fast way to bitcast int to float!</p>
           <div class="fragment">
-            <p>Emscripten has a pass to optimize away such things (are we doing it wrong?)</p>
+            <p>Emscripten has code to optimize that away (are we doing it wrong?)</p>
             <p><img src="doingitwrong.jpg" style="border: 1px solid black; box-shadow: 5px 5px 5px rgba(0,0,0,0.2)" width="33%"></p>
           </div>
         </section>
