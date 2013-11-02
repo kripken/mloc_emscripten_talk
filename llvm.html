@@ -177,20 +177,19 @@
 
         <section>
           <h3><b>Ok, how do we get<br>around these issues?</b></h3>
-          <br>
-          <p>(except for local vars, those are just fine. 1% of the problem is already solved!)</p>
         </section>
 
         <section>
           <h3><b>Emscripten's approach</b></h3>
           <br>
-          <p>Emit "low-level" JavaScript, close to LLVM IR</p>
-          <p class="fragment">No JS objects, arrays, closures, etc.</p>
-          <p class="fragment">But <b>do</b> emit normal JS calls, vars, etc.</p>
+          <p>Emit <strong>low-level</strong> JavaScript, close to LLVM IR</p>
+          <p class="fragment"><b>No</b> JS objects, arrays, closures, etc.</p>
+          <p class="fragment"><b>Yes</b> normal JS calls, vars, etc.</p>
         </section>
 
         <section>
           <pre><code>
+  // LLVM IR
   define i32 @func(i32* %p) {
     %r = load i32* %p
     %s = shl i32 %r 16
@@ -201,6 +200,7 @@
 </code></pre>
           <p><b>&rArr;</b> emscripten <b>&rArr;</b></p>
           <pre><code>
+  // JS
   function func(p) {
     var r = HEAP[p];
     return calc(r, r << 16);
@@ -218,7 +218,7 @@
     }
   }</code></pre>
           <p><b>&rArr;</b> emscripten <b>&rArr;</b></p>
-          <pre><code contenteditable>  var g = Float32Array(32768); // JavaScript
+          <pre><code contenteditable>  var g = Float32Array(32768); // JS
   function main() {
     var a = 0, b = 0;
     do {
@@ -233,9 +233,10 @@
         <section>
           <h3><b>asm.js: low-level JS</b></h3>
           <br>
-          <p>asm.js is a subset of JS that is low-level and easy to optimize</p>
-          <p class="fragment">Defined by a type system so easy to check if you fall in that subset</p>
-          <p class="fragment">JS engines can optimize things like <code>|0</code> etc. into code about as efficient as native code</p>
+          <p>asm.js is a <b>subset</b> of JS, so runs in all browsers</p>
+          <p class="fragment">Maps closely to (a subset of) <strong>LLVM IR</strong></p>
+          <p class="fragment">Defined by a <b>type system</b> (helps both compilers and VMs)</p>
+          <p class="fragment">Easy for JS VMs to optimize to <b>near-native speed</b></p>
         </section>
 
         <section>
@@ -247,16 +248,17 @@
         <section>
           <h3><b>Why so low-level?</b></h3>
           <br>
-          <p>Emscripten and other compilers to JS have experimented with "higher-level" output (e.g., each C++ object is a JS object)</p>
-          <p>Low-level is almost always faster</p>
+          <p>Emscripten and other compilers to JS have experimented with "higher-level" output</p>
+          <p class="fragment">For example, map LLVM structures to JS objects</p>
+          <p class="fragment">But low-level is almost always faster</p>
         </section>
 
         <section>
           <h3><b>Low-level upsides</b></h3>
           <br>
-          <p>Pointers are just numbers, not references to objects</p>
-          <p class="fragment">Reads/writes on typed arrays can become literal reads/writes from memory</p>
-          <p class="fragment">Low-level means memory model is identical to LLVM's, so can use all LLVM opts</p>
+          <p>Pointers are just <b>numbers</b>, not refs to objects</p>
+          <p class="fragment"><strong>Loads</strong> in LLVM IR become <strong>reads</strong> from typed array in JS, which become <strong>reads</strong> in machine code</p>
+          <p class="fragment">Low-level means <b>memory model</b> is identical to LLVM's (flat C-like, aliasing, etc.), so can use <b>all</b> LLVM opts</p>
         </section>
 
         <section>
