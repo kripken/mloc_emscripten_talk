@@ -287,21 +287,17 @@
         </section>
 
         <section>
-          <h3><b>3 compilers, 3 ways</b></h3>
+          <h3><b>3 JS compilers, 3 ways</b></h3>
           <br>
-          <p>
-          <ul>
-            <li>Mandreel: Typical LLVM backend, uses tblgen, selection DAG (like x86, ARM backends)</li>
-            <li>Duetto: Processes LLVM IR in llvm::Module (like C++ backend)</li>
-            <li>Emscripten: Processes LLVM IR in assembly</li>
-          </ul>
-          </p>
+          <p><b>Mandreel</b>: <strong>Typical LLVM backend</strong>, uses tblgen, selection DAG (like x86, ARM backends)</p>
+          <p class="fragment"><b>Duetto</b>: Processes <strong>LLVM IR</strong> in llvm::Module (like C++ backend)</p>
+          <p class="fragment"><b>Emscripten</b>: Processes <strong>LLVM IR</strong> in assembly</p>
           <br>
           <p class="fragment">What is the best approach?</p>
         </section>
 
         <section>
-          <h3><b>Why no backend?</b></h3>
+          <h3><b>Emscripten's choice</b></h3>
           <br>
           <p>JS is such an odd target, maximal flexibility in codegen seemed crucial in Emscripten</p>
           <p>Helped prototype and test various models over the years</p>
