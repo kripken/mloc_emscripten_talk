@@ -292,24 +292,26 @@
           <p><b>Mandreel</b>: <strong>Typical LLVM backend</strong>, uses tblgen, selection DAG (like x86, ARM backends)</p>
           <p class="fragment"><b>Duetto</b>: Processes <strong>LLVM IR</strong> in llvm::Module (like C++ backend)</p>
           <p class="fragment"><b>Emscripten</b>: Processes <strong>LLVM IR</strong> in assembly</p>
-          <br>
-          <p class="fragment">What is the best approach?</p>
         </section>
 
         <section>
           <h3><b>Emscripten's choice</b></h3>
           <br>
-          <p>JS is such an odd target, maximal flexibility in codegen seemed crucial in Emscripten</p>
-          <p>Helped prototype and test various models over the years</p>
-          <p>But final model is in fact fairly low-level and close to what an LLVM backend would emit</p>
-          <p>And Emscripten currently must do legalization on its own</p>
+          <p>JS is such an odd target &rArr; wanted <b>maximal flexibility</b> in codegen</p>
+          <p class="fragment">Helped <strong>prototype &amp; test</strong> many approaches</p>
         </section>
 
         <section>
-          <h3><b>LLVM backend?</b></h3>
+          <h3><b>non-backend downsides</b></h3>
           <br>
-          <p>So perhaps an LLVM backend makes sense, and Emscripten can consider it</p>
-          <p>But JS differs from "typical" machine targets in many ways, in particular it has 3 crucial optimizations that we need to see how practical it is to do in an LLVM backend</p>
+          <p>Emscripten currently must do its own legalization</p>
+          <p class="fragment">Emitted code is very <b>low-level</b> - perhaps close to what an <strong>LLVM backend</strong> could emit?</p>
+        </section>
+
+        <section>
+          <h3><b>Optimizing JS</b></h3>
+          <br>
+          <p>Emscripten has <strong>3 crucial optimizations</strong> that make sense for JS, and possibly no other LLVM backend:<br><b>Expressionize, Registerize and Reloop</b></p>
         </section>
 
         <section>
@@ -416,7 +418,7 @@
         <section>
           <h3><b>Summary</b></h3>
           <br>
-FUTURE: LLVM backend? your advice?
+FUTURE: LLVM backend? your advice? should we rewrite our compiler (not optimizer) to js?
           <p class="fragment">LLVM bitcode can be compiled to JavaScript</p>
           <p class="fragment">Allows LLVM bitcode to run in all browers, at high speeds</p>
           <p class="fragment">Approach is seeing adoption on the web, by games companies, etc.</p>
