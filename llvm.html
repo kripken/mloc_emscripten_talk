@@ -331,6 +331,13 @@
   FUNCTION_TABLE[HEAP[g(x) + y](h(HEAP[20], x + y + z));
 
 </code></pre>
+        </section>
+
+        <section>
+          <h3><b>1. Expressionize</b></h3>
+          <br>
+          <p>Reduces code size</p>
+          <p class="fragment">Improves JIT time and execution speed: fewer variables &rArr; less stuff for JS engines to worry about</p>
           <p class="fragment">Must model JS semantics (order of operations, etc.) precisely (sometimes surprising!)</p>
         </section>
 
@@ -351,23 +358,52 @@
   var b = +HEAP[20];
 
 </code></pre>
-          <p class="fragment">Looks like regalloc, but goal is different: Minimize # of total variables (in each type), not spills (JS VMs will do their own regalloc!)</p>
+        </section>
+
+        <section>
+          <h3><b>2. Registerize</b></h3>
+          <br>
+          <p>Looks like regalloc, but goal is different: Minimize <strong># of total variables</strong> (in each type), <b>not</b> spills</p>
+          <p class="fragment">JS VMs will do regalloc, only they know the actual # of registers</p>
+          <p class="fragment">Reduces code size &amp; improves execution speed, like expressionize</p>
         </section>
 
         <section>
           <h3><b>3. Reloop</b></h3>
-          <pre><code>
-  block1:
+          <pre><code>  block1:
     ; code1
     br i1 %cond, %label block1, label %block2
 
   block2:
     ; code2
     br %label block1
-
 </code></pre>
-          <h3><b>&rArr;</b></h3>
+          <hr>
+          <pre><code>  var label = 0; // emulated gotos :(
+  while (1) switch (label) {
+    case 0:
+      // code1
+      label = cond ? 0 : 1; break;
+    case 1:
+      // code2
+      label = 0; break;
+  }
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>3. Reloop</b></h3>
+          <pre><code>  block1:
+    ; code1
+    br i1 %cond, %label block1, label %block2
+
+  block2:
+    ; code2
+    br %label block1
+</code></pre>
+          <hr>
           <pre><code>
+  // relooped :)
   while (1) {
     do {
       // code1
@@ -379,52 +415,70 @@
         </section>
 
         <section>
-          <h3><b>Optimizations: Summary</b></h3>
+          <h3><b>3. Reloop</b></h3>
           <br>
-          <p>Reloop is more generic, and the Emscripten code is already used by other LLVM-based projects like Duetto</p>
-          <p class="fragment">Expressionize and Registerize require a precise modelling of JS semantics. Concern is we would need to basically add a JS AST into LLVM. Or is there a good way in an LLVM backend?</p>
+          <p>Relooping allows JS VM to optimize better, as it can understand control flow</p>
+          <p class="fragment">Also reduces code size</p>
+          <p class="fragment">Emscripten Relooper code is generic, and used by other LLVM-based projects like Duetto</p>
+        </section>
+
+        <section>
+          <h3><b>Opts Summary</b></h3>
+          <br>
+          <p>Each of expressionize, registerize and reloop can make a big impact on perf - anywhere from <strong>1x-10x</strong> faster</p>
+          <p class="fragment">Expressionize and registerize require a precise modelling of JS semantics - Is there a nice way to do that in an LLVM backend, or do we need a JS AST?</p>
         </section>
 
         <section>
           <h3><b>JS as a compilation target</b></h3>
           <br>
           <p>Began as a slow interpreted language, became a JITed language</p>
-          <p>Emscripten and Mandreel output led to JS VM optimizations and asm.js</p>
-          <p>Collaboration with JS standards bodies led to some new JS language features (Math.imul)</p>
+          <p class="fragment">Emscripten and Mandreel output led to JS VM optimizations and asm.js</p>
+          <p class="fragment">Collaboration with JS standards bodies led to some new JS language features (Math.imul)</p>
         </section>
 
         <section>
           <h3><b>float32</b></h3>
-          <p>JS numbers are doubles, and hard to emulate 32-bit float's lower precision (and higher speed)</p>
+          <p>JS numbers are doubles, LLVM has doubles and floats</p>
+          <p class="fragment">Rare but annoying bugs when we implement floats as doubles</p>
+          <p class="fragment">Emscripten can emulate floats precisely, but it is slow</p>
+          <p class="fragment">Yet 32-bit precision should be similar or faster than 64-bit!</p>
+        </section>
+
+        <section>
+          <h3><b>float32</b></h3>
           <p>Math.fround is a new JS feature that rounds 64-bit doubles to 32-bit floats</p>
-          <pre><code>
-  var a = Math.fround(1.23456789);
+          <pre><code>  var a = Math.fround(1.23456789);
   var b = Math.fround(9.9E99);
   print(Math.fround(a + b));
-
 </code></pre>
-          <p>JS engines can optimize that into 32-bit floats, no doubles. So Emscripten can emit JS that translates LLVM floats into floats in JS VMs</p>
+          <p>JS engines can optimize that into 32-bit floats, no doubles</p>
+          <p>Allows LLVM floats to convert into floats in JS VMs, gain both correct precision and potentially higher speed</p>
         </section>
 
         <section>
           <h3><b>SIMD</b></h3>
           <br>
           <p>Single Instruction, Multiple Data: <b>SSE</b>, <b>NEON</b>, etc.</p>
-          <p class="fragment"><a href="https://github.com/johnmccutchan/ecmascript_simd">SIMD</a> is coming to JS</p>
+          <p class="fragment">There is a <a href="https://github.com/johnmccutchan/ecmascript_simd">spec</a> for SIMD in JS</p>
+          <pre class="fragment"><code contenteditable>  var x = float32x4(1, 2, 3.14159, 22.5);
+  var y = float32x4(0, 0, 1, 0);
+  var z = SIMD.add(x, y);
+</code></pre>
           <p class="fragment">Emscripten supports LLVM vector types, so both C SIMD intrinsics and LLVM autovectorization work</p>
           <p class="fragment">When SIMD spec is finalized and JS engines support, it will be fast</p>
         </section>
 
         <section>
-          <h3><b>Summary</b></h3>
+          <h3><b>Last Thoughts</b></h3>
           <br>
-FUTURE: LLVM backend? your advice? should we rewrite our compiler (not optimizer) to js?
-          <p class="fragment">LLVM bitcode can be compiled to JavaScript</p>
+          <hr>
+          <p>LLVM bitcode can be compiled to JavaScript</p>
           <p class="fragment">Allows LLVM bitcode to run in all browers, at high speeds</p>
-          <p class="fragment">Approach is seeing adoption on the web, by games companies, etc.</p>
+          <p class="fragment">Should Emscripten implement a "proper" LLVM backend? What is the best approach?</p>
           <div class="fragment">
             <hr>
-            <p><b style="color: #c11">That's it! Questions?</b></p>
+            <p><b style="color: #c11">Thank you for listening!</b></p>
           </div>
         </section>
 
