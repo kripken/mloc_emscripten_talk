@@ -56,7 +56,7 @@
           <br>
           <h3>Alon Zakai (Mozilla)</h3>
           <br>
-          <p>(slides just tweeted at <a href="http://twitter.com/#!/kripken">@kripken</a>)</p>
+          <p>(these slides just tweeted at <a href="http://twitter.com/#!/kripken">@kripken</a>)</p>
         </section>
 
         <section>
@@ -78,7 +78,7 @@
           <p class="fragment">..so..</p>
           <div class="fragment">
             <br>
-            <p>Compiling LLVM bitcode to JavaScript would let us run <strong>everything, everywhere</strong></p>
+            <p>Compiling LLVM bitcode to JavaScript lets us run <strong>everything, everywhere</strong></p>
           </div>
         </section>
 
@@ -128,6 +128,8 @@
             <tr><td><b><center>JS</center></b></td><td width="5%"></td><td>double, object, array, function, etc.</td></tr>
           </table>
           </center>
+          <br>
+          <p class='fragment'>(hey, at least there's <strong>double</strong>...)</p>
         </section>
 
         <section>
@@ -135,11 +137,13 @@
           <br>
           <center>
           <table>
-            <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>Types and operations almost map 1-1 to CPU</center></td></tr>
+            <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>types&amp;ops map ~1-1 to CPU</center></td></tr>
             <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
-            <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>Virtual machine (VM), just in time (JIT) compilers w/type profiling, garbage collection, etc. (HOW DO I MAKE THIS FAST?!)</center></td></tr>
+            <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>virtual machine (VM), just in time (JIT) compilers w/type profiling, garbage collection, etc.</center></td></tr>
           </table>
           </center>
+          <br>
+          <p class='fragment'><strong>Predicable</strong> vs. <strong>HOW DO I MAKE THIS FAST?!</strong></p>
         </section>
 
         <section>
@@ -147,7 +151,7 @@
           <br>
           <center>
           <table>
-            <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>Functions, basic blocks and branches</center></td></tr>
+            <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>Functions, basic blocks&amp;branches</center></td></tr>
             <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
             <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>Functions, ifs and loops - no goto!</center></td></tr>
           </table>
@@ -165,7 +169,10 @@
           </table>
           </center>
           <br>
-          <p class="fragment"><img src="thesame.jpg" style="border: 1px solid black; box-shadow: 5px 5px 5px rgba(0,0,0,0.2)" width="33%"></p>
+          <div>
+            <p class="fragment"><img src="thesame.jpg" style="border: 1px solid black; box-shadow: 5px 5px 5px rgba(0,0,0,0.2); float: left" width="33%"></p>
+            <p class="fragment" style="margin: 0 auto; text-align:center; padding: 2em">Ironic, actually - many wish JS had <strong>block</strong> scope!</p>
+          </div>
         </section>
 
         <section>
