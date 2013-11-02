@@ -143,7 +143,7 @@
           </table>
           </center>
           <br>
-          <p class='fragment'><strong>Predicable</strong> vs. <strong>HOW DO I MAKE THIS FAST?!</strong></p>
+          <p class='fragment'><strong>Predictable</strong> vs. <strong>HOW DO I MAKE THIS FAST?!</strong></p>
         </section>
 
         <section>
@@ -218,11 +218,11 @@
     }
   }</code></pre>
           <p><b>&rArr;</b> emscripten <b>&rArr;</b></p>
-          <pre><code contenteditable>  var g = Float32Array(32768); // JS
+          <pre><code contenteditable>  var g = Float32Array(5000); // JS
   function main() {
     var a = 0, b = 0;
     do {
-      a = 8 + (b << 2) | 0;
+      a = b << 2;
       g[a >> 2] = +g[a >> 2] + 1.0;
       b = b + 1 | 0;
     } while ((b | 0) < 5000);
@@ -347,7 +347,7 @@
   var a = g(x) | 0; // integers 
   var b = a + y | 0;
   var c = HEAP[b] | 0;
-  var d = +HEAP[20]; // float
+  var d = +HEAP[20]; // double
 
 </code></pre>
           <h3><b>&rArr;</b></h3>
@@ -419,14 +419,14 @@
           <br>
           <p>Relooping allows JS VM to optimize better, as it can understand control flow</p>
           <p class="fragment">Also reduces code size</p>
-          <p class="fragment">Emscripten Relooper code is generic, and used by other LLVM-based projects like Duetto</p>
+          <p class="fragment">Emscripten Relooper code is generic, written in C++, and used by other LLVM-based projects like Duetto</p>
         </section>
 
         <section>
           <h3><b>Opts Summary</b></h3>
           <br>
           <p>Each of expressionize, registerize and reloop can make a big impact on perf - anywhere from <strong>1x-10x</strong> faster</p>
-          <p class="fragment">Expressionize and registerize require a precise modelling of JS semantics - Is there a nice way to do that in an LLVM backend, or do we need a JS AST?</p>
+          <p class="fragment">Expressionize and registerize require a precise modelling of JS semantics - is there a nice way to do that in an LLVM backend, or do we need a JS AST?</p>
         </section>
 
         <section>
@@ -472,14 +472,14 @@
         <section>
           <h3><b>Last Thoughts</b></h3>
           <br>
-          <hr>
           <p>LLVM bitcode can be compiled to JavaScript</p>
           <p class="fragment">Allows LLVM bitcode to run in all browers, at high speeds</p>
-          <p class="fragment">Should Emscripten implement a "proper" LLVM backend? What is the best approach?</p>
+          <p class="fragment"><a href="http://emscripten.org">emscripten.org</a> - feedback &amp; contributions welcome</p>
           <div class="fragment">
-            <hr>
+            <br>
             <p><b style="color: #c11">Thank you for listening!</b></p>
           </div>
+          <br>
         </section>
 
       </div>
