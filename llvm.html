@@ -89,7 +89,6 @@
             <li><b>Game engines</b> like <a href="epic/EpicCitadel.html">Unreal Engine 3</a></li>
             <li><b>Emulators</b> like <a href="mess/messloader.html?module=c64">MESS</a></li>
             <li><b>Physics engines</b> like <a href="ammo/ammo.html">Bullet</a></li>
-            <li><b>3D plotting</b> using <a href="http://gnuplot.respawned.com/">GNU plot</a></li>
             <li><b>Programming languages</b> like <a href="http://kripken.github.io/lua.vm.js/repl.html">Lua</a></li>
           </ul>
         </section>
@@ -116,44 +115,71 @@
   });
 
 </code></pre>
-          <p>What could be more different? ;)</p>
+          <p class="fragment">What could be more different? ;)</p>
         </section>
 
         <section>
           <h3><b>Types</b></h3>
-          <p><b>LLVM</b>: i8, i16, i32, float, double, etc.</p>
-          <p><b>JS</b>: double, object, array, function, etc.</p>
+          <br>
+          <center>
+          <table>
+            <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>i8, i16, i32, float, double, etc.</center></td></tr>
+            <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
+            <tr><td><b><center>JS</center></b></td><td width="5%"></td><td>double, object, array, function, etc.</td></tr>
+          </table>
+          </center>
         </section>
 
         <section>
           <h3><b>Performance Model</b></h3>
-          <p><b>LLVM</b>: Types and operations almost map 1-1 to CPU</p>
-          <p><b>JS</b>: Virtual machine (VM), just in time (JIT) compilers w/type profiling, garbage collection, etc.</p>
-          <p>HOW DO I MAKE THIS FAST?!</p>
+          <br>
+          <center>
+          <table>
+            <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>Types and operations almost map 1-1 to CPU</center></td></tr>
+            <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
+            <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>Virtual machine (VM), just in time (JIT) compilers w/type profiling, garbage collection, etc. (HOW DO I MAKE THIS FAST?!)</center></td></tr>
+          </table>
+          </center>
         </section>
 
         <section>
           <h3><b>Control Flow</b></h3>
-          <p><b>LLVM</b>: Functions, basic blocks and branches</p>
-          <p><b>JS</b>: Functions, ifs, loops - no goto!</p>
+          <br>
+          <center>
+          <table>
+            <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>Functions, basic blocks and branches</center></td></tr>
+            <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
+            <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>Functions, ifs and loops - no goto!</center></td></tr>
+          </table>
+          </center>
         </section>
 
         <section>
           <h3><b>Variables</b></h3>
-          <p><b>LLVM</b>: Local vars have function scope</p>
-          <p><b>JS</b>: Local vars have function scope</p>
-          <p><img src="thesame.jpg" style="border: 1px solid black; box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></p>
+          <br>
+          <center>
+          <table>
+            <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>Local vars have function scope</center></td></tr>
+            <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
+            <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>Local vars have function scope</center></td></tr>
+          </table>
+          </center>
+          <br>
+          <p class="fragment"><img src="thesame.jpg" style="border: 1px solid black; box-shadow: 5px 5px 5px rgba(0,0,0,0.2)" width="33%"></p>
         </section>
 
         <section>
           <h3><b>Ok, how do we get<br>around these issues?</b></h3>
+          <br>
+          <p>(except for local vars, those are just fine. 1% of the problem is already solved!)</p>
         </section>
 
         <section>
           <h3><b>Emscripten's approach</b></h3>
+          <br>
           <p>Emit "low-level" JavaScript, close to LLVM IR</p>
-          <p>No JS objects, arrays, closures, etc.</p>
-          <p>But <b>do</b> emit normal JS calls, vars, etc.</p>
+          <p class="fragment">No JS objects, arrays, closures, etc.</p>
+          <p class="fragment">But <b>do</b> emit normal JS calls, vars, etc.</p>
         </section>
 
         <section>
@@ -166,7 +192,7 @@
   }
 
 </code></pre>
-          <h3><b>&rArr; emscripten &rArr;</b></h3>
+          <p><b>&rArr;</b> emscripten <b>&rArr;</b></p>
           <pre><code>
   function func(p) {
     var r = HEAP[p];
@@ -184,7 +210,7 @@
       array[i] += 1.0f;
     }
   }</code></pre>
-          <h3><b>&rArr; emscripten &rArr;</b></h3>
+          <p><b>&rArr;</b> emscripten <b>&rArr;</b></p>
           <pre><code contenteditable>  var g = Float32Array(32768); // JavaScript
   function main() {
     var a = 0, b = 0;
@@ -199,9 +225,10 @@
 
         <section>
           <h3><b>asm.js: low-level JS</b></h3>
+          <br>
           <p>asm.js is a subset of JS that is low-level and easy to optimize</p>
-          <p>Defined by a type system so easy to check if you fall in that subset</p>
-          <p>JS engines can optimize things like <code>|0</code> etc. into code about as efficient as native code</p>
+          <p class="fragment">Defined by a type system so easy to check if you fall in that subset</p>
+          <p class="fragment">JS engines can optimize things like <code>|0</code> etc. into code about as efficient as native code</p>
         </section>
 
         <section>
@@ -212,39 +239,55 @@
 
         <section>
           <h3><b>Why so low-level?</b></h3>
-          <p>Emscripten and other compilers to JS have experimented with "higher-level" output (e.g., each C++ object is a JS object), but low-level is faster:</p>
-          <p>Pointers are just numbers, not references to objects</p>
-          <p>Reads/writes on typed arrays can become literal reads/writes from memory</p>
-          <p>Low-level means memory model is identical to LLVM's, so can use all LLVM opts</p>
+          <br>
+          <p>Emscripten and other compilers to JS have experimented with "higher-level" output (e.g., each C++ object is a JS object)</p>
+          <p>Low-level is almost always faster</p>
         </section>
 
         <section>
-          <h3><b>Downsides of low-level JS</b></h3>
+          <h3><b>Low-level upsides</b></h3>
+          <br>
+          <p>Pointers are just numbers, not references to objects</p>
+          <p class="fragment">Reads/writes on typed arrays can become literal reads/writes from memory</p>
+          <p class="fragment">Low-level means memory model is identical to LLVM's, so can use all LLVM opts</p>
+        </section>
+
+        <section>
+          <h3><b>Low-level downsides</b></h3>
+          <br>
           <p>LLVM optimizer can load 2 floats as an i64, then bitcast the 32-bit chunks to floats (e.g. Box2D)</p>
-          <p>This is bad for JS since there is no fast way to bitcast ints to floats!</p>
-          <p>Emscripten works to optimize away such things</p>
+          <p class="fragment">This is bad for JS since there is no fast way to bitcast ints to floats!</p>
+          <div class="fragment">
+            <p>Emscripten has a pass to optimize away such things (are we doing it wrong?)</p>
+            <p><img src="doingitwrong.jpg" style="border: 1px solid black; box-shadow: 5px 5px 5px rgba(0,0,0,0.2)" width="33%"></p>
+          </div>
         </section>
 
         <section>
           <h3><b>Emscripten Architecture</b></h3>
+          <br>
           <p>LLVM assembly => Emscripten Compiler => Emscripten Optimizer</p>
-          <p>Compiler and optimizer are written in JavaScript</p>
-          <p>Wait, that's not an LLVM backend..?</p>
+          <p class="fragment">Compiler and optimizer are written in JavaScript</p>
+          <p class="fragment">Wait, that's not an LLVM backend..?</p>
         </section>
 
         <section>
-          <h3><b>LLVM to JS Approaches</b></h3>
-          <p>There are least 3 such compilers:</p>
+          <h3><b>3 compilers, 3 ways</b></h3>
+          <br>
+          <p>
           <ul>
             <li>Mandreel: Typical LLVM backend, uses tblgen, selection DAG (like x86, ARM backends)</li>
             <li>Duetto: Processes LLVM IR in llvm::Module (like C++ backend)</li>
             <li>Emscripten: Processes LLVM IR in assembly</li>
           </ul>
-          <p>What is the best approach today for this?</p>
+          </p>
+          <br>
+          <p class="fragment">What is the best approach?</p>
         </section>
 
         <section>
           <h3><b>Why no backend?</b></h3>
+          <br>
           <p>JS is such an odd target, maximal flexibility in codegen seemed crucial in Emscripten</p>
           <p>Helped prototype and test various models over the years</p>
           <p>But final model is in fact fairly low-level and close to what an LLVM backend would emit</p>
@@ -253,6 +296,7 @@
 
         <section>
           <h3><b>LLVM backend?</b></h3>
+          <br>
           <p>So perhaps an LLVM backend makes sense, and Emscripten can consider it</p>
           <p>But JS differs from "typical" machine targets in many ways, in particular it has 3 crucial optimizations that we need to see how practical it is to do in an LLVM backend</p>
         </section>
@@ -266,15 +310,15 @@
   var d = HEAP[20];
   var e = x + y + z;
   var f = h(d, e);
-  FUNCTION_TABLE[c] = f;
+  FUNCTION_TABLE[c](f);
 
 </code></pre>
           <h3><b>&rArr;</b></h3>
           <pre><code>
-  FUNCTION_TABLE[HEAP[g(x) + y] = h(HEAP[20], x + y + z);
+  FUNCTION_TABLE[HEAP[g(x) + y](h(HEAP[20], x + y + z));
 
 </code></pre>
-          <p>Must model JS semantics (order of operations, etc.) precisely (sometimes surprising!)</p>
+          <p class="fragment">Must model JS semantics (order of operations, etc.) precisely (sometimes surprising!)</p>
         </section>
 
         <section>
@@ -294,7 +338,7 @@
   var b = +HEAP[20];
 
 </code></pre>
-          <p>Looks like regalloc, but goal is different: Minimize # of total variables (in each type), not spills (JS VMs will do their own regalloc!)</p>
+          <p class="fragment">Looks like regalloc, but goal is different: Minimize # of total variables (in each type), not spills (JS VMs will do their own regalloc!)</p>
         </section>
 
         <section>
@@ -323,15 +367,17 @@
 
         <section>
           <h3><b>Optimizations: Summary</b></h3>
-          <p>Reloop is simple and more generic (and our code is already used by other projects, e.g. Duetto)</p>
-          <p>Expressionize and Registerize require a precise modelling of JS semantics. Concern is we would need to basically add a JS AST into LLVM. Or is there a good way in an LLVM backend?</p>
+          <br>
+          <p>Reloop is more generic, and the Emscripten code is already used by other LLVM-based projects like Duetto</p>
+          <p class="fragment">Expressionize and Registerize require a precise modelling of JS semantics. Concern is we would need to basically add a JS AST into LLVM. Or is there a good way in an LLVM backend?</p>
         </section>
 
         <section>
           <h3><b>JS as a compilation target</b></h3>
+          <br>
           <p>Began as a slow interpreted language, became a JITed language</p>
           <p>Emscripten and Mandreel output led to JS VM optimizations and asm.js</p>
-          <p>Also to some new JS language features (Math.imul, etc.)</p>
+          <p>Collaboration with JS standards bodies led to some new JS language features (Math.imul)</p>
         </section>
 
         <section>
@@ -349,17 +395,16 @@
 
         <section>
           <h3><b>SIMD</b></h3>
-          <p class="fragment">Single Instruction, Multiple Data: <b>SSE</b>, <b>NEON</b>, etc.</p>
-          <a class="fragment" href="simd.jpg"><img src="simd.jpg"></a>
-          <p class="fragment"><small><a href="https://www.kernel.org/pub/linux/kernel/people/geoff/cell/ps3-linux-docs/CellProgrammingTutorial/BasicsOfSIMDProgramming.html">source</a></small></p>
-          <p class="fragment">Large parts of CPUs dedicated to SIMD</p>
-          <p><a href="https://github.com/johnmccutchan/ecmascript_simd">SIMD</a> is coming to JS</p>
-          <p>Emscripten supports LLVM vector types, so both C intrinsics and LLVM autovectorization work</p>
-          <p>When SIMD spec is finalized and JS engines support, it will be fast</p>
+          <br>
+          <p>Single Instruction, Multiple Data: <b>SSE</b>, <b>NEON</b>, etc.</p>
+          <p class="fragment"><a href="https://github.com/johnmccutchan/ecmascript_simd">SIMD</a> is coming to JS</p>
+          <p class="fragment">Emscripten supports LLVM vector types, so both C SIMD intrinsics and LLVM autovectorization work</p>
+          <p class="fragment">When SIMD spec is finalized and JS engines support, it will be fast</p>
         </section>
 
         <section>
           <h3><b>Summary</b></h3>
+          <br>
           <p class="fragment">LLVM bitcode can be compiled to JavaScript</p>
           <p class="fragment">Allows LLVM bitcode to run in all browers, at high speeds</p>
           <p class="fragment">Approach is seeing adoption on the web, by games companies, etc.</p>
