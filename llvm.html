@@ -276,8 +276,13 @@
         <section>
           <h3><b>Emscripten Architecture</b></h3>
           <br>
-          <p>LLVM assembly => Emscripten Compiler => Emscripten Optimizer</p>
-          <p class="fragment">Compiler and optimizer are written in JavaScript</p>
+          <center>
+          <table style="background-color: rgba(255,255,255,128); padding: 0.5em; border: 1px solid black; box-shadow: 7px 7px 7px rgba(0,0,0,0.2)">
+            <tr><td><center>LLVM IR</center></td><td><center><strong>&rArr;<br><br>Emscripten Compiler</strong></center></td><td><center>JS</center></td><td><center><b>&rArr;<br><br>Emscripten Optimizer</b></center></td><td><center>JS</center></td></tr>
+          </table>
+          </center>
+          <br>
+          <p class="fragment">Compiler and optimizer are written in JS</p>
           <p class="fragment">Wait, that's not an LLVM backend..?</p>
         </section>
 
@@ -415,6 +420,7 @@
         <section>
           <h3><b>Summary</b></h3>
           <br>
+FUTURE: LLVM backend? your advice?
           <p class="fragment">LLVM bitcode can be compiled to JavaScript</p>
           <p class="fragment">Allows LLVM bitcode to run in all browers, at high speeds</p>
           <p class="fragment">Approach is seeing adoption on the web, by games companies, etc.</p>
