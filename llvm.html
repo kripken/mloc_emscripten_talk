@@ -115,7 +115,7 @@
           <table>
             <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>i8, i16, i32, float, double, etc.</center></td></tr>
             <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
-            <tr><td><b><center>JS</center></b></td><td width="5%"></td><td>double, object ({}), array ([]), first-class functions, etc.</td></tr>
+            <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>double, object, array, first-class functions, etc.</center></td></tr>
           </table>
           </center>
           <br>
@@ -127,7 +127,7 @@
           <br>
           <center>
           <table>
-            <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>types&amp;ops map ~1-1 to CPU</center></td></tr>
+            <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>types &amp; ops map ~1-1 to CPU</center></td></tr>
             <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
             <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>virtual machine (VM), just in time (JIT) compilers w/type profiling, garbage collection, etc.</center></td></tr>
           </table>
@@ -141,7 +141,7 @@
           <br>
           <center>
           <table>
-            <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>Functions, basic blocks&amp;branches</center></td></tr>
+            <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>Functions, basic blocks &amp; branches</center></td></tr>
             <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
             <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>Functions, ifs and loops - no goto!</center></td></tr>
           </table>
@@ -160,7 +160,7 @@
           </center>
           <br>
           <div>
-            <p class="fragment"><img src="thesame.jpg" style="border: 1px solid black; box-shadow: 5px 5px 5px rgba(0,0,0,0.2); float: left" width="33%"></p>
+            <p class="fragment"><img src="thesame.jpg" style="border: 1px solid black; box-shadow: 5px 5px 5px rgba(0,0,0,0.2); float: left" height="250"></p>
             <p class="fragment" style="margin: 0 auto; text-align:center; padding: 2em">Ironic, actually - many wish JS had <strong>block</strong> scope!</p>
           </div>
         </section>
@@ -238,9 +238,9 @@
         <section>
           <h3><b>Why so low-level?</b></h3>
           <br>
-          <p>Emscripten and other compilers to JS have experimented with "higher-level" output</p>
-          <p class="fragment">For example, map LLVM structures to JS objects</p>
-          <p class="fragment">But low-level is almost always faster</p>
+          <p>Emscripten and other compilers to JS have experimented with "<b>higher-level</b>" output</p>
+          <p class="fragment">For example, map LLVM structures to <b>JS objects</b></p>
+          <p class="fragment">But <strong>low-level</strong> is almost always faster</p>
         </section>
 
         <section>
@@ -267,7 +267,7 @@
           <h3><b>Emscripten Architecture</b></h3>
           <br>
           <center>
-          <table style="background-color: rgba(255,255,255,128); padding: 0.5em; border: 1px solid black; box-shadow: 7px 7px 7px rgba(0,0,0,0.2)">
+          <table style="background-color: white; padding: 0.4em; border: 0.1em solid #027; border-radius: 1em; box-shadow: 7px 7px 7px rgba(0,0,0,0.6);">
             <tr><td><center>LLVM IR</center></td><td><center><strong>&rArr;<br><br>Emscripten Compiler</strong></center></td><td><center>JS</center></td><td><center><b>&rArr;<br><br>Emscripten Optimizer</b></center></td><td><center>JS</center></td></tr>
           </table>
           </center>
@@ -288,6 +288,7 @@
           <h3><b>Emscripten's choice</b></h3>
           <br>
           <p>JS is such an odd target &rArr; wanted <b>maximal flexibility</b> in codegen</p>
+          <br>
           <p class="fragment">Helped <strong>prototype &amp; test</strong> many approaches</p>
         </section>
 
@@ -295,13 +296,14 @@
           <h3><b>non-backend downsides</b></h3>
           <br>
           <p>Emscripten currently must do its own legalization</p>
+          <br>
           <p class="fragment">Emitted code is very <b>low-level</b> - perhaps close to what an <strong>LLVM backend</strong> could emit?</p>
         </section>
 
         <section>
           <h3><b>Optimizing JS</b></h3>
           <br>
-          <p>Emscripten has <strong>3 crucial optimizations</strong> that make sense for JS, and possibly no other LLVM backend:<br><b>Expressionize, Registerize and Reloop</b></p>
+          <p>Emscripten has <strong>3 crucial optimizations</strong> for JS, that might be irrelevant for other LLVM backends:<br><br><b>Expressionize, Registerize and Reloop</b></p>
         </section>
 
         <section>
