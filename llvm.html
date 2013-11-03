@@ -79,7 +79,8 @@
             <li><b>Game engines</b> like <a href="epic/EpicCitadel.html">Unreal Engine 3</a></li>
             <li><b>Emulators</b> like <a href="mess/messloader.html?module=c64">MESS</a></li>
             <li><b>Physics engines</b> like <a href="ammo/ammo.html">Bullet</a></li>
-            <li><b>Programming languages</b> like <a href="http://kripken.github.io/lua.vm.js/repl.html">Lua</a></li>
+            <li><b>Programming languages</b> like <a href="lua/repl.html">Lua</a></li>
+            <!--li><b>Programming languages</b> like <a href="http://kripken.github.io/lua.vm.js/repl.html">Lua</a></li-->
           </ul>
         </section>
 
@@ -188,7 +189,7 @@
   }
 
 </code></pre>
-          <p><b>&rArr;</b> emscripten <b>&rArr;</b></p>
+          <p><b>&rArr;</b> Emscripten <b>&rArr;</b></p>
           <pre><code>
   // JS
   function func(p) {
@@ -207,7 +208,7 @@
       array[i] += 1.0f;
     }
   }</code></pre>
-          <p><b>&rArr;</b> emscripten <b>&rArr;</b></p>
+          <p><b>&rArr;</b> Emscripten <b>&rArr;</b></p>
           <pre><code contenteditable>  var g = Float32Array(5000); // JS
   function main() {
     var a = 0, b = 0;
@@ -280,9 +281,9 @@
         <section>
           <h3><b>3 JS compilers, 3 ways</b></h3>
           <br>
-          <p><b>Mandreel</b>: <strong>Typical LLVM backend</strong>, uses tblgen, selection DAG (like x86, ARM backends)</p>
-          <p class="fragment"><b>Duetto</b>: Processes <strong>LLVM IR</strong> in llvm::Module (like C++ backend)</p>
-          <p class="fragment"><b>Emscripten</b>: Processes <strong>LLVM IR</strong> in assembly</p>
+          <p><b><a href="http://www.mandreel.com/">Mandreel</a></b>: <strong>Typical LLVM backend</strong>, uses tblgen, selection DAG (like x86, ARM backends)</p>
+          <p class="fragment"><b><a href="http://leaningtech.com/duetto">Duetto</a></b>: Processes <strong>LLVM IR</strong> in llvm::Module (like C++ backend)</p>
+          <p class="fragment"><b><a href="http://emscripten.org">Emscripten</a></b>: Processes <strong>LLVM IR</strong> in assembly</p>
         </section>
 
         <section>
@@ -331,7 +332,6 @@
           <br>
           <p>Reduces <b>code size</b></p>
           <p class="fragment">Improves <b>JIT time</b> and <b>execution speed</b>: fewer variables &rArr; less stuff for JS engines to worry about</p>
-          <p class="fragment">Must model JS semantics <strong>precisely</strong> - JS order of operations is sometimes surprising!</p>
         </section>
 
         <section>
@@ -419,7 +419,8 @@
           <h3><b>Opts Summary</b></h3>
           <br>
           <p><b>Each</b> of expressionize, registerize and reloop can make a big impact on perf - anywhere from <strong>1x-10x</strong> faster</p>
-          <p class="fragment">2 of the 3 require a precise modelling of <b>JS semantics</b> - is there a nice way to do that in an LLVM backend, or do we need a JS AST?</p>
+          <p class="fragment">2 of the 3 require a precise modelling of <b>JS semantics</b> (and order of operations is in some cases surprising!)</p>
+          <p class="fragment">Is there a nice way to do that in an LLVM backend, or do we need a JS AST?</p>
         </section>
 
         <section>
@@ -434,14 +435,14 @@
           <h3><b>New JS features</b></h3>
           <p><b>Math.imul</b> - precise 32-bit multiply (the only integer op without a trivial impl)</p>
           <p class="fragment"><b>Math.fround</b> - round a 64-bit double to a 32-bit float, allows efficient implementation of floats</p>
-          <p class="fragment"><b>SIMD</b> - There is a <a href="https://github.com/johnmccutchan/ecmascript_simd">spec</a>, and Emscripten supports LLVM vector, so both C SIMD <strong>intrinsics</strong> and <strong>LLVM autovectorization</strong> will eventually work</p>
+          <p class="fragment"><b>SIMD</b> - There is a <a href="https://github.com/johnmccutchan/ecmascript_simd">spec</a>, and Emscripten supports LLVM vector types, so both C SIMD <strong>intrinsics</strong> and <strong>LLVM autovectorization</strong> will eventually work</p>
         </section>
 
         <section>
           <h3><b>Conclusion</b></h3>
           <br>
           <p><b>LLVM bitcode</b> can be compiled to <b>JavaScript</b></p>
-          <p class="fragment">LLVM bitcode to <b>run in all browers</b>, at <b>high speed</b></p>
+          <p class="fragment">LLVM bitcode to <b>run in all browers</b>, at <b>high speed</b>, in a <b>standards-compliant</b> way</p>
           <p class="fragment">For more info, see <b><a href="http://emscripten.org">emscripten.org</a></b> - feedback &amp; contributions welcome!</p>
           <div class="fragment">
             <br>
