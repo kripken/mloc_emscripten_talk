@@ -61,6 +61,12 @@
         </section>
 
         <section>
+          <p><b>JavaScript</b>..?</p>
+          <br>
+          <p>At the <strong>LLVM</strong> developer's conference..?</p>
+        </section>
+
+        <section>
           <p><b>Everything</b> compiles into LLVM bitcode</p>
           <img src="DragonMedium.png" style="border: 0; box-shadow: none;" height="100">
           <div class="fragment">
@@ -78,8 +84,11 @@
           <br>
           <ul>
             <li><b>Game engines</b> like <a href="epic/EpicCitadel.html">Unreal Engine 3</a></li>
+            <!--li><b>Game engines</b> like <a href="http://www.unrealengine.com/html5/">Unreal Engine 3</a></li-->
             <li><b>Emulators</b> like <a href="mess/messloader.html?module=c64">MESS</a></li>
+            <!--li><b>Emulators</b> like <a href="http://jsmess.textfiles.com/">MESS</a></li-->
             <li><b>Physics engines</b> like <a href="ammo/ammo.html">Bullet</a></li>
+            <!--li><b>Physics engines</b> like <a href="http://kripken.github.io/ammo.js/examples/new/ammo.html">Bullet</a></li-->
             <li><b>Programming languages</b> like <a href="lua/repl.html">Lua</a></li>
             <!--li><b>Programming languages</b> like <a href="http://kripken.github.io/lua.vm.js/repl.html">Lua</a></li-->
           </ul>
@@ -219,7 +228,7 @@
       b = b + 1 | 0;
     } while ((b | 0) < 5000);
   }</code></pre>
-          <p class="fragment">(this "style" of code is a subset of JS called <b><a href="http://asmjs.org">asm.js)</a></b></p>
+          <p class="fragment">(this "style" of code is a subset of JS called <b><a href="http://asmjs.org">asm.js</a></b>)</p>
         </section>
 
         <section>
@@ -228,21 +237,21 @@
           <p>JS began as a slow interpreted language</p>
           <p class="fragment">Gained <b>type-specializing</b> JITs</p>
           <p class="fragment">Those are very good at <b>statically typed</b> code</p>
-          <p class="fragment">LLVM compiled through Emscripten is <strong>exactly that</strong></p>
+          <p class="fragment">LLVM compiled through Emscripten is <strong>exactly that</strong>, so it can be fast</p>
         </section>
 
         <section>
-          <h3><b>Performance</b></h3>
-          <a href="asm_jul_10_2013.png"><img src="asm_jul_10_2013.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></a>
-          <p><small>(VMs and Emscripten from July 10th 2013, run on 64-bit linux)</small></p>
-        </section>
-
-        <section>
-          <h3><b>Why this is fast</b></h3>
+          <h3><b>Speed</b></h3>
           <br>
           <p><code>(x+1)|0</code> &nbsp; <b>&rArr;</b> &nbsp; 32-bit integer + in modern JS VMs</p>
-          <p class="fragment"><strong>Loads</strong> in LLVM IR become <strong>reads</strong> from typed array in JS, which become <strong>reads</strong> in machine code</p>
+          <p class="fragment"><strong>Loads</strong> in LLVM IR become <b>reads</b> from typed array in JS, which become <strong>reads</strong> in machine code</p>
           <p class="fragment">Emscripten's <b>memory model</b> is identical to LLVM's (flat C-like, aliasing, etc.), so can use <b>all</b> LLVM opts</p>
+        </section>
+
+        <section>
+          <h3><b>Benchmarks</b></h3>
+          <a href="asm_jul_10_2013.png"><img src="asm_jul_10_2013.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></a>
+          <p><small>(VMs and Emscripten from July 10th 2013, run on 64-bit linux)</small></p>
         </section>
 
         <!--section>
@@ -411,7 +420,6 @@
           <h3><b>3. Reloop</b></h3>
           <br>
           <p>Relooping allows JS VM to optimize better, as it can <strong>understand</strong> control flow</p>
-          <p class="fragment">Also reduces <b>code size</b></p>
           <p class="fragment">Emscripten Relooper code is generic, written in C++, and used by other LLVM-based projects like Duetto</p>
         </section>
 
