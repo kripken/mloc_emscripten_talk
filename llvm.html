@@ -328,9 +328,9 @@
         <section>
           <h3><b>1. Expressionize</b></h3>
           <br>
-          <p>Reduces code size</p>
-          <p class="fragment">Improves JIT time and execution speed: fewer variables &rArr; less stuff for JS engines to worry about</p>
-          <p class="fragment">Must model JS semantics (order of operations, etc.) precisely (sometimes surprising!)</p>
+          <p>Reduces <b>code size</b></p>
+          <p class="fragment">Improves <b>JIT time</b> and <b>execution speed</b>: fewer variables &rArr; less stuff for JS engines to worry about</p>
+          <p class="fragment">Must model JS semantics <strong>precisely</strong> - JS order of operations is sometimes surprising!</p>
         </section>
 
         <section>
@@ -357,7 +357,7 @@
           <br>
           <p>Looks like regalloc, but goal is different: Minimize <strong># of total variables</strong> (in each type), <b>not</b> spills</p>
           <p class="fragment">JS VMs will do regalloc, only they know the actual # of registers</p>
-          <p class="fragment">Reduces code size &amp; improves execution speed, like expressionize</p>
+          <p class="fragment">Benefits <b>code size &amp; speed</b> like expressionize</p>
         </section>
 
         <section>
@@ -370,8 +370,8 @@
     ; code2
     br %label block1
 </code></pre>
-          <hr>
-          <pre><code>  var label = 0; // emulated gotos :(
+          <p>Without relooping (emulated gotos):</p>
+          <pre><code>  var label = 0;
   while (1) switch (label) {
     case 0:
       // code1
@@ -393,9 +393,8 @@
     ; code2
     br %label block1
 </code></pre>
-          <hr>
+          <p>With relooping:</p>
           <pre><code>
-  // relooped :)
   while (1) {
     do {
       // code1
@@ -403,14 +402,15 @@
     // code2
   }
 
+
 </code></pre>
         </section>
 
         <section>
           <h3><b>3. Reloop</b></h3>
           <br>
-          <p>Relooping allows JS VM to optimize better, as it can understand control flow</p>
-          <p class="fragment">Also reduces code size</p>
+          <p>Relooping allows JS VM to optimize better, as it can <strong>understand</strong> control flow</p>
+          <p class="fragment">Also reduces <b>code size</b></p>
           <p class="fragment">Emscripten Relooper code is generic, written in C++, and used by other LLVM-based projects like Duetto</p>
         </section>
 
@@ -418,15 +418,15 @@
           <h3><b>Opts Summary</b></h3>
           <br>
           <p>Each of expressionize, registerize and reloop can make a big impact on perf - anywhere from <strong>1x-10x</strong> faster</p>
-          <p class="fragment">Expressionize and registerize require a precise modelling of JS semantics - is there a nice way to do that in an LLVM backend, or do we need a JS AST?</p>
+          <p class="fragment">2 of the 3 require a precise modelling of <b>JS semantics</b> - is there a nice way to do that in an LLVM backend, or do we need a JS AST?</p>
         </section>
 
         <section>
           <h3><b>JS as a compilation target</b></h3>
           <br>
-          <p>Began as a slow interpreted language, became a JITed language</p>
-          <p class="fragment">Emscripten and Mandreel output led to JS VM optimizations and asm.js</p>
-          <p class="fragment">Collaboration with JS standards bodies led to some new JS language features (Math.imul)</p>
+          <p>Began as a slow interpreted language, became a <b>JITed</b> language</p>
+          <p class="fragment">Emscripten and Mandreel output led to <b>new JS VM optimizations</b> and <strong>asm.js</strong></p>
+          <p class="fragment">Collaboration with JS standards bodies led to some new JS language features (<b>Math.imul</b>)</p>
         </section>
 
         <section>
