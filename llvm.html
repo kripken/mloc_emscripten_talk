@@ -161,7 +161,7 @@
           <br>
           <div>
             <p class="fragment"><img src="thesame.jpg" style="border: 1px solid black; box-shadow: 5px 5px 5px rgba(0,0,0,0.2); float: left" height="250"></p>
-            <p class="fragment" style="margin: 0 auto; text-align:center; padding: 2em">Ironic, actually - many wish JS had <strong>block</strong> scope!</p>
+            <p class="fragment" style="margin: 0 auto; text-align:center; padding: 2em">Ironic, actually - many wish JS had <strong>block</strong> scope, like most languages...</p>
           </div>
         </section>
 
@@ -238,7 +238,7 @@
         <section>
           <h3><b>Why this is fast</b></h3>
           <br>
-          <p><code>(x+1)|0</code> &nbsp; becomes a 32-bit integer + in modern JS VMs</p>
+          <p><code>(x+1)|0</code> &nbsp; <b>&rArr;</b> &nbsp; 32-bit integer + in modern JS VMs</p>
           <p class="fragment"><strong>Loads</strong> in LLVM IR become <strong>reads</strong> from typed array in JS, which become <strong>reads</strong> in machine code</p>
           <p class="fragment">Emscripten's <b>memory model</b> is identical to LLVM's (flat C-like, aliasing, etc.), so can use <b>all</b> LLVM opts</p>
         </section>
@@ -258,15 +258,22 @@
         <section>
           <h3><b>Emscripten</b></h3>
           <br>
-          <p>Open source (MIT/LLVM)</p>
+          <p><strong>Open source</strong> (MIT/LLVM)</p>
+          <p class="fragment">Began in <b>2010</b></p>
+          <p class="fragment">Written mostly in <b>JS</b>, some <b>Python</b>, some <b>C++</b></p>
+          <p class="fragment">Core compiler is several KLOC</p>
+          <p class="fragment">Libraries + toolchain + test suite are several times larger</p>
+        </section>
+
+        <section>
+          <h3><b>Emscripten</b></h3>
           <br>
-          <center class="fragment">
+          <center>
           <table style="background-color: white; padding: 0.4em; border: 0.1em solid #027; border-radius: 1em; box-shadow: 7px 7px 7px rgba(0,0,0,0.6);">
             <tr><td><center>LLVM IR</center></td><td><center><strong>&rArr;<br><br>Emscripten Compiler</strong></center></td><td><center>JS</center></td><td><center><b>&rArr;<br><br>Emscripten Optimizer</b></center></td><td><center>JS</center></td></tr>
           </table>
           </center>
           <br>
-          <p class="fragment">Compiler and optimizer are written in JS</p>
           <p class="fragment">Wait, that's not an LLVM backend..?</p>
         </section>
 
@@ -411,36 +418,36 @@
         <section>
           <h3><b>Opts Summary</b></h3>
           <br>
-          <p>Each of expressionize, registerize and reloop can make a big impact on perf - anywhere from <strong>1x-10x</strong> faster</p>
+          <p><b>Each</b> of expressionize, registerize and reloop can make a big impact on perf - anywhere from <strong>1x-10x</strong> faster</p>
           <p class="fragment">2 of the 3 require a precise modelling of <b>JS semantics</b> - is there a nice way to do that in an LLVM backend, or do we need a JS AST?</p>
         </section>
 
         <section>
-          <h3><b>JS is a moving target</b></h3>
+          <h3><b>JS is improving</b></h3>
           <br>
           <p>First Emscripten and Mandreel figured out stuff that worked well in existing JS VMs</p>
           <p class="fragment">Later JS VMs added <b>new optimizations</b> for that type of code</p>
-          <p class="fragment">Collaboration with JS standards bodies also led to some new JS language features</p>
+          <p class="fragment">Collaboration with JS standards bodies also led to some <strong>new language features</strong></p>
         </section>
 
         <section>
           <h3><b>New JS features</b></h3>
-          <p>Math.imul - precise 32-bit multiply (multiplying two JS numbers normally can lead to double-rounding)</p>
-          <p class="fragment">Math.fround - round a 64-bit double to a 32-bit float, allows efficient implementation of floats</p>
-          <p class="fragment">SIMD - There is a <a href="https://github.com/johnmccutchan/ecmascript_simd">spec</a> and Emscripten supports LLVM vector types, so both C SIMD intrinsics and LLVM autovectorization will eventually be accelerated</p>
+          <p><b>Math.imul</b> - precise 32-bit multiply (the only integer op without a trivial impl)</p>
+          <p class="fragment"><b>Math.fround</b> - round a 64-bit double to a 32-bit float, allows efficient implementation of floats</p>
+          <p class="fragment"><b>SIMD</b> - There is a <a href="https://github.com/johnmccutchan/ecmascript_simd">spec</a>, and Emscripten supports LLVM vector, so both C SIMD <strong>intrinsics</strong> and <strong>LLVM autovectorization</strong> will eventually work</p>
         </section>
 
         <section>
           <h3><b>Conclusion</b></h3>
           <br>
-          <p>LLVM bitcode can be compiled to JavaScript</p>
-          <p class="fragment">Allows LLVM bitcode to run in all browers, at high speeds</p>
-          <p class="fragment"><a href="http://emscripten.org">emscripten.org</a> - feedback &amp; contributions welcome</p>
-          repeat browser logos etc
+          <p><b>LLVM bitcode</b> can be compiled to <b>JavaScript</b></p>
+          <p class="fragment">LLVM bitcode to <b>run in all browers</b>, at <b>high speed</b></p>
+          <p class="fragment">For more info, see <b><a href="http://emscripten.org">emscripten.org</a></b> - feedback &amp; contributions welcome!</p>
           <div class="fragment">
             <br>
             <p><b style="color: #c11">Thank you for listening!</b></p>
           </div>
+          repeat browser logos etc
           <br>
         </section>
 
