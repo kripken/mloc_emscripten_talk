@@ -422,43 +422,18 @@
         </section>
 
         <section>
-          <h3><b>Improving JS</b></h3>
+          <h3><b>JS is a moving target</b></h3>
           <br>
-          <p>Emscripten and Mandreel figured out stuff that worked well in existing JS VMs</p>
+          <p>First Emscripten and Mandreel figured out stuff that worked well in existing JS VMs</p>
           <p class="fragment">Later JS VMs added <b>new optimizations</b> for that type of code</p>
-          <p class="fragment">Collaboration with JS standards bodies also led to some new JS language features (<b>Math.imul</b>)</p>
+          <p class="fragment">Collaboration with JS standards bodies also led to some new JS language features</p>
         </section>
 
         <section>
-          <h3><b>float32</b></h3>
-          <p>JS numbers are doubles, LLVM has doubles and floats</p>
-          <p class="fragment">Rare but annoying bugs when we implement floats as doubles</p>
-          <p class="fragment">Emscripten can emulate floats precisely, but it is slow</p>
-          <p class="fragment">Yet 32-bit precision should be similar or faster than 64-bit!</p>
-        </section>
-
-        <section>
-          <h3><b>float32</b></h3>
-          <p>Math.fround is a new JS feature that rounds 64-bit doubles to 32-bit floats</p>
-          <pre><code>  var a = Math.fround(1.23456789);
-  var b = Math.fround(9.9E99);
-  print(Math.fround(a + b));
-</code></pre>
-          <p>JS engines can optimize that into 32-bit floats, no doubles</p>
-          <p>Allows LLVM floats to convert into floats in JS VMs, gain both correct precision and potentially higher speed</p>
-        </section>
-
-        <section>
-          <h3><b>SIMD</b></h3>
-          <br>
-          <p>Single Instruction, Multiple Data: <b>SSE</b>, <b>NEON</b>, etc.</p>
-          <p class="fragment">There is a <a href="https://github.com/johnmccutchan/ecmascript_simd">spec</a> for SIMD in JS</p>
-          <pre class="fragment"><code contenteditable>  var x = float32x4(1, 2, 3.14159, 22.5);
-  var y = float32x4(0, 0, 1, 0);
-  var z = SIMD.add(x, y);
-</code></pre>
-          <p class="fragment">Emscripten supports LLVM vector types, so both C SIMD intrinsics and LLVM autovectorization work</p>
-          <p class="fragment">When SIMD spec is finalized and JS engines support, it will be fast</p>
+          <h3><b>New JS features</b></h3>
+          <p>Math.imul - precise 32-bit multiply (multiplying two JS numbers normally can lead to double-rounding)</p>
+          <p>Math.fround - round a 64-bit double to a 32-bit float, allows efficient implementation of floats</p>
+          <p>SIMD - There is a <a href="https://github.com/johnmccutchan/ecmascript_simd">spec</a> and Emscripten supports LLVM vector types, so both C SIMD intrinsics and LLVM autovectorization will eventually be accelerated</p>
         </section>
 
         <section>
@@ -467,6 +442,7 @@
           <p>LLVM bitcode can be compiled to JavaScript</p>
           <p class="fragment">Allows LLVM bitcode to run in all browers, at high speeds</p>
           <p class="fragment"><a href="http://emscripten.org">emscripten.org</a> - feedback &amp; contributions welcome</p>
+          repeat browser logos etc
           <div class="fragment">
             <br>
             <p><b style="color: #c11">Thank you for listening!</b></p>
