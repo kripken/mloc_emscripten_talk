@@ -236,17 +236,17 @@
         </section>
 
         <section>
-          <h3><b>Why so low-level?</b></h3>
+          <h3><b>JS as a compilation target</b></h3>
           <br>
-          <p>Emscripten and other compilers to JS have experimented with "<b>higher-level</b>" output</p>
-          <p class="fragment">For example, map LLVM structures to <b>JS objects</b></p>
-          <p class="fragment">But <strong>low-level</strong> is almost always faster</p>
+          <p>JS began as a slow interpreted language</p>
+          <p class="fragment">Gained <b>type-specializing</b> JITs</p>
+          <p class="fragment">Those are very good at <b>statically typed</b> code</p>
+          <p class="fragment">LLVM compiled to asm.js is <strong>exactly that</strong></p>
         </section>
 
         <section>
-          <h3><b>Low-level upsides</b></h3>
+          <h3><b>Low-level benefits</b></h3>
           <br>
-          <p>Pointers are just <b>numbers</b>, not refs to objects</p>
           <p class="fragment"><strong>Loads</strong> in LLVM IR become <strong>reads</strong> from typed array in JS, which become <strong>reads</strong> in machine code</p>
           <p class="fragment">Low-level means <b>memory model</b> is identical to LLVM's (flat C-like, aliasing, etc.), so can use <b>all</b> LLVM opts</p>
         </section>
@@ -422,11 +422,11 @@
         </section>
 
         <section>
-          <h3><b>JS as a compilation target</b></h3>
+          <h3><b>Improving JS</b></h3>
           <br>
-          <p>Began as a slow interpreted language, became a <b>JITed</b> language</p>
-          <p class="fragment">Emscripten and Mandreel output led to <b>new JS VM optimizations</b> and <strong>asm.js</strong></p>
-          <p class="fragment">Collaboration with JS standards bodies led to some new JS language features (<b>Math.imul</b>)</p>
+          <p>Emscripten and Mandreel figured out stuff that worked well in existing JS VMs</p>
+          <p class="fragment">Later JS VMs added <b>new optimizations</b> for that type of code</p>
+          <p class="fragment">Collaboration with JS standards bodies also led to some new JS language features (<b>Math.imul</b>)</p>
         </section>
 
         <section>
@@ -462,7 +462,7 @@
         </section>
 
         <section>
-          <h3><b>Last Thoughts</b></h3>
+          <h3><b>Conclusion</b></h3>
           <br>
           <p>LLVM bitcode can be compiled to JavaScript</p>
           <p class="fragment">Allows LLVM bitcode to run in all browers, at high speeds</p>
