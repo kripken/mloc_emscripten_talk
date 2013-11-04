@@ -241,8 +241,11 @@
           <h3><b>JS as a compilation target</b></h3>
           <br>
           <p>JS began as a slow interpreted language</p>
+          <br>
           <p class="fragment">Gained <b>type-specializing</b> JITs</p>
+          <br>
           <p class="fragment">Those are very good at <b>statically typed</b> code</p>
+          <br>
           <p class="fragment">LLVM compiled through Emscripten is <strong>exactly that</strong>, so it can be fast</p>
         </section>
 
@@ -353,6 +356,7 @@
           <h3><b>1. Expressionize</b></h3>
           <br>
           <p>Improves <b>JIT time</b> and <b>execution speed</b>: fewer variables &rArr; less stuff for JS engines to worry about</p>
+          <br>
           <p class="fragment">Reduces <b>code size</b></p>
         </section>
 
@@ -442,7 +446,7 @@
         <section>
           <h3><b>Opts Summary</b></h3>
           <br>
-          <p class="fragment">2 of the 3 require a precise modelling of <b>JS semantics</b> (and order of operations is in some cases surprising!)</p>
+          <p>2 of the 3 require a precise modelling of <b>JS semantics</b> (and order of operations is in some cases surprising!)</p>
           <br>
           <p class="fragment">That kind of thing seems irrelevant for typical LLVM targets</p>
           <br>
@@ -463,10 +467,12 @@
           <h3><b>Even Further: SIMD</b></h3>
           <br>
           <p>There is a <a href="https://github.com/johnmccutchan/ecmascript_simd">SIMD spec</a> for JS</p>
+          <br>
           <pre class="fragment"><code contenteditable>  var x = float32x4(1, 2, 3.14159, 22.5);
   var y = float32x4(0, 0, 1, 0);
   var z = SIMD.add(x, y);
 </code></pre>
+          <br>
           <p class="fragment">Emscripten supports LLVM vector types, so both SIMD <b>intrinsics</b> in C and <strong>LLVM autovectorization</strong> will eventually be fast</p>
         </section>
 
