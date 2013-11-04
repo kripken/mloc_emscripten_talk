@@ -6,7 +6,7 @@
 
     <title>Emscripten: Compiling LLVM bitcode to JavaScript</title>
 
-    <meta name="description" content="JavaScript + Other Languages">
+    <meta name="description" content="Emscripten: Compiling LLVM bitcode to JavaScript">
     <meta name="author" content="Alon Zakai">
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -62,7 +62,7 @@
 
         <section>
           <br>
-          <p><b>JavaScript</b> at the <strong>LLVM</strong> developer's conference..?</p>
+          <p><b>JavaScript</b>..? At the <strong>LLVM</strong> developer's conference..?</p>
           <br>
           <img src="confusing_bubble.jpg" style="border: 1px solid black; box-shadow: 7px 7px 7px rgba(0,0,0,0.5)" height="350">
         </section>
@@ -94,7 +94,7 @@
         </section>
 
         <section>
-          <h3><b>And this works today!</b></h3>
+          <h3><b>This works today!</b></h3>
           <br>
           <ul>
             <li><b>Game engines</b> like <a href="epic/EpicCitadel.html">Unreal Engine 3</a></li>
@@ -247,7 +247,7 @@
         </section>
 
         <section>
-          <h3><b>Speed</b></h3>
+          <h3><b>Speed: More Detail</b></h3>
           <br>
           <p><code>(x+1)|0</code> &nbsp; <b>&rArr;</b> &nbsp; 32-bit integer + in modern JS VMs</p>
           <br>
@@ -352,8 +352,8 @@
         <section>
           <h3><b>1. Expressionize</b></h3>
           <br>
-          <p>Reduces <b>code size</b></p>
-          <p class="fragment">Improves <b>JIT time</b> and <b>execution speed</b>: fewer variables &rArr; less stuff for JS engines to worry about</p>
+          <p>Improves <b>JIT time</b> and <b>execution speed</b>: fewer variables &rArr; less stuff for JS engines to worry about</p>
+          <p class="fragment">Reduces <b>code size</b></p>
         </section>
 
         <section>
@@ -379,7 +379,9 @@
           <h3><b>2. Registerize</b></h3>
           <br>
           <p>Looks like regalloc, but goal is different: Minimize <strong># of total variables</strong> (in each type), <b>not</b> spills</p>
+          <br>
           <p class="fragment">JS VMs will do regalloc, only they know the actual # of registers</p>
+          <br>
           <p class="fragment">Benefits <b>code size &amp; speed</b> like expressionize</p>
         </section>
 
@@ -433,6 +435,7 @@
           <h3><b>3. Reloop</b></h3>
           <br>
           <p>Relooping allows JS VM to optimize better, as it can <strong>understand</strong> control flow</p>
+          <br>
           <p class="fragment">Emscripten Relooper code is generic, written in C++, and used by other LLVM-based projects like Duetto</p>
         </section>
 
@@ -441,7 +444,7 @@
           <br>
           <p class="fragment">2 of the 3 require a precise modelling of <b>JS semantics</b> (and order of operations is in some cases surprising!)</p>
           <br>
-          <p class="fragment">Seem like they would be irrelevant for all other backends?</p>
+          <p class="fragment">That kind of thing seems irrelevant for typical LLVM targets</p>
           <br>
           <p class="fragment">Is there a nice way to these opts in an <strong>LLVM backend</strong>, or do we need a JS AST?</p>
         </section>
