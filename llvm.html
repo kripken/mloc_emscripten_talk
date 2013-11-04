@@ -125,8 +125,9 @@
 </code></pre>
           <hr>
           <pre><code>
-  var x = new MyClass('name', 5).chain(function() {
-    doMore({ x: 5, y: [1,2,3] });
+  var x = new MyClass('name', 5).chain(function(arg) {
+    if (check(arg)) doMore({ x: arg, y: [1,2,3] });
+    else throw 'stop';
   });
 
 </code></pre>
