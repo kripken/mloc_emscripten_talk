@@ -134,17 +134,15 @@
         </section>
 
         <section>
-          <h3><b>Types</b></h3>
+          <h3><b>Numeric Types</b></h3>
           <br>
           <center>
           <table>
-            <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>i8, i16, i32, float, double, etc.</center></td></tr>
+            <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>i8, i16, i32, float, double</center></td></tr>
             <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
-            <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>double, object, array, first-class functions, etc.</center></td></tr>
+            <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>double</center></td></tr>
           </table>
           </center>
-          <br>
-          <p class='fragment'>(hey, at least there's <strong>double</strong>...)</p>
         </section>
 
         <section>
@@ -195,14 +193,6 @@
         </section>
 
         <section>
-          <h3><b>Emscripten's approach</b></h3>
-          <br>
-          <p>Emit <strong>low-level</strong> JavaScript, close to LLVM IR</p>
-          <p class="fragment"><b>No</b> JS objects, arrays, closures, etc.</p>
-          <p class="fragment"><b>Yes</b> normal JS calls, vars, etc.</p>
-        </section>
-
-        <section>
           <pre><code>
   // LLVM IR
   define i32 @func(i32* %p) {
@@ -222,6 +212,7 @@
   }
 
 </code></pre>
+          <p class="fragment">Almost direct mapping in many cases</p>
         </section>
 
         <section>
@@ -258,7 +249,9 @@
           <h3><b>Speed</b></h3>
           <br>
           <p><code>(x+1)|0</code> &nbsp; <b>&rArr;</b> &nbsp; 32-bit integer + in modern JS VMs</p>
+          <br>
           <p class="fragment"><strong>Loads</strong> in LLVM IR become <b>reads</b> from typed array in JS, which become <strong>reads</strong> in machine code</p>
+          <br>
           <p class="fragment">Emscripten's <b>memory model</b> is identical to LLVM's (flat C-like, aliasing, etc.), so can use <b>all</b> LLVM opts</p>
         </section>
 
@@ -284,9 +277,12 @@
           <a href="http://emscripten.org"><img src="emscripten_switch_logo.png" height=150></a>
           <br>
           <p><strong>Open source</strong> (MIT/LLVM)</p>
+          <br>
           <p class="fragment">Began in <b>2010</b></p>
+          <br>
           <p class="fragment">Written mostly in <b>JS</b>, some <b>Python</b>, some <b>C++</b></p>
-          <p class="fragment">Bulk of codebase is libraries + toolchain + test suite, core compiler is a small fraction of those</p>
+          <br>
+          <p class="fragment">Most of the codebase is not the core compiler, but libraries + toolchain + test suite</p>
         </section>
 
         <section>
@@ -305,7 +301,9 @@
           <h3><b>3 JS compilers, 3 ways</b></h3>
           <br>
           <p><b><a href="http://www.mandreel.com/">Mandreel</a></b>: <strong>Typical LLVM backend</strong>, uses tblgen, selection DAG (like x86, ARM backends)</p>
+          <br>
           <p class="fragment"><b><a href="http://leaningtech.com/duetto">Duetto</a></b>: Processes <strong>LLVM IR</strong> in llvm::Module (like C++ backend)</p>
+          <br>
           <p class="fragment"><b><a href="http://emscripten.org">Emscripten</a></b>: Processes <strong>LLVM IR</strong> in assembly</p>
         </section>
 
@@ -318,7 +316,7 @@
         </section>
 
         <section>
-          <h3><b>non-backend downsides</b></h3>
+          <h3><b>Downsides too</b></h3>
           <br>
           <p>Emscripten currently must do its own legalization</p>
           <br>
@@ -328,7 +326,9 @@
         <section>
           <h3><b>Optimizing JS</b></h3>
           <br>
-          <p>Emscripten has <strong>3 crucial optimizations</strong> for JS, that might be irrelevant for other LLVM backends:<br><br><b>Expressionize, Registerize and Reloop</b></p>
+          <p>Emscripten has <strong>3 optimizations</strong> we found are crucial for JS, which that might be irrelevant for other LLVM backends</p>
+          <br>
+          <p class="fragment">Each of them can make a big impact on perf - anywhere from <b>1x-10x</b> faster</p>
         </section>
 
         <section>
@@ -440,15 +440,17 @@
         <section>
           <h3><b>Opts Summary</b></h3>
           <br>
-          <p><b>Each</b> of expressionize, registerize and reloop can make a big impact on perf - anywhere from <strong>1x-10x</strong> faster</p>
           <p class="fragment">2 of the 3 require a precise modelling of <b>JS semantics</b> (and order of operations is in some cases surprising!)</p>
-          <p class="fragment">Is there a nice way to do that in an LLVM backend, or do we need a JS AST?</p>
+          <br>
+          <p class="fragment">Seem like they would be irrelevant for all other backends?</p>
+          <br>
+          <p class="fragment">Is there a nice way to these opts in an LLVM backend, or do we need a JS AST?</p>
         </section>
 
         <section>
           <h3><b>JS is improving</b></h3>
           <br>
-          <p>First Emscripten and Mandreel figured out stuff that worked well in existing JS VMs</p>
+          <p>First Emscripten and Mandreel figured out stuff that worked well in <b>existing</b> JS VMs</p>
           <p class="fragment">Later JS VMs added <b>new optimizations</b> for that type of code</p>
           <p class="fragment">Collaboration with JS standards bodies also led to some <strong>new language features</strong></p>
         </section>
