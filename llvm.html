@@ -443,22 +443,28 @@
           <br>
           <p class="fragment">Seem like they would be irrelevant for all other backends?</p>
           <br>
-          <p class="fragment">Is there a nice way to these opts in an LLVM backend, or do we need a JS AST?</p>
+          <p class="fragment">Is there a nice way to these opts in an <strong>LLVM backend</strong>, or do we need a JS AST?</p>
         </section>
 
         <section>
-          <h3><b>JS is improving</b></h3>
+          <h3><b>Missing Pieces</b></h3>
           <br>
-          <p>First Emscripten and Mandreel figured out stuff that worked well in <b>existing</b> JS VMs</p>
-          <p class="fragment">Later JS VMs added <b>new optimizations</b> for that type of code</p>
-          <p class="fragment">Collaboration with JS standards bodies also led to some <strong>new language features</strong></p>
+          <p>(Surprisingly!) JS already had almost everything a compiler target needs</p>
+          <br>
+          <p class="fragment">But a few things turn out to be missing: <b>32-bit integer multiply</b>, <strong>single-precision floats</strong> etc.</p>
+          <br>
+          <p class="fragment">Thankfully the JS standards bodies are open to improving JS as a compiler target: <b>Math.imul</b>, <strong>Math.fround</strong></p>
         </section>
 
         <section>
-          <h3><b>New JS features</b></h3>
-          <p><b>Math.imul</b> - precise 32-bit multiply (the only integer op without a trivial impl)</p>
-          <p class="fragment"><b>Math.fround</b> - round a 64-bit double to a 32-bit float, allows efficient implementation of floats</p>
-          <p class="fragment"><b>SIMD</b> - There is a <a href="https://github.com/johnmccutchan/ecmascript_simd">spec</a>, and Emscripten supports LLVM vector types, so both C SIMD <strong>intrinsics</strong> and <strong>LLVM autovectorization</strong> will eventually work</p>
+          <h3><b>Even Further: SIMD</b></h3>
+          <br>
+          <p>There is a <a href="https://github.com/johnmccutchan/ecmascript_simd">SIMD spec</a> for JS</p>
+          <pre class="fragment"><code contenteditable>  var x = float32x4(1, 2, 3.14159, 22.5);
+  var y = float32x4(0, 0, 1, 0);
+  var z = SIMD.add(x, y);
+</code></pre>
+          <p class="fragment">Emscripten supports LLVM vector types, so both SIMD <b>intrinsics</b> in C and <strong>LLVM autovectorization</strong> will eventually work</p>
         </section>
 
         <section>
