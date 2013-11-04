@@ -117,10 +117,10 @@
           <br>
           <p>Random (unrelated) code samples from each:</p>
           <pre><code>
-    %r = load i32* %p
-    %s = shl i32 %r 16
-    %t = call i32 @calc(i32 %r, i32 %s)
-    br label %next
+  %r = load i32* %p
+  %s = shl i32 %r 16
+  %t = call i32 @calc(i32 %r, i32 %s)
+  br label %next
 
 </code></pre>
           <hr>
@@ -326,9 +326,7 @@
         <section>
           <h3><b>Optimizing JS</b></h3>
           <br>
-          <p>Emscripten has <strong>3 optimizations</strong> we found are crucial for JS, which that might be irrelevant for other LLVM backends</p>
-          <br>
-          <p class="fragment">Each of them can make a big impact on perf - anywhere from <b>1x-10x</b> faster</p>
+          <p>Emscripten has <strong>3 optimizations</strong> we found are crucial for JS, up to <b>10x</b> slowdowns without each</p>
         </section>
 
         <section>
@@ -371,7 +369,7 @@
   var a = g(x) | 0;
   a = a + y | 0;
   a = HEAP[a] | 0;
-  var b = +HEAP[20];
+  var d = +HEAP[20];
 
 </code></pre>
         </section>
@@ -386,22 +384,22 @@
 
         <section>
           <h3><b>3. Reloop</b></h3>
-          <pre><code>  block1:
-    ; code1
-    br i1 %cond, %label block1, label %block2
+          <pre><code>  block0:
+    ; code0
+    br i1 %cond, label %block0, label %block1
 
-  block2:
-    ; code2
-    br %label block1
+  block1:
+    ; code1
+    br %label block0
 </code></pre>
           <p>Without relooping (emulated gotos):</p>
           <pre><code>  var label = 0;
   while (1) switch (label) {
     case 0:
-      // code1
+      // code0
       label = cond ? 0 : 1; break;
     case 1:
-      // code2
+      // code1
       label = 0; break;
   }
 </code></pre>
@@ -409,21 +407,21 @@
 
         <section>
           <h3><b>3. Reloop</b></h3>
-          <pre><code>  block1:
-    ; code1
-    br i1 %cond, %label block1, label %block2
+          <pre><code>  block0:
+    ; code0
+    br i1 %cond, label %block0, label %block1
 
-  block2:
-    ; code2
-    br %label block1
+  block1:
+    ; code1
+    br %label block0
 </code></pre>
           <p>With relooping:</p>
           <pre><code>
   while (1) {
     do {
-      // code1
+      // code0
     } while (cond);
-    // code2
+    // code1
   }
 
 
