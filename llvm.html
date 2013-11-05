@@ -467,16 +467,11 @@
         </section>
 
         <section>
-          <h3><b>Even Further: SIMD</b></h3>
+          <h3><b>The Future</b></h3>
           <br>
-          <p>There is a SIMD (single instruction, multiple data: SSE, NEON, etc.) <a href="https://github.com/johnmccutchan/ecmascript_simd">spec</a> for JS</p>
+          <p>JS engines will continue to get <b>faster</b>, compiled code will get even <b>closer</b> to native speed</p>
           <br>
-          <pre class="fragment"><code contenteditable>  var x = float32x4(1, 2, 3.14159, 22.5);
-  var y = float32x4(0, 0, 1, 0);
-  var z = SIMD.add(x, y);
-</code></pre>
-          <br>
-          <p class="fragment">Emscripten supports LLVM vector types, so both SIMD <b>intrinsics</b> in C and <strong>LLVM autovectorization</strong> will eventually be fast</p>
+          <p class="fragment">There is a SIMD (SSE, NEON, etc.) <a href="https://github.com/johnmccutchan/ecmascript_simd">spec</a> for JS, and Emscripten supports LLVM vector types &rArr; <strong>LLVM autovectorization</strong> etc. will be fast</p>
         </section>
 
         <section>
