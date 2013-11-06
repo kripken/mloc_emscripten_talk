@@ -124,7 +124,7 @@
           <p>Random (unrelated) code samples from each:</p>
           <pre><code>
   %r = load i32* %p
-  %s = shl i32 %r 16
+  %s = shl i32 %r, 16
   %t = call i32 @calc(i32 %r, i32 %s)
   br label %next
 
@@ -202,7 +202,7 @@
   // LLVM IR
   define i32 @func(i32* %p) {
     %r = load i32* %p
-    %s = shl i32 %r 16
+    %s = shl i32 %r, 16
     %t = call i32 @calc(i32 %r, i32 %s)
     ret i32 %t
   }
@@ -455,7 +455,7 @@
         <section>
           <h3><b>Opts Summary</b></h3>
           <br>
-          <p>The last 2 (expressionize &amp; registerize) require precise modelling of <b>JS semantics</b> (and order of operations is in some cases surprising!)</p>
+          <p>Expressionize &amp; registerize require precise modelling of <b>JS semantics</b> (and order of operations is in some cases surprising!)</p>
           <br>
           <p class="fragment">Is there a nice way to these opts in an <strong>LLVM backend</strong>, or do we need a JS AST?</p>
           <br>
