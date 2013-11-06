@@ -341,63 +341,7 @@
         </section>
 
         <section>
-          <h3><b>1. Expressionize</b></h3>
-          <pre><code>
-  var a = g(x);
-  var b = a + y;
-  var c = HEAP[b];
-  var d = HEAP[20];
-  var e = x + y + z;
-  var f = h(d, e);
-  FUNCTION_TABLE[c](f);
-
-</code></pre>
-          <h3><b>&rArr;</b></h3>
-          <pre><code>
-  FUNCTION_TABLE[HEAP[g(x) + y](h(HEAP[20], x + y + z));
-
-</code></pre>
-        </section>
-
-        <section>
-          <h3><b>1. Expressionize</b></h3>
-          <br>
-          <p>Improves <b>JIT time</b> and <b>execution speed</b>: fewer variables &rArr; less stuff for JS engines to worry about</p>
-          <br>
-          <p class="fragment">Reduces <b>code size</b></p>
-        </section>
-
-        <section>
-          <h3><b>2. Registerize</b></h3>
-          <pre><code>
-  var a = g(x) | 0; // integers 
-  var b = a + y | 0;
-  var c = HEAP[b] | 0;
-  var d = +HEAP[20]; // double
-
-</code></pre>
-          <h3><b>&rArr;</b></h3>
-          <pre><code>
-  var a = g(x) | 0;
-  a = a + y | 0;
-  a = HEAP[a] | 0;
-  var d = +HEAP[20];
-
-</code></pre>
-        </section>
-
-        <section>
-          <h3><b>2. Registerize</b></h3>
-          <br>
-          <p>Looks like regalloc, but goal is different: Minimize <strong># of total variables</strong> (in each type), <b>not</b> spills</p>
-          <br>
-          <p class="fragment">JS VMs will do regalloc, only they know the actual # of registers</p>
-          <br>
-          <p class="fragment">Benefits <b>code size &amp; speed</b> like expressionize</p>
-        </section>
-
-        <section>
-          <h3><b>3. Reloop</b></h3>
+          <h3><b>1. Reloop</b></h3>
           <pre><code>  block0:
     ; code0
     br i1 %cond, label %block0, label %block1
@@ -447,17 +391,75 @@
           <br>
           <p>Relooping allows JS VM to optimize better, as it can <strong>understand</strong> control flow</p>
           <br>
-          <p class="fragment">Emscripten Relooper code is generic, written in C++, and used by other projects (e.g., Duetto)</p>
+          <p class="fragment">Emscripten Relooper code is <b>generic</b>, written in C++, and used by other projects (e.g., Duetto)</p>
+          <br>
+          <p class="fragment">This one seems like it could work in <b>any</b> architecture, in an LLVM backend or not</p>
+        </section>
+
+        <section>
+          <h3><b>2. Expressionize</b></h3>
+          <pre><code>
+  var a = g(x);
+  var b = a + y;
+  var c = HEAP[b];
+  var d = HEAP[20];
+  var e = x + y + z;
+  var f = h(d, e);
+  FUNCTION_TABLE[c](f);
+
+</code></pre>
+          <h3><b>&rArr;</b></h3>
+          <pre><code>
+  FUNCTION_TABLE[HEAP[g(x) + y](h(HEAP[20], x + y + z));
+
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>2. Expressionize</b></h3>
+          <br>
+          <p>Improves <b>JIT time</b> and <b>execution speed</b>: fewer variables &rArr; less stuff for JS engines to worry about</p>
+          <br>
+          <p class="fragment">Reduces <b>code size</b></p>
+        </section>
+
+        <section>
+          <h3><b>3. Registerize</b></h3>
+          <pre><code>
+  var a = g(x) | 0; // integers 
+  var b = a + y | 0;
+  var c = HEAP[b] | 0;
+  var d = +HEAP[20]; // double
+
+</code></pre>
+          <h3><b>&rArr;</b></h3>
+          <pre><code>
+  var a = g(x) | 0;
+  a = a + y | 0;
+  a = HEAP[a] | 0;
+  var d = +HEAP[20];
+
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>3. Registerize</b></h3>
+          <br>
+          <p>Looks like regalloc, but goal is different: Minimize <strong># of total variables</strong> (in each type), <b>not</b> spills</p>
+          <br>
+          <p class="fragment">JS VMs will do regalloc, only they know the actual # of registers</p>
+          <br>
+          <p class="fragment">Benefits <b>code size &amp; speed</b> like expressionize</p>
         </section>
 
         <section>
           <h3><b>Opts Summary</b></h3>
           <br>
-          <p>2 of the 3 require a precise modelling of <b>JS semantics</b> (and order of operations is in some cases surprising!)</p>
+          <p>The last 2 (expressionize &amp; registerize) require precise modelling of <b>JS semantics</b> (and order of operations is in some cases surprising!)</p>
           <br>
           <p class="fragment">Is there a nice way to these opts in an <strong>LLVM backend</strong>, or do we need a JS AST?</p>
           <br>
-          <p class="fragment">End on a <b>question</b>: Should Emscripten change how it interfaces with LLVM?</p>
+          <p class="fragment"><b>Question</b>: Should Emscripten change how it interfaces with LLVM?</p>
         </section>
 
         <!--section>
