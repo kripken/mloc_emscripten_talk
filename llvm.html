@@ -99,10 +99,10 @@
           <!--li><b>Game engines</b> like <a href="http://www.unrealengine.com/html5/">Unreal Engine 3</a></li-->
           <!--p><b>Emulators</b> like <a href="mess/messloader.html?module=c64">MESS</a></p-->
           <!--li><b>Emulators</b> like <a href="http://jsmess.textfiles.com/">MESS</a></li-->
-          <p><b>Physics engines</b> like <a href="ammo/ammo.html">Bullet</a></p>
-          <!--li><b>Physics engines</b> like <a href="http://kripken.github.io/ammo.js/examples/new/ammo.html">Bullet</a></li-->
           <p><b>Programming languages</b> like <a href="lua/repl.html">Lua</a></p>
           <!--li><b>Programming languages</b> like <a href="http://kripken.github.io/lua.vm.js/repl.html">Lua</a></li-->
+          <p><b>Libraries too:</b> <a href="ammo/ammo.html">Bullet</a></p>
+          <!--li><b>Libraries too: </b> like <a href="http://kripken.github.io/ammo.js/examples/new/ammo.html">Bullet</a></li-->
         </section>
 
         <section>
@@ -162,8 +162,6 @@
             <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>virtual machine (VM), just in time (JIT) compilers w/type profiling, garbage collection, etc.</center></td></tr>
           </table>
           </center>
-          <br>
-          <p class='fragment'><strong>Predictable</strong> vs. <strong>HOW DO I MAKE THIS FAST?!</strong></p>
         </section>
 
         <section>
@@ -308,9 +306,9 @@
         </section>
 
         <section>
-          <h3><b>3 JS compilers, 3 ways</b></h3>
+          <h3><b>3 JS compilers, 3 architectures</b></h3>
           <br>
-          <p><b><a href="http://www.mandreel.com/">Mandreel</a></b>: <strong>Typical LLVM backend</strong>, uses tblgen, selection DAG (like x86, ARM backends)</p>
+          <p class="fragment"><b><a href="http://www.mandreel.com/">Mandreel</a></b>: <strong>Typical LLVM backend</strong>, uses tblgen, selection DAG (like x86, ARM backends)</p>
           <br>
           <p class="fragment"><b><a href="http://leaningtech.com/duetto">Duetto</a></b>: Processes <strong>LLVM IR</strong> in llvm::Module (like C++ backend)</p>
           <br>
@@ -320,7 +318,7 @@
         <section>
           <h3><b>Emscripten's choice</b></h3>
           <br>
-          <p>JS is such an odd target &rArr; wanted <b>maximal flexibility</b> in codegen</p>
+          <p>JS is such an odd target &rArr; wanted architecture with <b>maximal flexibility</b> in codegen</p>
           <br>
           <p class="fragment">Helped <strong>prototype &amp; test</strong> many approaches</p>
         </section>
@@ -330,16 +328,16 @@
           <br>
           <img src="doingitwrong.jpg" style="border: 1px solid black; box-shadow: 5px 5px 5px rgba(0,0,0,0.2); float: left; margin: 1em" height="200">
           <br>
-          <p>Emscripten currently must do its own legalization (are we doing it wrong?)</p>
+          <p>Emscripten currently must do its own legalization (are we doing it wrong? probably...)</p>
           <div style="clear:both;"></div>
-          <br>
-          <p class="fragment">Emitted code is very <b>low-level</b> - perhaps close to what an <strong>LLVM backend</strong> could emit?</p>
         </section>
 
         <section>
           <h3><b>Optimizing JS</b></h3>
           <br>
           <p>Emscripten has <strong>3 optimizations</strong> we found are crucial for JS, up to <b>10x</b> slowdowns without each</p>
+          <br>
+          <p class="fragment">Whatever the best architecture is, it should be able to implement those - let's go over them now</p>
         </section>
 
         <section>
@@ -457,9 +455,9 @@
           <br>
           <p>2 of the 3 require a precise modelling of <b>JS semantics</b> (and order of operations is in some cases surprising!)</p>
           <br>
-          <p class="fragment">That kind of thing seems irrelevant for typical LLVM targets</p>
-          <br>
           <p class="fragment">Is there a nice way to these opts in an <strong>LLVM backend</strong>, or do we need a JS AST?</p>
+          <br>
+          <p class="fragment">End on a <b>question</b>: Should Emscripten change how it interfaces with LLVM?</p>
         </section>
 
         <!--section>
@@ -481,8 +479,10 @@
         </section-->
 
         <section>
+          <h3><b>Conclusion</b></h3>
+          <br>
           <p><b>LLVM bitcode</b> can be compiled to <b>JavaScript</b> and run in <b>all browers</b>, at <b>high speed</b>, in a <b>standards-compliant</b> way</p>
-          <img src="dragon-browsers3.png" style="border: 0; box-shadow: none;" height="250">
+          <img src="dragon-browsers3.png" style="border: 0; box-shadow: none;" height="150">
           <br>
           <p class="fragment">For more info, see <b><a href="http://emscripten.org">emscripten.org</a></b> - feedback &amp; contributions always welcome</p>
           <br>
