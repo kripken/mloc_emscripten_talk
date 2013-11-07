@@ -76,7 +76,7 @@
           </div>
           <div>
             <br>
-            <p style="background-color: white; padding: 0.4em; border: 0.1em solid #027; border-radius: 1em; box-shadow: 7px 7px 7px rgba(0,0,0,0.6);">Compiling LLVM bitcode to JavaScript lets us run <strong>everything, everywhere</strong></p>
+            <p style="background-color: white; padding: 0.4em; border: 0.1em solid #027; border-radius: 1em; box-shadow: 7px 7px 7px rgba(0,0,0,0.6);">Compiling LLVM bitcode to JavaScript lets us run ~ <strong>everything, everywhere</strong></p>
           </div>
           </div>
         </section>
@@ -89,7 +89,7 @@
           </div>
           <div class="fragment">
             <br>
-            <p style="background-color: white; padding: 0.4em; border: 0.1em solid #027; border-radius: 1em; box-shadow: 7px 7px 7px rgba(0,0,0,0.6);">Compiling LLVM bitcode to JavaScript lets us run <strong>everything, everywhere</strong></p>
+            <p style="background-color: white; padding: 0.4em; border: 0.1em solid #027; border-radius: 1em; box-shadow: 7px 7px 7px rgba(0,0,0,0.6);">Compiling LLVM bitcode to JavaScript lets us run ~ <strong>everything, everywhere</strong></p>
           </div>
         </section>
 
@@ -160,9 +160,9 @@
           <br>
           <center>
           <table>
-            <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>types &amp; ops map ~1-1 to CPU</center></td></tr>
+            <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>types and ops map ~1:1 to CPU</center></td></tr>
             <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
-            <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>virtual machine (VM), just in time (JIT) compilers w/type profiling, garbage collection, etc.</center></td></tr>
+            <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>virtual machine (VM), just in time (JIT) compilers w/ type profiling, garbage collection, etc.</center></td></tr>
           </table>
           </center>
         </section>
@@ -338,7 +338,7 @@
         <section>
           <h3><b>Optimizing JS</b></h3>
           <br>
-          <p>Emscripten has <strong>3 optimizations</strong> we found are crucial for JS, up to <b>10x</b> slowdowns without each</p>
+          <p>Emscripten has <strong>3 optimizations</strong> we found are very important for JS</p>
           <br>
           <p class="fragment">Whatever the best architecture is, it should be able to implement those - let's go over them now</p>
         </section>
@@ -460,7 +460,7 @@
           <br>
           <p>Expressionize &amp; registerize require precise modelling of <b>JS semantics</b> (and order of operations is in some cases surprising!)</p>
           <br>
-          <p class="fragment">Is there a nice way to these opts in an <strong>LLVM backend</strong>, or do we need a JS AST?</p>
+          <p class="fragment">Is there a nice way to do these opts in an <strong>LLVM backend</strong>, or do we need a JS AST?</p>
           <br>
           <p class="fragment"><b>Questions</b>: Should Emscripten change how it interfaces with LLVM? What would LLVM like upstreamed?</p>
         </section>
