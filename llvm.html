@@ -1,0 +1,528 @@
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Emscripten: Compiling LLVM bitcode to JavaScript</title>
+
+    <meta name="description" content="Emscripten: Compiling LLVM bitcode to JavaScript">
+    <meta name="author" content="Alon Zakai">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/sky.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <style type="text/css">
+      h2 b {
+        color: #048;
+      }
+      h3 b {
+        color: #369;
+      }
+      b {
+        color: #63a;
+      }
+      strong {
+        color: #c11;
+      }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+
+        <section>
+          <h2><b>Emscripten -<br>Compiling LLVM<br>bitcode to <div style="color: #c11">JavaScript (?!)</div></b></h2>
+          <br>
+          <h3>Alon Zakai (Mozilla)</h3>
+          <br>
+          <!--p>(these slides just tweeted at <a href="http://twitter.com/#!/kripken">@kripken</a>)</p-->
+          <p><a href="http://twitter.com/#!/kripken">@kripken</a></p>
+          <a href="http://emscripten.org"><img src="emscripten_switch_logo.png" height=100></a>
+        </section>
+
+        <section>
+          <br>
+          <p><b>JavaScript</b>..? At the <strong>LLVM</strong> developer's conference..?</p>
+          <br>
+          <img src="confusing_bubble.jpg" style="border: 1px solid black; box-shadow: 7px 7px 7px rgba(0,0,0,0.5)" height="350">
+        </section>
+
+        <section>
+          <p><b>Everything</b> compiles into LLVM bitcode</p>
+          <img src="dragon-browsers3b.png" style="border: 0; box-shadow: none;" height="300">
+          <div style="visibility: hidden">
+          <div>
+            <p>The web is <b>everywhere</b>, and runs <b>JavaScript</b></p>
+          </div>
+          <div>
+            <br>
+            <p style="background-color: white; padding: 0.4em; border: 0.1em solid #027; border-radius: 1em; box-shadow: 7px 7px 7px rgba(0,0,0,0.6);">Compiling LLVM bitcode to JavaScript lets us run <strong>everything, everywhere</strong></p>
+          </div>
+          </div>
+        </section>
+
+        <section>
+          <p><b>Everything</b> compiles into LLVM bitcode</p>
+          <img src="dragon-browsers3.png" style="border: 0; box-shadow: none;" height="300">
+          <div>
+            <p>The web is <b>everywhere</b>, and runs <b>JavaScript</b></p>
+          </div>
+          <div class="fragment">
+            <br>
+            <p style="background-color: white; padding: 0.4em; border: 0.1em solid #027; border-radius: 1em; box-shadow: 7px 7px 7px rgba(0,0,0,0.6);">Compiling LLVM bitcode to JavaScript lets us run <strong>everything, everywhere</strong></p>
+          </div>
+        </section>
+
+        <section>
+          <h3><b>This works today!</b></h3>
+          <br>
+          <!--p><b>Game engines</b> like <a href="epic/EpicCitadel.html">Unreal Engine 3</a></p-->
+          <p><b>Game engines</b> like <a href="http://www.unrealengine.com/html5/">Unreal Engine 3</a></p-->
+          <!--p><b>Emulators</b> like <a href="mess/messloader.html?module=c64">MESS</a></p-->
+          <!--p><b>Emulators</b> like <a href="http://jsmess.textfiles.com/">MESS</a></p-->
+          <!--p><b>Programming languages</b> like <a href="lua/repl.html">Lua</a></p-->
+          <p><b>Programming languages</b> like <a href="http://kripken.github.io/lua.vm.js/repl.html">Lua</a></p>
+          <!--p><b>Libraries too:</b> <a href="ammo/ammo.html">Bullet</a></p-->
+          <p><b>Libraries too: </b> like <a href="http://kripken.github.io/ammo.js/examples/new/ammo.html">Bullet</a></p>
+        </section>
+
+        <section>
+          <p>Of course, usually <b>native</b> builds are best</p>
+          <br>
+          <p class="fragment">But imagine, for example, that you wrote a new feature in clang and want to let people give it a quick test</p>
+          <br>
+          <p class="fragment">Build once to JS, and <strong>just give people a URL</strong></p>
+          <!--p class="fragment">(and that's <b><a href="clang/demo.html">not</a></b> theoretical)</p-->
+          <p class="fragment">(and that's <b><a href="http://kripken.github.io/clangor/demo.html">not</a></b> theoretical)</p>
+
+        </section>
+
+        <section>
+          <h3>Ok, <b>how</b> does this work?</b></h3>
+        </section>
+
+        <section>
+          <h3><b>LLVM vs. JavaScript</b></h3>
+          <br>
+          <p>Random (unrelated) code samples from each:</p>
+          <pre><code>
+  %r = load i32* %p
+  %s = shl i32 %r, 16
+  %t = call i32 @calc(i32 %r, i32 %s)
+  br label %next
+
+</code></pre>
+          <hr>
+          <pre><code>
+  var x = new MyClass('name', 5).chain(function(arg) {
+    if (check(arg)) doMore({ x: arg, y: [1,2,3] });
+    else throw 'stop';
+  });
+
+</code></pre>
+          <p class="fragment">What could be more different? ;)</p>
+        </section>
+
+        <section>
+          <h3><b>Numeric Types</b></h3>
+          <br>
+          <center>
+          <table>
+            <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>i8, i16, i32, float, double</center></td></tr>
+            <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
+            <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>double</center></td></tr>
+          </table>
+          </center>
+        </section>
+
+        <section>
+          <h3><b>Performance Model</b></h3>
+          <br>
+          <center>
+          <table>
+            <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>types &amp; ops map ~1-1 to CPU</center></td></tr>
+            <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
+            <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>virtual machine (VM), just in time (JIT) compilers w/type profiling, garbage collection, etc.</center></td></tr>
+          </table>
+          </center>
+        </section>
+
+        <section>
+          <h3><b>Control Flow</b></h3>
+          <br>
+          <center>
+          <table>
+            <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>Functions, basic blocks &amp; branches</center></td></tr>
+            <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
+            <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>Functions, ifs and loops - no goto!</center></td></tr>
+          </table>
+          </center>
+        </section>
+
+        <section>
+          <h3><b>Variables</b></h3>
+          <br>
+          <center>
+          <table>
+            <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>Local vars have function scope</center></td></tr>
+            <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
+            <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center class="fragment">Local vars have function scope</center></td></tr>
+          </table>
+          </center>
+          <br>
+          <div>
+            <p class="fragment"><img src="thesame.jpg" style="border: 1px solid black; box-shadow: 5px 5px 5px rgba(0,0,0,0.2); float: left" height="250"></p>
+            <p class="fragment" style="margin: 0 auto; text-align:center; padding: 2em">Ironic, actually - many wish JS had <strong>block</strong> scope, like most languages...</p>
+          </div>
+        </section>
+
+        <section>
+          <h3><b>Ok, how do we get<br>around these issues?</b></h3>
+        </section>
+
+        <section>
+          <pre><code>
+  // LLVM IR
+  define i32 @func(i32* %p) {
+    %r = load i32* %p
+    %s = shl i32 %r, 16
+    %t = call i32 @calc(i32 %r, i32 %s)
+    ret i32 %t
+  }
+
+</code></pre>
+          <p><b>&rArr;</b> Emscripten <b>&rArr;</b></p>
+          <pre><code>
+  // JS
+  function func(p) {
+    var r = HEAP[p];
+    return calc(r, r << 16);
+  }
+
+</code></pre>
+          <p class="fragment">Almost direct mapping in many cases</p>
+        </section>
+
+        <section>
+          <p>Another example:</p>
+          <pre><code contenteditable>  float array[5000]; // C++
+  int main() {
+    for (int i = 0; i < 5000; ++i) {
+      array[i] += 1.0f;
+    }
+  }</code></pre>
+          <p><b>&rArr;</b> Emscripten <b>&rArr;</b></p>
+          <pre><code contenteditable>  var g = Float32Array(5000); // JS
+  function main() {
+    var a = 0, b = 0;
+    do {
+      a = b << 2;
+      g[a >> 2] = +g[a >> 2] + 1.0;
+      b = b + 1 | 0;
+    } while ((b | 0) < 5000);
+  }</code></pre>
+          <p class="fragment">(this "style" of code is a subset of JS called <b><a href="http://asmjs.org">asm.js</a></b>)</p>
+        </section>
+
+        <section>
+          <h3><b>JS as a compilation target</b></h3>
+          <br>
+          <p>JS began as a slow interpreted language</p>
+          <br>
+          <p class="fragment">Competition &rArr; <b>type-specializing</b> JITs</p>
+          <br>
+          <p class="fragment">Those are very good at <b>statically typed</b> code</p>
+          <br>
+          <p class="fragment">LLVM compiled through Emscripten is <strong>exactly that</strong>, so it can be fast</p>
+        </section>
+
+        <section>
+          <h3><b>Speed: More Detail</b></h3>
+          <br>
+          <p><code>(x+1)|0</code> &nbsp; <b>&rArr;</b> &nbsp; 32-bit integer + in modern JS VMs</p>
+          <br>
+          <p class="fragment"><strong>Loads</strong> in LLVM IR become <strong>reads</strong> from typed array in JS, which become <strong>reads</strong> in machine code</p>
+          <br>
+          <p class="fragment">Emscripten's <b>memory model</b> is identical to LLVM's (flat C-like, aliasing, etc.), so can use <b>all</b> LLVM opts</p>
+        </section>
+
+        <section>
+          <h3><b>Benchmarks</b></h3>
+          <a href="benchmarks_nov4_2013.png"><img src="benchmarks_nov4_2013.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></a>
+          <p><small>(VMs and Emscripten from Oct 28th 2013, run on 64-bit linux)</small></p>
+        </section>
+
+        <!--section>
+          <h3><b>Low-level downsides</b></h3>
+          <br>
+          <p>LLVM optimizer sometimes surprises us</p>
+          <p class="fragment">E.g. load <b>2 floats</b> as <strong>i64</strong>, then <b>split&amp;bitcast</b></p>
+          <p class="fragment">Bad for JS since no fast way to bitcast int to float!</p>
+          <div class="fragment">
+            <p>Emscripten has code to optimize that away (are we doing it wrong?)</p>
+            <p><img src="doingitwrong.jpg" style="border: 1px solid black; box-shadow: 5px 5px 5px rgba(0,0,0,0.2)" width="33%"></p>
+          </div>
+        </section-->
+
+        <section>
+          <a href="http://emscripten.org"><img src="emscripten_switch_logo.png" height=150></a>
+          <br>
+          <p><strong>Open source</strong> (MIT/LLVM)</p>
+          <br>
+          <p class="fragment">Began in <b>2010</b></p>
+          <br>
+          <p class="fragment">Most of the codebase is not the core compiler, but <b>libraries + toolchain + test suite</b></p>
+        </section>
+
+        <section>
+          <a href="http://emscripten.org"><img src="emscripten_switch_logo.png" height=150></a>
+          <br>
+          <center>
+          <table style="background-color: white; padding: 0.6em; border: 0.1em solid #027; border-radius: 1em; box-shadow: 7px 7px 7px rgba(0,0,0,0.6);">
+            <tr><td><center style="white-space: nowrap">LLVM IR</center></td><td><center><strong>&rAarr;&rAarr;&rAarr;<br><br>Emscripten Compiler</strong></center></td><td><center>JS</center></td><td><center><b>&rAarr;&rAarr;&rAarr;<br><br>Emscripten Optimizer</b></center></td><td><center>JS</center></td></tr>
+          </table>
+          </center>
+          <br>
+          <p class="fragment">Compiler and optimizer written mostly in <b>JS</b></p>
+          <br>
+          <p class="fragment">Wait, that's not an LLVM backend..?</p>
+        </section>
+
+        <section>
+          <h3><b>3 JS compilers, 3 designs</b></h3>
+          <br>
+          <p class="fragment"><b><a href="http://www.mandreel.com/">Mandreel</a></b>: <strong>Typical LLVM backend</strong>, uses tblgen, selection DAG (like x86, ARM backends)</p>
+          <br>
+          <p class="fragment"><b><a href="http://leaningtech.com/duetto">Duetto</a></b>: Processes <strong>LLVM IR</strong> in llvm::Module (like C++ backend)</p>
+          <br>
+          <p class="fragment"><b><a href="http://emscripten.org">Emscripten</a></b>: Processes <strong>LLVM IR</strong> in assembly</p>
+        </section>
+
+        <section>
+          <h3><b>Emscripten's choice</b></h3>
+          <br>
+          <p>JS is such an odd target &rArr; wanted architecture with <b>maximal flexibility</b> in codegen</p>
+          <br>
+          <p class="fragment">Helped <strong>prototype &amp; test</strong> many approaches</p>
+        </section>
+
+        <section>
+          <h3><b>Downsides too</b></h3>
+          <br>
+          <img src="doingitwrong.jpg" style="border: 1px solid black; box-shadow: 5px 5px 5px rgba(0,0,0,0.2); float: left; margin: 1em" height="200">
+          <br>
+          <p>Emscripten currently must do its own legalization (are we doing it wrong? probably...)</p>
+          <div style="clear:both;"></div>
+        </section>
+
+        <section>
+          <h3><b>Optimizing JS</b></h3>
+          <br>
+          <p>Emscripten has <strong>3 optimizations</strong> we found are crucial for JS, up to <b>10x</b> slowdowns without each</p>
+          <br>
+          <p class="fragment">Whatever the best architecture is, it should be able to implement those - let's go over them now</p>
+        </section>
+
+        <section>
+          <h3><b>1. Reloop</b></h3>
+          <pre><code>  block0:
+    ; code0
+    br i1 %cond, label %block0, label %block1
+
+  block1:
+    ; code1
+    br %label block0
+</code></pre>
+          <p>Without relooping (emulated gotos):</p>
+          <pre><code>  var label = 0;
+  while (1) switch (label) {
+    case 0:
+      // code0
+      label = cond ? 0 : 1; break;
+    case 1:
+      // code1
+      label = 0; break;
+  }
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>1. Reloop</b></h3>
+          <pre><code>  block0:
+    ; code0
+    br i1 %cond, label %block0, label %block1
+
+  block1:
+    ; code1
+    br %label block0
+</code></pre>
+          <p>With relooping:</p>
+          <pre><code>
+  while (1) {
+    do {
+      // code0
+    } while (cond);
+    // code1
+  }
+
+
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>1. Reloop</b></h3>
+          <br>
+          <p>Relooping allows JS VM to optimize better, as it can <strong>understand</strong> control flow</p>
+          <br>
+          <p class="fragment">Emscripten Relooper code is <b>generic</b>, written in C++, and used by other projects (e.g., Duetto)</p>
+          <br>
+          <p class="fragment">This one seems like it could work in <b>any</b> architecture, in an LLVM backend or not</p>
+        </section>
+
+        <section>
+          <h3><b>2. Expressionize</b></h3>
+          <pre><code>
+  var a = g(x);
+  var b = a + y;
+  var c = HEAP[b];
+  var d = HEAP[20];
+  var e = x + y + z;
+  var f = h(d, e);
+  FUNCTION_TABLE[c](f);
+
+</code></pre>
+          <h3><b>&rArr;</b></h3>
+          <pre><code>
+  FUNCTION_TABLE[HEAP[g(x) + y](h(HEAP[20], x + y + z));
+
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>2. Expressionize</b></h3>
+          <br>
+          <p>Improves <b>JIT time</b> and <b>execution speed</b>: fewer variables &rArr; less stuff for JS engines to worry about</p>
+          <br>
+          <p class="fragment">Reduces <b>code size</b></p>
+        </section>
+
+        <section>
+          <h3><b>3. Registerize</b></h3>
+          <pre><code>
+  var a = g(x) | 0; // integers 
+  var b = a + y | 0;
+  var c = HEAP[b] | 0;
+  var d = +HEAP[20]; // double
+
+</code></pre>
+          <h3><b>&rArr;</b></h3>
+          <pre><code>
+  var a = g(x) | 0;
+  a = a + y | 0;
+  a = HEAP[a] | 0;
+  var d = +HEAP[20];
+
+</code></pre>
+        </section>
+
+        <section>
+          <h3><b>3. Registerize</b></h3>
+          <br>
+          <p>Looks like regalloc, but goal is different: Minimize <strong># of total variables</strong> (in each type), <b>not</b> spills</p>
+          <br>
+          <p class="fragment">JS VMs will do regalloc, only they know the actual # of registers</p>
+          <br>
+          <p class="fragment">Benefits <b>code size &amp; speed</b> like expressionize</p>
+        </section>
+
+        <section>
+          <h3><b>Opts Summary</b></h3>
+          <br>
+          <p>Expressionize &amp; registerize require precise modelling of <b>JS semantics</b> (and order of operations is in some cases surprising!)</p>
+          <br>
+          <p class="fragment">Is there a nice way to these opts in an <strong>LLVM backend</strong>, or do we need a JS AST?</p>
+          <br>
+          <p class="fragment"><b>Questions</b>: Should Emscripten change how it interfaces with LLVM? What would LLVM like upstreamed?</p>
+        </section>
+
+        <!--section>
+          <h3><b>Missing Pieces</b></h3>
+          <br>
+          <p>(Surprisingly!) JS already had almost everything a compiler target needs</p>
+          <br>
+          <p class="fragment">But a few things turn out to be missing: <b>32-bit integer multiply</b>, <strong>single-precision floats</strong> etc.</p>
+          <br>
+          <p class="fragment">Thankfully the JS standards bodies are open to improving JS as a compiler target: <b>Math.imul</b>, <strong>Math.fround</strong></p>
+        </section>
+
+        <section>
+          <h3><b>The Future</b></h3>
+          <br>
+          <p>JS engines will continue to get <b>faster</b>, compiled code will get even <b>closer</b> to native speed</p>
+          <br>
+          <p class="fragment">There is a SIMD (SSE, NEON, etc.) <a href="https://github.com/johnmccutchan/ecmascript_simd">spec</a> for JS, and Emscripten supports LLVM vector types &rArr; <strong>LLVM autovectorization</strong> etc. will be fast</p>
+        </section-->
+
+        <section>
+          <h3><b>Conclusion</b></h3>
+          <br>
+          <p><b>LLVM bitcode</b> can be compiled to <b>JavaScript</b> and run in <b>all browers</b>, at <b>high speed</b>, in a <b>standards-compliant</b> way</p>
+          <img src="dragon-browsers3.png" style="border: 0; box-shadow: none;" height="150">
+          <br>
+          <p class="fragment">For more info, see <b><a href="http://emscripten.org">emscripten.org</a></b> - feedback &amp; contributions always welcome</p>
+          <br>
+          <p class="fragment"><b style="color: #c11">Thank you for listening!</b></p>
+        </section>
+
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+
+    <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: 'sky', //Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'fade', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+
+          // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>
