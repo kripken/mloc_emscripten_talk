@@ -67,20 +67,40 @@
         </section>
 
         <section>
-          <h2>It's pretty easy to run a C++ codebase to the web these days</h2>
-          <p>1. Use an engine that supports Emscripten (XXX, UE4, OpenFL, etc.)</p>
-          <p>2. Port your own in-house engine</p>
+          <h2>It's pretty easy to run a C++ codebase on the web these days</h2>
+          <p>1. Use an engine that already supports Emscripten (XXX, UE4, OpenFL, etc.)</p>
+          <p>2. Port your own in-house engine (IMVU, Nebula3, etc.)</p>
           <p>This talk will focus on 2. But, you might still care about these details in 1, to optimize</p>
         </section>
 
         <section>
-          <h2></h2>
-          <p></p>
+          <h2>Goal of this talk<br>Give an overview of how this is done<br>Luke will explain later how it works in the code</h2>
         </section>
 
         <section>
-          <h2></h2>
-          <p></p>
+          <h2>Hello world</h2>
+          <pre class="fragment"><code contenteditable>  // helloworld.cpp
+  #include <stdio.h>
+  int main() {
+    printf("hello, world!\n");
+    return 0;
+  }
+</code></pre>
+          <hr>
+          <pre class="fragment"><code contenteditable>  $ emcc helloworld.cpp
+  $ node a.out.js
+  hello, world!
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Hello world</h2>
+          <pre class="fragment"><code contenteditable>  $ emcc helloworld.cpp -o output.html
+  $ ls output.*
+  output.html output.js
+  $ firefox output.html      # or any other browser
+</code></pre>
+          <p>screenshot here? or actual page?</p>
         </section>
 
         <section>
