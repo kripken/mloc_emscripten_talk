@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>emscripten & asm.js</title>
+
+    <meta name="description" content="GDC 2014">
+    <meta name="author" content="Alon Zakai">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <style type="text/css">
+      b {
+        color: #f85;
+      }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+
+        <section>
+          <h1><div style="color: #f85">Emscripten &amp; ?</div></h1>
+          <h2 style="color: #fda">GDC 2014</h2>
+          <h3>Alon Zakai - Mozilla</h3>
+        </section>
+
+        <section>
+          <h2>Emscripten &amp; asm.js in the industry</h2>
+          <p>XXX</p>
+          <p>Epic</p>
+        </section>
+
+        <section>
+          <h2>But also many other engines and games!</h2>
+          <p>Unigine</p>
+          <p>Nebula3</p>
+          <p>Torque 2D</p>
+          <p>OpenFL</p>
+          <p>Godot</p>
+          <p>Cocos2D-X</p>
+          <p>Cube 2</p>
+          <p>etc.</p>
+        </section>
+
+        <section>
+          <h2>It's pretty easy to run a C++ codebase to the web these days</h2>
+          <p>1. Use an engine that supports Emscripten (XXX, UE4, OpenFL, etc.)</p>
+          <p>2. Port your own in-house engine</p>
+          <p>This talk will focus on 2. But, you might still care about these details in 1, to optimize</p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <p></p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <p></p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <p></p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <p></p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <p></p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <p></p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <p></p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <p></p>
+        </section>
+
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+
+    <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: 'default', //Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'fade', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+
+          // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>
