@@ -191,9 +191,9 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
         </section>
 
         <section>
-          <h2>Getting a Window</h2>
+          <h2>Getting a Window, I/O, etc.</h2>
           <p>Emscripten supports a few C APIs for this: HTML5, SDL, glut, glfw</p>
-          <p>Completeness and maturity vary (list starts from best)</p>
+          <p>Simple stuff works in all, complex stuff varies (list starts from best)</p>
           <p>Can use SDL, glut etc. for existing codebases</p>
           <p>HTML5 is probably best for new codebases</p>
         </section>
@@ -220,7 +220,26 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
 
         <section>
           <h2>Rendering</h2>
-          <p></p>
+          <p>Emscripten supports OpenGL</p>
+          <p>The subset of OpenGL ES 2.0 that is parallel to WebGL (ES 2.0 minus clientside data &amp; a few other things) is best: fast, fully supported</p>
+          <p>General OpenGL ES 2.0 works well, using the FULL_ES2 flag (emulating clientside data adds some overhead)</p>
+          <p>Some OpenGL 1.x stuff works using the LEGACY_GL_EMULATION flag (but much doesn't, and overhead is significant)</p>
+        </section>
+
+        <section>
+          <h2>Rendering</h2>
+          <p>Use the WebGL-friendly subset of OpenGL ES 2.0 for best results</p>
+          <pre><code contenteditable>
+void do_web_frame() {
+  // normal GLES 2.0 code, no clientside data
+  glClear(GL_DEPTH_BUFFER_BIT);
+  glBindBuffer(GL_ARRAY_BUFFER, ab);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eb);
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 24, 0);
+  glDrawArrays(GL_TRIANGLE_STRIP, 0, n);
+  ..
+}
+</code></pre>
         </section>
 
     </div>
