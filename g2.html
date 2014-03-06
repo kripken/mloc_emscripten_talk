@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
 
-    <title>emscripten & asm.js</title>
+    <title>Compiling to the Web</title>
 
     <meta name="description" content="GDC 2014">
     <meta name="author" content="Alon Zakai">
@@ -43,9 +43,12 @@
       <div class="slides">
 
         <section>
-          <h1><div style="color: #f85">Emscripten &amp; ?</div></h1>
+          <h2><b style="color: #f85">Compiling to the Web:</b></h2>
+          <h2>Getting Started With<br>asm.js and Emscripten</h2>
+          <br>
           <h2 style="color: #fda">GDC 2014</h2>
           <h3>Alon Zakai - Mozilla</h3>
+          ..awesome screenshots..
         </section>
 
         <section>
@@ -74,7 +77,7 @@
         </section>
 
         <section>
-          <h2>Goal of this talk<br>Give an overview of how this is done<br>Luke will explain later how it works in the code</h2>
+          <h2>Ok, I have some C++ code.<br>What do I do?</h2>
         </section>
 
         <section>
@@ -104,32 +107,61 @@
         </section>
 
         <section>
-          <h2></h2>
+          <p>When we run</p>
+          <pre><code contenteditable>  $ emcc helloworld.cpp -o output.html
+</code></pre>
+          <p>...what actually happens?</p>
+          <p class="fragment">You are running a <b>cross-compiler</b>: Generating code for another platform than the one you are currently on</p>
+          <p class="fragment">Similar to developing a mobile game on a desktop!</p>
+        </section>
+
+        <section>
+          <h2>Cross-compiling</h2>
+          <p><b>Cannot</b> use system headers or libraries</p>
+          <p>emcc uses the emscripten headers and libs, which are portable</p>
+          <p>Need a library? Have to build it from source into bitcode with emcc, statically link with your project</p>
+        </section>
+
+        <section>
+          <h2>Undefined Behavior</h2>
+          <pre><code contenteditable>  char buffer[8];
+  int *i = (int*)&buffer[1]; // unaligned!
+  *i = 10;
+</code></pre>
+          <p>This works on x86, can fault on ARM</p>
+          <p>JavaScript is more like ARM here, will be incorrect</p>
+          <p>Build with emcc <code>SAFE_HEAP</code> to get runtime checks, makes debugging this easy</p>
+        </section>
+
+        <section>
+          <h2>Undefined Behavior</h2>
+          <p>There are many kinds, makes cross-compilation in general a little tricky</p>
+          <p>Build your project with <code>-Werror</code>, can catch many things!</p>
+          <pre><code contenteditable>  // src.c
+int main() {
+  printf("hello, world!\n");
+}
+</code></pre>
+          <pre><code contenteditable>$ emcc src.c -Werror
+error: implicitly declaring library function 'printf'
+  printf("hello, world!\n");
+  ^
+tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Event Loop</h2>
           <p></p>
         </section>
 
         <section>
-          <h2></h2>
+          <h2>Getting a Window</h2>
           <p></p>
         </section>
 
         <section>
-          <h2></h2>
-          <p></p>
-        </section>
-
-        <section>
-          <h2></h2>
-          <p></p>
-        </section>
-
-        <section>
-          <h2></h2>
-          <p></p>
-        </section>
-
-        <section>
-          <h2></h2>
+          <h2>Rendering</h2>
           <p></p>
         </section>
 
