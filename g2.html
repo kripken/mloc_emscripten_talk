@@ -152,12 +152,70 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
 
         <section>
           <h2>Event Loop</h2>
-          <p></p>
+          <p>Code on the web must run as a sequence of <b>short-running</b> events</p>
+          <p>Anything long-running will pause the browser, lead to "slow script dialogue"</p>
+          screenshot
+        </section>
+
+        <section>
+          <h2>Bad :(</h2>
+          <pre><code contenteditable>
+  int main() {
+    init();
+    while (is_game_running()) {
+      do_frame();
+    }
+    return 0;
+  }
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Good :)</h2>
+          <pre><code contenteditable>
+  void do_web_frame() {
+    if (!is_game_running()) {
+      emscripten_cancel_main_loop();
+      return;
+    }
+    do_frame();
+  }
+
+  int main() {
+    init();
+    emscripten_set_main_loop(do_web_frame, 0, 0);
+    return 0;
+  }
+</code></pre>
+          <p class="fragment">See &lt;emscripten.h&gt; for more details</p>
         </section>
 
         <section>
           <h2>Getting a Window</h2>
-          <p></p>
+          <p>Emscripten supports a few C APIs for this: HTML5, SDL, glut, glfw</p>
+          <p>Completeness and maturity vary (list starts from best)</p>
+          <p>Can use SDL, glut etc. for existing codebases</p>
+          <p>HTML5 is probably best for new codebases</p>
+        </section>
+
+        <section>
+          <h2>html5.h</h2>
+          <pre><code contenteditable>
+  #include <emscripten.h>
+  #include <emscripten/html5.h>
+
+  void init() {
+    emscripten_set_canvas_size(1024, 768);
+    emscripten_set_keydown_callback(0, 0, 1, key_callback);
+    ..
+  }
+
+  int main() {
+    init();
+    emscripten_set_main_loop(do_web_frame, 0, 0);
+    return 0;
+  }
+</code></pre>
         </section>
 
         <section>
