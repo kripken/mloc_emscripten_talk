@@ -83,7 +83,7 @@
         <section>
           <h2>Hello world</h2>
           <pre class="fragment"><code contenteditable>  // helloworld.cpp
-  #include <stdio.h>
+  #include &lt;stdio.h&gt;
   int main() {
     printf("hello, world!\n");
     return 0;
@@ -201,8 +201,8 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
         <section>
           <h2>html5.h</h2>
           <pre><code contenteditable>
-  #include <emscripten.h>
-  #include <emscripten/html5.h>
+  #include &lt;emscripten.h&gt;
+  #include &lt;emscripten/html5.h&gt;
 
   void init() {
     emscripten_set_canvas_size(1024, 768);
@@ -215,6 +215,7 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
     emscripten_set_main_loop(do_web_frame, 0, 0);
     return 0;
   }
+
 </code></pre>
         </section>
 
