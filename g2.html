@@ -72,7 +72,7 @@
         <section>
           <h2>It's pretty easy to run a C++ codebase on the web these days</h2>
           <p>1. Use an engine that already supports Emscripten (XXX, UE4, OpenFL, etc.)</p>
-          <p>2. Port your own in-house engine (IMVU, Nebula3, etc.)</p>
+          <p>2. Port your own in-house engine (IMVU, Nebula3, etc.). Emscripten is open source, free to use, even free to bundle in your SDK</p>
           <p>This talk will focus on 2. But, you might still care about these details in 1, to optimize</p>
         </section>
 
@@ -101,7 +101,7 @@
           <pre class="fragment"><code contenteditable>  $ emcc helloworld.cpp -o output.html
   $ ls output.*
   output.html output.js
-  $ firefox output.html      # or any other browser
+  $ firefox output.html    # or any other modern browser
 </code></pre>
           <p>screenshot here? or actual page?</p>
         </section>
@@ -138,9 +138,9 @@
           <p>There are many kinds, makes cross-compilation in general a little tricky</p>
           <p>Build your project with <code>-Werror</code>, can catch many things!</p>
           <pre><code contenteditable>  // src.c
-int main() {
-  printf("hello, world!\n");
-}
+  int main() {
+    printf("hello, world!\n");
+  }
 </code></pre>
           <pre><code contenteditable>$ emcc src.c -Werror
 error: implicitly declaring library function 'printf'
@@ -153,7 +153,7 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
         <section>
           <h2>Event Loop</h2>
           <p>Code on the web must run as a sequence of <b>short-running</b> events</p>
-          <p>Anything long-running will pause the browser, lead to "slow script dialogue"</p>
+          <p>Anything long-running will pause the browser, lead to "slow script dialogue" :(</p>
           screenshot
         </section>
 
@@ -195,7 +195,7 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
           <p>Emscripten supports a few C APIs for this: HTML5, SDL, glut, glfw</p>
           <p>Simple stuff works in all, complex stuff varies (list starts from best)</p>
           <p>Can use SDL, glut etc. for existing codebases</p>
-          <p>HTML5 is probably best for new codebases</p>
+          <p>HTML5 is a good option for new codebases or if you know HTML5 well</p>
         </section>
 
         <section>
@@ -204,19 +204,41 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
   #include &lt;emscripten.h&gt;
   #include &lt;emscripten/html5.h&gt;
 
-  void init() {
+  int main() {
     emscripten_set_canvas_size(1024, 768);
     emscripten_set_keydown_callback(0, 0, 1, key_callback);
-    ..
-  }
-
-  int main() {
-    init();
     emscripten_set_main_loop(do_web_frame, 0, 0);
     return 0;
   }
 
 </code></pre>
+        </section>
+
+        <section>
+          <h2>SDL</h2>
+          <pre><code contenteditable>
+  #include &lt;SDL.h&gt;
+  #include &lt;emscripten.h&gt;
+
+  int main() {
+    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Surface *screen = SDL_SetVideoMode(1024, 768, 32, SDL_HWSURFACE);
+    emscripten_set_main_loop(do_web_frame, 0, 0);
+    // use SDL_PollEvent to receive input etc.
+    return 0;
+  }
+
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Debugging</h2>
+          <p>SDL, glut etc. are good options because you can make parallel builds: Native and web</p>
+          <p>Use your normal debugging tools on the native build</p>
+          <p>Also possible to debug web builds</p>
+          <p>Build with -g2, -g3 or -g4 for different amounts of debuggability and debug info (see emcc --help)</p>
+          <p>-g4 gives you source maps: browser's debugger will show you where you are in the C++ source (screenshot?)</p>
+          <p>For more manual debugging, just add console.log(), stackTrace(), etc. into the output code</p>
         </section>
 
         <section>
@@ -228,8 +250,7 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
         </section>
 
         <section>
-          <h2>Rendering</h2>
-          <p>Use the WebGL-friendly subset of OpenGL ES 2.0 for best results</p>
+          <h2>WebGL via GL ES 2.0</h2>
           <pre><code contenteditable>
 void do_web_frame() {
   // normal GLES 2.0 code, no clientside data
