@@ -371,15 +371,25 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
         </section>
 
         <section>
-          <h2>Rendering</h2>
-          <p>Emscripten supports OpenGL</p>
-          <p>The subset of OpenGL ES 2.0 that is parallel to WebGL (ES 2.0 minus clientside data &amp; a few other things) is best: fast, fully supported</p>
-          <p>General OpenGL ES 2.0 works well, using the FULL_ES2 flag (emulating clientside data adds some overhead)</p>
-          <p>Some OpenGL 1.x stuff works using the LEGACY_GL_EMULATION flag (but much doesn't, and overhead is significant)</p>
+          <h2>Rendering: OpenGL</h2>
+          <p><b>1.</b> The subset of OpenGL ES 2.0 that is parallel to WebGL (ES 2.0 minus clientside data &amp; a few other things) is best: fast, fully supported</p>
+          <p>:)</p>
         </section>
 
         <section>
-          <h2>WebGL via GL ES 2.0</h2>
+          <h2>Rendering: OpenGL</h2>
+          <p><b>2.</b> General OpenGL ES 2.0 works well, using the FULL_ES2 flag (emulating clientside data adds some overhead)</p>
+          <p>:/</p>
+        </section>
+
+        <section>
+          <h2>Rendering: OpenGL</h2>
+          <p><b>3.</b> Some OpenGL 1.x stuff works using the LEGACY_GL_EMULATION flag (but much doesn't, and overhead is significant)</p>
+          <p>:(</p>
+        </section>
+
+        <section>
+          <p>So use the WebGL-friendly subset of GLES 2.0 :)</p>
           <pre><code contenteditable>
 void do_web_frame() {
   /* normal GLES 2.0 code, no clientside data */
@@ -391,7 +401,6 @@ void do_web_frame() {
   ..
 }
 </code></pre>
-          <p>Normal OpenGL ES 2.0 code in C, calls into Emscripten code which connects to the browser's WebGL support</p>
         </section>
 
         <section>
