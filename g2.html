@@ -33,6 +33,21 @@
       }
     </style>
 
+    <style type="text/css">
+    #wrap {
+       width:600px;
+       margin:0 auto;
+    }
+    #left_col {
+       float:left;
+       width:300px;
+    }
+    #right_col {
+       float:right;
+       width:300px;
+    }
+    </style>
+
   </head>
 
   <body>
@@ -52,28 +67,49 @@
         </section>
 
         <section>
-          <h2>Emscripten &amp; asm.js in the industry</h2>
-          <p>XXX</p>
-          <p>Epic</p>
+          <h2>asm.js</h2>
+          <p>A strict subset of JavaScript, the industry-standard language that runs in all web browsers</p>
+          <p>Designed to be very easy to optimize and run at near-native speed</p>
         </section>
 
         <section>
-          <h2>But also many other engines and games!</h2>
-          <p>Unigine</p>
-          <p>Nebula3</p>
-          <p>Torque 2D</p>
-          <p>OpenFL</p>
-          <p>Godot</p>
-          <p>Cocos2D-X</p>
-          <p>Cube 2</p>
-          <p>etc.</p>
+          <h2>Emscripten</h2>
+          <p>An open source compiler from C/C++ to asm.js</p>
+          <p>Uses LLVM and clang</p>
         </section>
 
         <section>
-          <h2>It's pretty easy to run a C++ codebase on the web these days</h2>
-          <p>1. Use an engine that already supports Emscripten (XXX, UE4, OpenFL, etc.)</p>
-          <p>2. Port your own in-house engine (IMVU, Nebula3, etc.). Emscripten is open source, free to use, even free to bundle in your SDK</p>
-          <p>This talk will focus on 2. But, you might still care about these details in 1, to optimize</p>
+          <h2>Emscripten &amp; asm.js used by many companies, major and minor</h2>
+          <br>
+          <div id="wrap">
+            <div id="left_col">
+              <p>XXX</p>
+              <p>Unigine</p>
+              <p>Torque 2D</p>
+              <p>Godot</p>
+              <p>Cube 2</p>
+            </div>
+            <div id="right_col">
+              <p>Epic</p>
+              <p>Nebula3</p>
+              <p>OpenFL</p>
+              <p>Cocos2D-X</p>
+              <p>etc.</p>
+            </div>
+          </div>
+          logos?
+        </section>
+
+        <section>
+          <h2>It's pretty easy to run a C++ codebase on the web these days!</h2>
+          <p><b>1.</b> Use an engine that already supports Emscripten (XXX, UE4, OpenFL, etc.)</p>
+          <p>Porting to the web becomes just another platform that the engine can target</p>
+        </section>
+        <section>
+          <h2>It's pretty easy to run a C++ codebase on the web these days!</h2>
+          <p><b>2.</b> Port your own in-house engine (IMVU, Nebula3, etc.).</p>
+          <p>Emscripten is open source and free to use in any way</p>
+          <p>This talk will focus on 2. But, you might still care about these details in 1, to understand &amp; optimize</p>
         </section>
 
         <section>
@@ -98,12 +134,12 @@
 
         <section>
           <h2>Hello world</h2>
-          <pre class="fragment"><code contenteditable>  $ emcc helloworld.cpp -o output.html
+          <pre><code contenteditable>  $ emcc helloworld.cpp -o output.html
   $ ls output.*
   output.html output.js
   $ firefox output.html    # or any other modern browser
 </code></pre>
-          <p>screenshot here? or actual page?</p>
+          <img src="hello.png" style="border: 0">
         </section>
 
         <section>
@@ -119,23 +155,23 @@
           <h2>Cross-compiling</h2>
           <p><b>Cannot</b> use system headers or libraries</p>
           <p>emcc uses the emscripten headers and libs, which are portable</p>
-          <p>Need a library? Have to build it from source into bitcode with emcc, statically link with your project</p>
+          <p>Need a library? Need to build it to bitcode using emcc (or get that from someone that already did it), then statically link with your project</p>
         </section>
 
         <section>
           <h2>Undefined Behavior</h2>
+          <p>A common issue with cross-compiling, for example:</p>
           <pre><code contenteditable>  char buffer[8];
-  int *i = (int*)&buffer[1]; // unaligned!
+  int *i = (int*)&buffer[1]; /* unaligned! */
   *i = 10;
 </code></pre>
-          <p>This works on x86, can fault on ARM</p>
-          <p>JavaScript is more like ARM here, will be incorrect</p>
+          <p>This works on x86, can fail on ARM</p>
+          <p>JavaScript, like ARM, will not produce correct results</p>
           <p>Build with emcc <code>SAFE_HEAP</code> to get runtime checks, makes debugging this easy</p>
         </section>
 
         <section>
           <h2>Undefined Behavior</h2>
-          <p>There are many kinds, makes cross-compilation in general a little tricky</p>
           <p>Build your project with <code>-Werror</code>, can catch many things!</p>
           <pre><code contenteditable>  // src.c
   int main() {
@@ -153,8 +189,9 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
         <section>
           <h2>Event Loop</h2>
           <p>Code on the web must run as a sequence of <b>short-running</b> events</p>
-          <p>Anything long-running will pause the browser, lead to "slow script dialogue" :(</p>
-          screenshot
+          <p>Anything long-running will pause the browser, lead to dreaded "slow script dialogue" :(</p>
+          <img src="slowscript.gif" style="border: 0">
+          <p>Dialouge boxes look nicer today, but problem remains the same</p>
         </section>
 
         <section>
@@ -167,6 +204,7 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
     }
     return 0;
   }
+
 </code></pre>
         </section>
 
@@ -186,13 +224,15 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
     emscripten_set_main_loop(do_web_frame, 0, 0);
     return 0;
   }
+
 </code></pre>
-          <p class="fragment">See &lt;emscripten.h&gt; for more details</p>
+          <p class="fragment">See <b>&lt;emscripten.h&gt;</b> for more details</p>
         </section>
 
         <section>
           <h2>Getting a Window, I/O, etc.</h2>
-          <p>Emscripten supports a few C APIs for this: HTML5, SDL, glut, glfw</p>
+          <p>Emscripten supports a few C APIs for this:</p>
+          <p><b>HTML5, SDL, glut, glfw</b></p>
           <p>Simple stuff works in all, complex stuff varies (list starts from best)</p>
           <p>Can use SDL, glut etc. for existing codebases</p>
           <p>HTML5 is a good option for new codebases or if you know HTML5 well</p>
@@ -222,9 +262,10 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
 
   int main() {
     SDL_Init(SDL_INIT_VIDEO);
-    SDL_Surface *screen = SDL_SetVideoMode(1024, 768, 32, SDL_HWSURFACE);
+    SDL_Surface *screen =
+      SDL_SetVideoMode(1024, 768, 32, SDL_HWSURFACE);
     emscripten_set_main_loop(do_web_frame, 0, 0);
-    // use SDL_PollEvent to receive input etc.
+    /* use SDL_PollEvent to receive input etc. */
     return 0;
   }
 
@@ -233,11 +274,85 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
 
         <section>
           <h2>Debugging</h2>
-          <p>SDL, glut etc. are good options because you can make parallel builds: Native and web</p>
-          <p>Use your normal debugging tools on the native build</p>
-          <p>Also possible to debug web builds</p>
-          <p>Build with -g2, -g3 or -g4 for different amounts of debuggability and debug info (see emcc --help)</p>
-          <p>-g4 gives you source maps: browser's debugger will show you where you are in the C++ source (screenshot?)</p>
+          <p>SDL, glut etc. are good to use because you can build the <b>same</b> code both to native and web</p>
+          <p>One approach is to then use your normal debugging tools on the native build</p>
+        </section>
+
+        <section>
+          <h2>Debugging</h2>
+          <p>Also possible to debug web builds
+          <p>emcc has various levels of debuggability of generated code</p>
+        </section>
+
+        <section>
+          <h2>Debugging</h2>
+          <p>Default optimized (-O1 and above) output is minified</p>
+          <p>Try to debug this...</p>
+          <pre><code contenteditable>
+  function a(a,b){a=a|0;b=b|0;f(a+b|0);}
+
+</code></pre>
+          <p>...you're gonna have a bad time</p>
+        </section>
+
+        <section>
+          <h2>Debugging</h2>
+          <p><b>-g1</b> : preserve whitespace</p>
+          <pre><code contenteditable>
+  function a(a, b) {
+    a = a | 0;
+    b = b | 0;
+    f(a + b | 0);
+  }
+
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Debugging</h2>
+          <p><b>-g2</b> : preserve function names</p>
+          <pre><code contenteditable>
+  function _addAndPrint(a, b) {
+    a = a | 0;
+    b = b | 0;
+    _printAnInteger(a + b | 0);
+  }
+
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Debugging</h2>
+          <p><b>-g3</b> : preserve variable names</p>
+          <pre><code contenteditable>
+  function _addAndPrint($left, $right) {
+    $left = $left | 0;
+    $right = $right | 0;
+    _printAnInteger($left + $right | 0);
+  }
+
+</code></pre>
+          <p>They will not match original source variable names 1-1, but are often quite close</p>
+        </section>
+
+        <section>
+          <h2>Debugging</h2>
+          <p><b>-g4</b> : source maps!</p>
+          <p>Show the C/C++ source code in your browser's debugger</p>
+        </section>
+
+        <section>
+          <h2>Debugging: Source Maps</h2>
+          <img src="ff-debug.png">
+        </section>
+
+        <section>
+          <h2>Debugging: Source Maps</h2>
+          <img src="cr-debug.png">
+        </section>
+
+        <section>
+          <h2>Manual Debugging</h2>
           <p>For more manual debugging, just add console.log(), stackTrace(), etc. into the output code</p>
         </section>
 
@@ -253,7 +368,7 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
           <h2>WebGL via GL ES 2.0</h2>
           <pre><code contenteditable>
 void do_web_frame() {
-  // normal GLES 2.0 code, no clientside data
+  /* normal GLES 2.0 code, no clientside data */
   glClear(GL_DEPTH_BUFFER_BIT);
   glBindBuffer(GL_ARRAY_BUFFER, ab);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eb);
