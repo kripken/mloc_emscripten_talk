@@ -344,16 +344,30 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
         <section>
           <h2>Debugging: Source Maps</h2>
           <img src="ff-debug.png">
+          <p>Works in Firefox...</p>
         </section>
 
         <section>
           <h2>Debugging: Source Maps</h2>
           <img src="cr-debug.png">
+          <p>...and Chrome as well</p>
         </section>
 
         <section>
           <h2>Manual Debugging</h2>
-          <p>For more manual debugging, just add console.log(), stackTrace(), etc. into the output code</p>
+          <p>More manual debugging works too - and is actually much easier than on native platforms!</p>
+          <pre><code contenteditable>
+  function _addAndPrint($left, $right) {
+    $left = $left | 0;
+    $right = $right | 0;
+    //---
+    console.log('adding ' + [$left, $right] + ' at ' + stackTrace());
+    //---
+    _printAnInteger($left + $right | 0);
+  }
+
+</code></pre>
+          <p>Add debug printouts that execute arbitrary JavaScript, show stack traces, etc.</p>
         </section>
 
         <section>
