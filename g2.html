@@ -69,7 +69,7 @@
         <section>
           <h2>asm.js</h2>
           <p>A strict subset of JavaScript, the industry-standard language that runs in all web browsers</p>
-          <p>Designed to be very easy to optimize and run at near-native speed</p>
+          <p>Designed to be very easy to optimize and run close to native speed</p>
         </section>
 
         <section>
@@ -79,7 +79,7 @@
         </section>
 
         <section>
-          <h2>Emscripten &amp; asm.js used by many companies, major and minor</h2>
+          <h2>Emscripten &amp; asm.js:<br>Growing adoption</h2>
           <br>
           <div id="wrap">
             <div id="left_col">
@@ -101,14 +101,14 @@
         </section>
 
         <section>
-          <h2>It's pretty easy to run a C++ codebase on the web these days!</h2>
+          <h3>It's pretty easy to run a C++<br>codebase on the web these days!</h3>
           <p><b>1.</b> Use an engine that already supports Emscripten (XXX, UE4, OpenFL, etc.)</p>
-          <p>Porting to the web becomes just another platform that the engine can target</p>
         </section>
         <section>
-          <p><b>2.</b> Port your own in-house engine (IMVU, Nebula3, etc.).</p>
+          <p><b>2.</b> Port your own in-house engine (IMVU, Nebula3, etc.)</p>
           <p>The tools are open source, free, and mature</p>
-          <p>This talk will focus on 2. But, you might still care about these details if you use an engine someone else ported, to understand &amp; optimize</p>
+          <p>This talk will focus on <b>2</b></p>
+          <p>But even if you use an already-ported engine, understanding the underlying technology can help!</p>
         </section>
 
         <section>
@@ -152,9 +152,8 @@
 
         <section>
           <h2>Cross-compiling</h2>
-          <p><b>Cannot</b> use system headers or libraries</p>
-          <p>emcc uses the emscripten headers and libs, which are portable</p>
-          <p>Need a library? Need to build it to bitcode using emcc (or get that from someone that already did it), then statically link with your project</p>
+          <p><b>Cannot</b> use your system headers or libraries (they are OS-specific x86 binaries)</p>
+          <p>Code <b>must</b> be portable - no inline x86 assembly, etc.</p>
         </section>
 
         <section>
@@ -166,12 +165,12 @@
 </code></pre>
           <p>This works on x86, can fail on ARM</p>
           <p>JavaScript, like ARM, will not produce correct results</p>
-          <p>Build with emcc <code>SAFE_HEAP</code> to get runtime checks, makes debugging this easy</p>
+          <p>emcc <b><code>SAFE_HEAP</code></b> option makes debugging this easy</p>
         </section>
 
         <section>
           <h2>Undefined Behavior</h2>
-          <p>Build your project with <code>-Werror</code>, can catch many things!</p>
+          <p>Build your project with <b><code>-Werror</code></b>, can catch many things!</p>
           <pre><code contenteditable>  // src.c
   int main() {
     printf("hello, world!\n");
@@ -187,14 +186,14 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
 
         <section>
           <h2>Event Loop</h2>
-          <p>Code on the web must run as a sequence of <b>short-running</b> events</p>
-          <p>Anything long-running will pause the browser, lead to dreaded "slow script dialogue" :(</p>
+          <p>Code on the web must run in <b>short</b> events</p>
+          <p>Not returning control to the browser can lead to the dreaded "slow script dialogue" :(</p>
           <img src="slowscript.gif" style="border: 0">
-          <p>Dialog boxes look nicer today, but problem remains the same</p>
+          <p>Dialog boxes nicer today, problem remains the same</p>
         </section>
 
         <section>
-          <h2>Bad :(</h2>
+          <h2>Instead of this...</h2>
           <pre><code contenteditable>
   int main() {
     init();
@@ -208,7 +207,7 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
         </section>
 
         <section>
-          <h2>Good :)</h2>
+          <h2>...We need this</h2>
           <pre><code contenteditable>
   #include &lt;emscripten.h&gt;
 
@@ -280,19 +279,18 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
 
         <section>
           <h2>Debugging</h2>
-          <p>Also possible to debug web builds
+          <p>For web-specific issues, need to debug web builds
           <p>emcc has various levels of debuggability of generated code using the <b>-g</b> argument</p>
         </section>
 
         <section>
           <h2>Debugging</h2>
-          <p>Optimized (<b>-O2</b> and above) output is minified</p>
-          <p>Try to debug this...</p>
+          <p>Optimized (<b>-O2</b> and above) output is minified by default</p>
           <pre><code contenteditable>
   function a(a,b){a=a|0;b=b|0;f(a+b|0);}
 
 </code></pre>
-          <p>...you're gonna have a bad time</p>
+          <img src="badtime.jpg">
         </section>
 
         <section>
@@ -367,29 +365,31 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
   }
 
 </code></pre>
-          <p>Add debug printouts that execute arbitrary JavaScript, show stack traces, etc.</p>
+          <p>Can add debug printouts that execute arbitrary JavaScript, show stack traces, etc.</p>
         </section>
 
         <section>
           <h2>Rendering: OpenGL</h2>
-          <p><b>1.</b> The subset of OpenGL ES 2.0 that is parallel to WebGL (ES 2.0 minus clientside data &amp; a few other things) is best: fast, fully supported</p>
-          <p>:)</p>
+          <p><b>Best:</b> The subset of OpenGL ES 2.0 that is parallel to WebGL :)</p>
+          <p>Basically ES 2.0 minus clientside data and <a href="http://www.khronos.org/registry/webgl/specs/latest/1.0/#6">a few other minor things</a></p>
         </section>
 
         <section>
           <h2>Rendering: OpenGL</h2>
-          <p><b>2.</b> General OpenGL ES 2.0 works well, using the FULL_ES2 flag (emulating clientside data adds some overhead)</p>
-          <p>:/</p>
+          <p><b>Ok:</b> General OpenGL ES 2.0 including non-WebGL features</p>
+          <p>We emulate things like clientside data for you, adds some overhead</p>
+          <p>Build your code with the <b><code>FULL_ES2</code></b> flag</p>
         </section>
 
         <section>
           <h2>Rendering: OpenGL</h2>
-          <p><b>3.</b> Some OpenGL 1.x stuff works using the LEGACY_GL_EMULATION flag (but much doesn't, and overhead is significant)</p>
-          <p>:(</p>
+          <p><b>Bad:</b> Older OpenGL 1.x stuff :(</p>
+          <p>Much works, but a lot doesn't, and emulation overhead is significant)</p>
+          <p>Build your code with the <b><code>LEGACY_GL_EMULATION</code></b> flag</p>
         </section>
 
         <section>
-          <p>So use the WebGL-friendly subset of GLES 2.0 :)</p>
+          <p>So use the WebGL-friendly subset of OpenGL ES 2.0 :)</p>
           <pre><code contenteditable>
 void do_web_frame() {
   /* normal GLES 2.0 code, no clientside data */
@@ -403,10 +403,10 @@ void do_web_frame() {
   ..
 }
 </code></pre>
+          <p>Fast, familiar, same code runs in native builds as well</p>
         </section>
 
         <section>
-          <p>So that's how you port C/C++ code to the Web</p>
           <p>Now on to part 2!</p>
         </section>
 
