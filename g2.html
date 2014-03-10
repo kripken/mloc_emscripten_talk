@@ -68,16 +68,24 @@
 
         <section>
           <h2>asm.js</h2>
-          <p>A strict subset of JavaScript, the industry-standard language that runs in all web browsers</p>
-          <p>Designed to be very easy to optimize and run close to native speed</p>
+          <br>
+          <p>A strict subset of <b>JavaScript</b>, the industry-standard language that runs in all web browsers</p>
+          <br>
+          <p>Designed to be very <b>easy to optimize</b> and run close to native speed</p>
         </section>
 
         <section>
           <h2>Emscripten</h2>
-          <p>An open source compiler from C/C++ to asm.js</p>
+          <br>
+          <p>An open source compiler from <b>C/C++ to asm.js</b></p>
+          <br>
           <p>Uses LLVM and clang</p>
           <br>
-          <p class="fragment"><b>Emscripten &amp; asm.js basically let you run your C/C++ code in browsers, without plugins</b></p>
+          <p class="fragment">
+            Emscripten &amp; asm.js let you run your C/C++ code in web browsers, <b>without plugins</b>
+            <br><br>
+            <img src="browser-logos.png" style="border: 0; box-shadow: none;background-color: transparent">
+          </p>
         </section>
 
         <section>
@@ -108,8 +116,11 @@
         </section>
         <section>
           <p><b>2.</b> Port your own in-house engine (IMVU, Nebula3, etc.)</p>
-          <p>The tools are open source, free, and mature</p>
+          <br>
+          <p class='fragment'>The tools are open source, free, and mature</p>
+          <br>
           <p class='fragment'>This is what this talk will focus on</p>
+          <br>
           <p class='fragment'>But even if you use an already-ported engine, understanding the underlying technology can help!</p>
         </section>
 
@@ -144,41 +155,54 @@
         </section>
 
         <section>
-          <p>When we run</p>
+          <p>When we run...</p>
           <pre><code contenteditable>  $ emcc helloworld.cpp -o output.html
 </code></pre>
           <p>...what actually happens?</p>
-          <p class="fragment">You are running a <b>cross-compiler</b>: Generating code for another platform than the one you are currently on</p>
-          <p class="fragment">Similar to developing a mobile game on a desktop!</p>
+          <br>
+          <p class="fragment">We are running a <b>cross-compiler</b>: Generating code for another platform than the one you are currently on</p>
+          <br>
+          <p class="fragment">Similar to developing a <b>mobile</b> game on a <b>desktop</b>!</p>
         </section>
 
         <section>
           <h2>Cross-compiling</h2>
+          <br>
           <p><b>Cannot</b> use your system headers or libraries (they are OS-specific x86 binaries)</p>
+          <br>
           <p class='fragment'>Code <b>must</b> be portable - no inline x86 assembly, etc.</p>
         </section>
 
         <section>
           <h2>Undefined Behavior</h2>
+          <br>
           <p>A common issue with cross-compiling, for example:</p>
+          <br>
           <pre><code contenteditable>  char buffer[8];
   int *i = (int*)&buffer[1]; /* unaligned! */
   *i = 10;
 </code></pre>
-          <p class='fragment'>This works on x86, can fail on ARM</p>
-          <p class='fragment'>JavaScript, like ARM, will not produce correct results</p>
+          <br>
+          <p class='fragment'>This works on x86, can <b>fail</b> on ARM</p>
+          <br>
+          <p class='fragment'>JavaScript, like ARM, will <b>not</b> produce correct results</p>
+          <br>
           <p class='fragment'>emcc <b><code>SAFE_HEAP</code></b> option makes debugging this easy</p>
         </section>
 
         <section>
           <h2>Undefined Behavior</h2>
+          <br>
           <p>Build your project with <b><code>-Werror</code></b>, can catch many things!</p>
+          <br>
           <pre><code contenteditable>  // src.c
   int main() {
     printf("hello, world!\n");
   }
 </code></pre>
+          <br>
           <hr class='fragment'>
+          <br>
           <pre class='fragment'><code contenteditable>$ emcc src.c -Werror
 error: implicitly declaring library function 'printf'
   printf("hello, world!\n");
@@ -189,7 +213,9 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
 
         <section>
           <h2>Event Loop</h2>
+          <br>
           <p>Code on the web must run in <b>short</b> events</p>
+          <br>
           <p>Not returning control to the browser can lead to the dreaded "slow script dialogue" :(</p>
           <img src="slowscript.gif" style="border: 0">
           <p>Dialog boxes nicer today ;) but problem remains the same</p>
@@ -197,6 +223,7 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
 
         <section>
           <h2>Instead of this...</h2>
+          <br>
           <pre><code contenteditable>
   int main() {
     init();
@@ -211,6 +238,7 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
 
         <section>
           <h2>...We need this</h2>
+          <br>
           <pre><code contenteditable>
   #include &lt;emscripten.h&gt;
 
@@ -233,14 +261,18 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
 
         <section>
           <h2>Getting a Window, I/O, etc.</h2>
+          <br>
           <p>Emscripten supports a few C APIs for this:</p>
           <p><b>HTML5, SDL, glut, glfw</b></p>
+          <br>
           <p class='fragment'>Can use SDL, glut etc. for existing codebases</p>
-          <p class='fragment'>HTML5 is a good option for new codebases or if you know HTML5 well</p>
+          <br>
+          <p class='fragment'>HTML5 is a good option for new codebases or if you know HTML5 already</p>
         </section>
 
         <section>
           <h2>html5.h</h2>
+          <br>
           <pre><code contenteditable>
   #include &lt;emscripten.h&gt;
   #include &lt;emscripten/html5.h&gt;
@@ -257,6 +289,7 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
 
         <section>
           <h2>SDL</h2>
+          <br>
           <pre><code contenteditable>
   #include &lt;SDL.h&gt;
   #include &lt;emscripten.h&gt;
@@ -275,18 +308,23 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
 
         <section>
           <h2>Debugging</h2>
-          <p>SDL, glut etc. are good to use because you can build the <b>same</b> code both to native and web</p>
-          <p>Can then use your normal debugging tools on the native build</p>
+          <br>
+          <p>SDL, glut etc. are good to use because you can build the <b>exact same</b> code both to native and web</p>
+          <br>
+          <p>Can debug cross-platform issues <b>normally</b> on the native build</p>
         </section>
 
         <section>
           <h2>Debugging</h2>
-          <p>For web-specific issues, need to debug web builds
+          <br>
+          <p>For web-specific issues, need to debug web builds</p>
+          <br>
           <p>emcc has various levels of debuggability of generated code using the <b>-g</b> argument</p>
         </section>
 
         <section>
           <h2>Debugging</h2>
+          <br>
           <p>Optimized (<b>-O2</b> and above) output is minified by default</p>
           <pre><code contenteditable>
   function a(a,b){a=a|0;b=b|0;f(a+b|0);}
@@ -297,6 +335,7 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
 
         <section>
           <h2>Debugging</h2>
+          <br>
           <p><b>-g1</b> : preserve whitespace</p>
           <pre><code contenteditable>
   function a(a, b) {
@@ -310,6 +349,7 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
 
         <section>
           <h2>Debugging</h2>
+          <br>
           <p><b>-g2</b> : preserve function names</p>
           <pre><code contenteditable>
   function _addAndPrint(a, b) {
@@ -323,6 +363,7 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
 
         <section>
           <h2>Debugging</h2>
+          <br>
           <p><b>-g3</b> : preserve variable names</p>
           <pre><code contenteditable>
   function _addAndPrint($left, $right) {
@@ -332,13 +373,17 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
   }
 
 </code></pre>
-          <p>They will not always match original source variable names 1-1, but are often quite close</p>
+          <br>
+          <p>They will not always exactly match original variable names in source, but are often quite close</p>
         </section>
 
         <section>
           <h2>Debugging</h2>
+          <br>
           <p><b>-g4</b> : source maps</p>
+          <br>
           <p>Show the C/C++ source code in your browser's debugger!</p>
+          <br>
           <p class='fragment'>Works in Firefox, Chrome and Safari</p>
         </section>
 
@@ -354,7 +399,9 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
 
         <section>
           <h2>Manual Debugging</h2>
-          <p>More manual debugging works too - and is actually much easier than on native platforms!</p>
+          <br>
+          <p>More manual debugging works too - and is actually much <b>easier</b> than on native platforms!</p>
+          <br>
           <pre><code contenteditable>
   function _addAndPrint($left, $right) {
     $left = $left | 0;
@@ -366,33 +413,45 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
   }
 
 </code></pre>
-          <p>Can add debug printouts that execute arbitrary JavaScript, show stack traces, etc.</p>
+          <br>
+          <p>Can add debug printouts that <b>execute arbitrary JavaScript</b>, show <b>stack traces</b>, etc.</p>
         </section>
 
         <section>
           <h2>Rendering: OpenGL</h2>
+          <br>
           <p><b>Best:</b> The subset of OpenGL ES 2.0 that is parallel to WebGL :)</p>
+          <br>
           <p class='fragment'>Basically ES 2.0 minus clientside data and <a href="http://www.khronos.org/registry/webgl/specs/latest/1.0/#6">a few other minor things</a></p>
         </section>
 
         <section>
           <h2>Rendering: OpenGL</h2>
+          <br>
           <p><b>Ok:</b> General OpenGL ES 2.0 including non-WebGL features</p>
+          <br>
           <p class='fragment'>We emulate things like clientside data for you, adds some overhead</p>
+          <br>
           <p class='fragment'>Build with the <b><code>FULL_ES2</code></b> flag</p>
         </section>
 
         <section>
           <h2>Rendering: OpenGL</h2>
+          <br>
           <p><b>Bad:</b> Older OpenGL 1.x stuff :(</p>
+          <br>
           <p class='fragment'>Much works, but a lot doesn't, and emulation overhead is significant</p>
+          <br>
           <p class='fragment'>Build with the <b><code>LEGACY_GL_EMULATION</code></b> flag</p>
+          <br>
           <p class='fragment'>Not recommended!</p>
         </section>
 
         <section>
           <h2>OpenGL: summary</h2>
-          <p>Use the WebGL-friendly subset of OpenGL ES 2.0 :)</p>
+          <br>
+          <p>Use the <b>WebGL-friendly</b> subset of <b>OpenGL ES 2.0</b> :)</p>
+          <br>
           <pre><code contenteditable>
 void do_web_frame() {
   /* normal GLES 2.0 code, no clientside data */
@@ -406,11 +465,12 @@ void do_web_frame() {
   ..
 }
 </code></pre>
-          <p class='fragment'>Fast, familiar, same code runs in native builds as well</p>
+          <br>
+          <p class='fragment'>Fast, familiar, same code runs in native builds</p>
         </section>
 
         <section>
-          <p>Now on to part 2!</p>
+          <p>Now on to <b>part 2</b>!</p>
         </section>
 
     </div>
