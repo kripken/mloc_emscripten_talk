@@ -62,7 +62,8 @@
           <h2>Getting Started With<br>asm.js and Emscripten</h2>
           <br>
           <h2 style="color: #fda">GDC 2014</h2>
-          <h3>Alon Zakai - Mozilla</h3>
+          <h3>Alon Zakai, Luke Wagner</h3>
+          <h3>Mozilla</h3>
           ..awesome screenshots..
         </section>
 
@@ -76,6 +77,8 @@
           <h2>Emscripten</h2>
           <p>An open source compiler from C/C++ to asm.js</p>
           <p>Uses LLVM and clang</p>
+          <br>
+          <p class="fragment"><b>Emscripten &amp; asm.js basically let you run your C/C++ code in browsers, without plugins</b></p>
         </section>
 
         <section>
@@ -232,7 +235,6 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
           <h2>Getting a Window, I/O, etc.</h2>
           <p>Emscripten supports a few C APIs for this:</p>
           <p><b>HTML5, SDL, glut, glfw</b></p>
-          <p>Simple stuff works in all, complex stuff varies (list starts from best)</p>
           <p>Can use SDL, glut etc. for existing codebases</p>
           <p>HTML5 is a good option for new codebases or if you know HTML5 well</p>
         </section>
@@ -384,7 +386,7 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
         <section>
           <h2>Rendering: OpenGL</h2>
           <p><b>Bad:</b> Older OpenGL 1.x stuff :(</p>
-          <p>Much works, but a lot doesn't, and emulation overhead is significant)</p>
+          <p>Much works, but a lot doesn't, and emulation overhead is significant</p>
           <p>Build your code with the <b><code>LEGACY_GL_EMULATION</code></b> flag</p>
         </section>
 
