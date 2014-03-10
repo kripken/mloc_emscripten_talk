@@ -82,7 +82,7 @@
           <p>Uses LLVM and clang</p>
           <br>
           <p class="fragment">
-            Emscripten &amp; asm.js let you run your C/C++ code in web browsers, <b>without plugins</b>
+            Emscripten &amp; asm.js let you run your C/C++ code in web browsers, at <b>high speed</b>, <b>without plugins</b>
             <br><br>
             <img src="browser-logos.png" style="border: 0; box-shadow: none;background-color: transparent">
           </p>
@@ -119,9 +119,7 @@
           <br>
           <p class='fragment'>The tools are open source, free, and mature</p>
           <br>
-          <p class='fragment'>This is what this talk will focus on</p>
-          <br>
-          <p class='fragment'>But even if you use an already-ported engine, understanding the underlying technology can help!</p>
+          <p class='fragment'>This is what I'll focus on, Luke will then talk in more detail about <b>asm.js and performance</b></p>
         </section>
 
         <section>
@@ -130,6 +128,7 @@
 
         <section>
           <h2>Hello world</h2>
+          <br>
           <pre class="fragment"><code contenteditable>  // helloworld.cpp
   #include &lt;stdio.h&gt;
   int main() {
@@ -146,6 +145,7 @@
 
         <section>
           <h2>Hello world</h2>
+          <br>
           <pre><code contenteditable>  $ emcc helloworld.cpp -o output.html
   $ ls output.*
   output.html output.js
@@ -432,7 +432,7 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
           <br>
           <p class='fragment'>We emulate things like clientside data for you, adds some overhead</p>
           <br>
-          <p class='fragment'>Build with the <b><code>FULL_ES2</code></b> flag</p>
+          <p class='fragment'>Requires the <b><code>FULL_ES2</code></b> flag</p>
         </section>
 
         <section>
@@ -442,7 +442,7 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
           <br>
           <p class='fragment'>Much works, but a lot doesn't, and emulation overhead is significant</p>
           <br>
-          <p class='fragment'>Build with the <b><code>LEGACY_GL_EMULATION</code></b> flag</p>
+          <p class='fragment'>Requires the <b><code>LEGACY_GL_EMULATION</code></b> flag</p>
           <br>
           <p class='fragment'>Not recommended!</p>
         </section>
