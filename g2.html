@@ -63,8 +63,7 @@
           <br>
           <h2 style="color: #fda">GDC 2014</h2>
           <h3>Alon Zakai, Luke Wagner</h3>
-          <h3>Mozilla</h3>
-          ..awesome screenshots..
+          <img src="mozilla_wordmark2.png" style="border:0; background-color: transparent; box-shadow: none; height: 3em">
         </section>
 
         <section>
@@ -110,8 +109,8 @@
         <section>
           <p><b>2.</b> Port your own in-house engine (IMVU, Nebula3, etc.)</p>
           <p>The tools are open source, free, and mature</p>
-          <p>This talk will focus on <b>2</b></p>
-          <p>But even if you use an already-ported engine, understanding the underlying technology can help!</p>
+          <p class='fragment'>This is what this talk will focus on</p>
+          <p class='fragment'>But even if you use an already-ported engine, understanding the underlying technology can help!</p>
         </section>
 
         <section>
@@ -127,7 +126,7 @@
     return 0;
   }
 </code></pre>
-          <hr>
+          <hr class='fragment'>
           <pre class="fragment"><code contenteditable>  $ emcc helloworld.cpp
   $ node a.out.js
   hello, world!
@@ -141,7 +140,7 @@
   output.html output.js
   $ firefox output.html    # or any other modern browser
 </code></pre>
-          <img src="hello.png" style="border: 0">
+          <img src="hello.png" style="border: 0" class='fragment'>
         </section>
 
         <section>
@@ -156,7 +155,7 @@
         <section>
           <h2>Cross-compiling</h2>
           <p><b>Cannot</b> use your system headers or libraries (they are OS-specific x86 binaries)</p>
-          <p>Code <b>must</b> be portable - no inline x86 assembly, etc.</p>
+          <p class='fragment'>Code <b>must</b> be portable - no inline x86 assembly, etc.</p>
         </section>
 
         <section>
@@ -166,9 +165,9 @@
   int *i = (int*)&buffer[1]; /* unaligned! */
   *i = 10;
 </code></pre>
-          <p>This works on x86, can fail on ARM</p>
-          <p>JavaScript, like ARM, will not produce correct results</p>
-          <p>emcc <b><code>SAFE_HEAP</code></b> option makes debugging this easy</p>
+          <p class='fragment'>This works on x86, can fail on ARM</p>
+          <p class='fragment'>JavaScript, like ARM, will not produce correct results</p>
+          <p class='fragment'>emcc <b><code>SAFE_HEAP</code></b> option makes debugging this easy</p>
         </section>
 
         <section>
@@ -179,7 +178,8 @@
     printf("hello, world!\n");
   }
 </code></pre>
-          <pre><code contenteditable>$ emcc src.c -Werror
+          <hr class='fragment'>
+          <pre class='fragment'><code contenteditable>$ emcc src.c -Werror
 error: implicitly declaring library function 'printf'
   printf("hello, world!\n");
   ^
@@ -192,7 +192,7 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
           <p>Code on the web must run in <b>short</b> events</p>
           <p>Not returning control to the browser can lead to the dreaded "slow script dialogue" :(</p>
           <img src="slowscript.gif" style="border: 0">
-          <p>Dialog boxes nicer today, problem remains the same</p>
+          <p>Dialog boxes nicer today ;) but problem remains the same</p>
         </section>
 
         <section>
@@ -235,8 +235,8 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
           <h2>Getting a Window, I/O, etc.</h2>
           <p>Emscripten supports a few C APIs for this:</p>
           <p><b>HTML5, SDL, glut, glfw</b></p>
-          <p>Can use SDL, glut etc. for existing codebases</p>
-          <p>HTML5 is a good option for new codebases or if you know HTML5 well</p>
+          <p class='fragment'>Can use SDL, glut etc. for existing codebases</p>
+          <p class='fragment'>HTML5 is a good option for new codebases or if you know HTML5 well</p>
         </section>
 
         <section>
@@ -292,7 +292,7 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
   function a(a,b){a=a|0;b=b|0;f(a+b|0);}
 
 </code></pre>
-          <img src="badtime.jpg">
+          <img src="badtime.jpg" class='fragment'>
         </section>
 
         <section>
@@ -339,18 +339,17 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
           <h2>Debugging</h2>
           <p><b>-g4</b> : source maps</p>
           <p>Show the C/C++ source code in your browser's debugger!</p>
+          <p class='fragment'>Works in Firefox, Chrome and Safari</p>
         </section>
 
         <section>
-          <h2>Debugging: Source Maps</h2>
+          <h2>Source Maps in Firefox</h2>
           <img src="ff-debug.png">
-          <p>Works in Firefox...</p>
         </section>
 
         <section>
-          <h2>Debugging: Source Maps</h2>
+          <h2>Source Maps in Chrome</h2>
           <img src="cr-debug.png">
-          <p>...and Chrome as well</p>
         </section>
 
         <section>
@@ -373,25 +372,27 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
         <section>
           <h2>Rendering: OpenGL</h2>
           <p><b>Best:</b> The subset of OpenGL ES 2.0 that is parallel to WebGL :)</p>
-          <p>Basically ES 2.0 minus clientside data and <a href="http://www.khronos.org/registry/webgl/specs/latest/1.0/#6">a few other minor things</a></p>
+          <p class='fragment'>Basically ES 2.0 minus clientside data and <a href="http://www.khronos.org/registry/webgl/specs/latest/1.0/#6">a few other minor things</a></p>
         </section>
 
         <section>
           <h2>Rendering: OpenGL</h2>
           <p><b>Ok:</b> General OpenGL ES 2.0 including non-WebGL features</p>
-          <p>We emulate things like clientside data for you, adds some overhead</p>
-          <p>Build your code with the <b><code>FULL_ES2</code></b> flag</p>
+          <p class='fragment'>We emulate things like clientside data for you, adds some overhead</p>
+          <p class='fragment'>Build with the <b><code>FULL_ES2</code></b> flag</p>
         </section>
 
         <section>
           <h2>Rendering: OpenGL</h2>
           <p><b>Bad:</b> Older OpenGL 1.x stuff :(</p>
-          <p>Much works, but a lot doesn't, and emulation overhead is significant</p>
-          <p>Build your code with the <b><code>LEGACY_GL_EMULATION</code></b> flag</p>
+          <p class='fragment'>Much works, but a lot doesn't, and emulation overhead is significant</p>
+          <p class='fragment'>Build with the <b><code>LEGACY_GL_EMULATION</code></b> flag</p>
+          <p class='fragment'>Not recommended!</p>
         </section>
 
         <section>
-          <p>So use the WebGL-friendly subset of OpenGL ES 2.0 :)</p>
+          <h2>OpenGL: summary</h2>
+          <p>Use the WebGL-friendly subset of OpenGL ES 2.0 :)</p>
           <pre><code contenteditable>
 void do_web_frame() {
   /* normal GLES 2.0 code, no clientside data */
@@ -405,7 +406,7 @@ void do_web_frame() {
   ..
 }
 </code></pre>
-          <p>Fast, familiar, same code runs in native builds as well</p>
+          <p class='fragment'>Fast, familiar, same code runs in native builds as well</p>
         </section>
 
         <section>
