@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Compiling to the Web</title>
+
+    <meta name="description" content="GDC 2014">
+    <meta name="author" content="Alon Zakai">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <style type="text/css">
+      b {
+        color: #f85;
+      }
+    </style>
+
+    <style type="text/css">
+    #wrap {
+       width:600px;
+       margin:0 auto;
+    }
+    #left_col {
+       float:left;
+       width:300px;
+    }
+    #right_col {
+       float:right;
+       width:300px;
+    }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+
+        <section>
+          <h2><b style="color: #f85">Compiling to the Web:</b></h2>
+          <h2>Getting Started With<br>asm.js and Emscripten</h2>
+          <br>
+          <h2 style="color: #fda">GDC 2014</h2>
+          <h3>Alon Zakai, Luke Wagner</h3>
+          <h3>Mozilla</h3>
+          ..awesome screenshots..
+        </section>
+
+        <section>
+          <h2>asm.js</h2>
+          <p>A strict subset of JavaScript, the industry-standard language that runs in all web browsers</p>
+          <p>Designed to be very easy to optimize and run close to native speed</p>
+        </section>
+
+        <section>
+          <h2>Emscripten</h2>
+          <p>An open source compiler from C/C++ to asm.js</p>
+          <p>Uses LLVM and clang</p>
+          <br>
+          <p class="fragment"><b>Emscripten &amp; asm.js basically let you run your C/C++ code in browsers, without plugins</b></p>
+        </section>
+
+        <section>
+          <h2>Emscripten &amp; asm.js:<br>Growing adoption</h2>
+          <br>
+          <div id="wrap">
+            <div id="left_col">
+              <p>XXX</p>
+              <p>Unigine</p>
+              <p>Torque 2D</p>
+              <p>Godot</p>
+              <p>Cube 2</p>
+            </div>
+            <div id="right_col">
+              <p>Epic</p>
+              <p>Nebula3</p>
+              <p>OpenFL</p>
+              <p>Cocos2D-X</p>
+              <p>etc.</p>
+            </div>
+          </div>
+          logos?
+        </section>
+
+        <section>
+          <h3>It's pretty easy to run a C++<br>codebase on the web these days!</h3>
+          <p><b>1.</b> Use an engine that already supports Emscripten (XXX, UE4, OpenFL, etc.)</p>
+        </section>
+        <section>
+          <p><b>2.</b> Port your own in-house engine (IMVU, Nebula3, etc.)</p>
+          <p>The tools are open source, free, and mature</p>
+          <p>This talk will focus on <b>2</b></p>
+          <p>But even if you use an already-ported engine, understanding the underlying technology can help!</p>
+        </section>
+
+        <section>
+          <h2>Ok, I have some C++ code.<br>What do I do?</h2>
+        </section>
+
+        <section>
+          <h2>Hello world</h2>
+          <pre class="fragment"><code contenteditable>  // helloworld.cpp
+  #include &lt;stdio.h&gt;
+  int main() {
+    printf("hello, world!\n");
+    return 0;
+  }
+</code></pre>
+          <hr>
+          <pre class="fragment"><code contenteditable>  $ emcc helloworld.cpp
+  $ node a.out.js
+  hello, world!
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Hello world</h2>
+          <pre><code contenteditable>  $ emcc helloworld.cpp -o output.html
+  $ ls output.*
+  output.html output.js
+  $ firefox output.html    # or any other modern browser
+</code></pre>
+          <img src="hello.png" style="border: 0">
+        </section>
+
+        <section>
+          <p>When we run</p>
+          <pre><code contenteditable>  $ emcc helloworld.cpp -o output.html
+</code></pre>
+          <p>...what actually happens?</p>
+          <p class="fragment">You are running a <b>cross-compiler</b>: Generating code for another platform than the one you are currently on</p>
+          <p class="fragment">Similar to developing a mobile game on a desktop!</p>
+        </section>
+
+        <section>
+          <h2>Cross-compiling</h2>
+          <p><b>Cannot</b> use your system headers or libraries (they are OS-specific x86 binaries)</p>
+          <p>Code <b>must</b> be portable - no inline x86 assembly, etc.</p>
+        </section>
+
+        <section>
+          <h2>Undefined Behavior</h2>
+          <p>A common issue with cross-compiling, for example:</p>
+          <pre><code contenteditable>  char buffer[8];
+  int *i = (int*)&buffer[1]; /* unaligned! */
+  *i = 10;
+</code></pre>
+          <p>This works on x86, can fail on ARM</p>
+          <p>JavaScript, like ARM, will not produce correct results</p>
+          <p>emcc <b><code>SAFE_HEAP</code></b> option makes debugging this easy</p>
+        </section>
+
+        <section>
+          <h2>Undefined Behavior</h2>
+          <p>Build your project with <b><code>-Werror</code></b>, can catch many things!</p>
+          <pre><code contenteditable>  // src.c
+  int main() {
+    printf("hello, world!\n");
+  }
+</code></pre>
+          <pre><code contenteditable>$ emcc src.c -Werror
+error: implicitly declaring library function 'printf'
+  printf("hello, world!\n");
+  ^
+tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Event Loop</h2>
+          <p>Code on the web must run in <b>short</b> events</p>
+          <p>Not returning control to the browser can lead to the dreaded "slow script dialogue" :(</p>
+          <img src="slowscript.gif" style="border: 0">
+          <p>Dialog boxes nicer today, problem remains the same</p>
+        </section>
+
+        <section>
+          <h2>Instead of this...</h2>
+          <pre><code contenteditable>
+  int main() {
+    init();
+    while (is_game_running()) {
+      do_frame();
+    }
+    return 0;
+  }
+
+</code></pre>
+        </section>
+
+        <section>
+          <h2>...We need this</h2>
+          <pre><code contenteditable>
+  #include &lt;emscripten.h&gt;
+
+  void do_web_frame() {
+    if (!is_game_running()) {
+      emscripten_cancel_main_loop();
+      return;
+    }
+    do_frame();
+  }
+
+  int main() {
+    init();
+    emscripten_set_main_loop(do_web_frame, 0, 0);
+    return 0;
+  }
+
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Getting a Window, I/O, etc.</h2>
+          <p>Emscripten supports a few C APIs for this:</p>
+          <p><b>HTML5, SDL, glut, glfw</b></p>
+          <p>Can use SDL, glut etc. for existing codebases</p>
+          <p>HTML5 is a good option for new codebases or if you know HTML5 well</p>
+        </section>
+
+        <section>
+          <h2>html5.h</h2>
+          <pre><code contenteditable>
+  #include &lt;emscripten.h&gt;
+  #include &lt;emscripten/html5.h&gt;
+
+  int main() {
+    emscripten_set_canvas_size(1024, 768);
+    emscripten_set_keydown_callback(0, 0, 1, key_callback);
+    emscripten_set_main_loop(do_web_frame, 0, 0);
+    return 0;
+  }
+
+</code></pre>
+        </section>
+
+        <section>
+          <h2>SDL</h2>
+          <pre><code contenteditable>
+  #include &lt;SDL.h&gt;
+  #include &lt;emscripten.h&gt;
+
+  int main() {
+    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Surface *screen =
+      SDL_SetVideoMode(1024, 768, 32, SDL_HWSURFACE);
+    emscripten_set_main_loop(do_web_frame, 0, 0);
+    /* use SDL_PollEvent to receive input etc. */
+    return 0;
+  }
+
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Debugging</h2>
+          <p>SDL, glut etc. are good to use because you can build the <b>same</b> code both to native and web</p>
+          <p>Can then use your normal debugging tools on the native build</p>
+        </section>
+
+        <section>
+          <h2>Debugging</h2>
+          <p>For web-specific issues, need to debug web builds
+          <p>emcc has various levels of debuggability of generated code using the <b>-g</b> argument</p>
+        </section>
+
+        <section>
+          <h2>Debugging</h2>
+          <p>Optimized (<b>-O2</b> and above) output is minified by default</p>
+          <pre><code contenteditable>
+  function a(a,b){a=a|0;b=b|0;f(a+b|0);}
+
+</code></pre>
+          <img src="badtime.jpg">
+        </section>
+
+        <section>
+          <h2>Debugging</h2>
+          <p><b>-g1</b> : preserve whitespace</p>
+          <pre><code contenteditable>
+  function a(a, b) {
+    a = a | 0;
+    b = b | 0;
+    f(a + b | 0);
+  }
+
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Debugging</h2>
+          <p><b>-g2</b> : preserve function names</p>
+          <pre><code contenteditable>
+  function _addAndPrint(a, b) {
+    a = a | 0;
+    b = b | 0;
+    _printAnInteger(a + b | 0);
+  }
+
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Debugging</h2>
+          <p><b>-g3</b> : preserve variable names</p>
+          <pre><code contenteditable>
+  function _addAndPrint($left, $right) {
+    $left = $left | 0;
+    $right = $right | 0;
+    _printAnInteger($left + $right | 0);
+  }
+
+</code></pre>
+          <p>They will not always match original source variable names 1-1, but are often quite close</p>
+        </section>
+
+        <section>
+          <h2>Debugging</h2>
+          <p><b>-g4</b> : source maps</p>
+          <p>Show the C/C++ source code in your browser's debugger!</p>
+        </section>
+
+        <section>
+          <h2>Debugging: Source Maps</h2>
+          <img src="ff-debug.png">
+          <p>Works in Firefox...</p>
+        </section>
+
+        <section>
+          <h2>Debugging: Source Maps</h2>
+          <img src="cr-debug.png">
+          <p>...and Chrome as well</p>
+        </section>
+
+        <section>
+          <h2>Manual Debugging</h2>
+          <p>More manual debugging works too - and is actually much easier than on native platforms!</p>
+          <pre><code contenteditable>
+  function _addAndPrint($left, $right) {
+    $left = $left | 0;
+    $right = $right | 0;
+    //---
+    if ($left < $right) console.log('l&lt;r at ' + stackTrace());
+    //---
+    _printAnInteger($left + $right | 0);
+  }
+
+</code></pre>
+          <p>Can add debug printouts that execute arbitrary JavaScript, show stack traces, etc.</p>
+        </section>
+
+        <section>
+          <h2>Rendering: OpenGL</h2>
+          <p><b>Best:</b> The subset of OpenGL ES 2.0 that is parallel to WebGL :)</p>
+          <p>Basically ES 2.0 minus clientside data and <a href="http://www.khronos.org/registry/webgl/specs/latest/1.0/#6">a few other minor things</a></p>
+        </section>
+
+        <section>
+          <h2>Rendering: OpenGL</h2>
+          <p><b>Ok:</b> General OpenGL ES 2.0 including non-WebGL features</p>
+          <p>We emulate things like clientside data for you, adds some overhead</p>
+          <p>Build your code with the <b><code>FULL_ES2</code></b> flag</p>
+        </section>
+
+        <section>
+          <h2>Rendering: OpenGL</h2>
+          <p><b>Bad:</b> Older OpenGL 1.x stuff :(</p>
+          <p>Much works, but a lot doesn't, and emulation overhead is significant</p>
+          <p>Build your code with the <b><code>LEGACY_GL_EMULATION</code></b> flag</p>
+        </section>
+
+        <section>
+          <p>So use the WebGL-friendly subset of OpenGL ES 2.0 :)</p>
+          <pre><code contenteditable>
+void do_web_frame() {
+  /* normal GLES 2.0 code, no clientside data */
+  glClear(GL_DEPTH_BUFFER_BIT);
+  glBindBuffer(GL_ARRAY_BUFFER, ab);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eb);
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 24, 0);
+  glUseProgram(p);
+  ..
+  glDrawArrays(GL_TRIANGLE_STRIP, 0, n);
+  ..
+}
+</code></pre>
+          <p>Fast, familiar, same code runs in native builds as well</p>
+        </section>
+
+        <section>
+          <p>Now on to part 2!</p>
+        </section>
+
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+
+    <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: 'default', //Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'fade', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+
+          // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>
