@@ -62,7 +62,7 @@
           <h2>Getting Started With<br>asm.js and Emscripten</h2>
           <br>
           <h2 style="color: #fda">GDC 2014</h2>
-          <h3>Alon Zakai (<a href="http://twitter.com/#!/kripken">@kripken</a>), Luke Wagner</h3>
+          <p>Alon Zakai/<a href="http://twitter.com/#!/kripken">@kripken</a>, &nbsp; Luke Wagner</p>
           <img src="mozilla_wordmark2.png" style="border:0; background-color: transparent; box-shadow: none; height: 3em">
         </section>
 
@@ -93,17 +93,17 @@
           <br>
           <div id="wrap">
             <div id="left_col">
-              <p>XXX</p>
-              <p>Unigine</p>
-              <p>Torque 2D</p>
-              <p>Godot</p>
-              <p>Cube 2</p>
+              <p><b>XXX</b></p>
+              <p><b>Unigine</b></p>
+              <p><b>Torque 2D</b></p>
+              <p><b>Godot</b></p>
+              <p><b>Cube 2</b></p>
             </div>
             <div id="right_col">
-              <p>Epic</p>
-              <p>Nebula3</p>
-              <p>OpenFL</p>
-              <p>Cocos2D-X</p>
+              <p><b>Epic</b></p>
+              <p><b>Nebula3</b></p>
+              <p><b>OpenFL</b></p>
+              <p><b>Cocos2D-X</b></p>
               <p>etc.</p>
             </div>
           </div>
@@ -136,7 +136,9 @@
     return 0;
   }
 </code></pre>
+          <br>
           <hr class='fragment'>
+          <br>
           <pre class="fragment"><code contenteditable>  $ emcc helloworld.cpp
   $ node a.out.js
   hello, world!
@@ -364,7 +366,7 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
         <section>
           <h2>Debugging</h2>
           <br>
-          <p><b>-g3</b> : preserve variable names</p>
+          <p><b>-g3 (or just -g)</b> : preserve variable names</p>
           <pre><code contenteditable>
   function _addAndPrint($left, $right) {
     $left = $left | 0;
@@ -400,7 +402,7 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
         <section>
           <h2>Manual Debugging</h2>
           <br>
-          <p>More manual debugging works too - and is actually much <b>easier</b> than on native platforms!</p>
+          <p>Manual debugging works too, even <b>easier</b> than on native!</p>
           <br>
           <pre><code contenteditable>
   function _addAndPrint($left, $right) {
@@ -415,6 +417,7 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
 </code></pre>
           <br>
           <p>Can add debug printouts that <b>execute arbitrary JavaScript</b>, show <b>stack traces</b>, etc.</p>
+          <p class="fragment">Can use <b>alert()</b> to pause execution until user interaction</p>
         </section>
 
         <section>
