@@ -112,7 +112,7 @@
 
         <section>
           <h3>It's pretty easy to run a C++<br>codebase on the web these days!</h3>
-          <p><b>1.</b> Use an engine that already supports Emscripten (XXX, UE4, OpenFL, etc.)</p>
+          <p><b>1.</b> Use an engine that already supports Emscripten (XXX, UE4, etc.)</p>
         </section>
         <section>
           <p><b>2.</b> Port your own in-house engine (IMVU, Nebula3, etc.)</p>
@@ -178,7 +178,7 @@
         <section>
           <h2>Undefined Behavior</h2>
           <br>
-          <p>A common issue with cross-compiling, for example:</p>
+          <p>A possible issue with cross-compiling, for example:</p>
           <br>
           <pre><code contenteditable>  char buffer[8];
   int *i = (int*)&buffer[1]; /* unaligned! */
@@ -311,15 +311,15 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
         <section>
           <h2>Debugging</h2>
           <br>
-          <p>SDL, glut etc. are good to use because you can build the <b>exact same</b> code both to native and web</p>
+          <p class="fragment">SDL, glut etc. are good to use because you can build the <b>exact same</b> code both to native and web</p>
           <br>
-          <p>Can debug cross-platform issues <b>normally</b> on the native build</p>
+          <p class="fragment">Can debug cross-platform issues <b>normally</b> on the native build</p>
         </section>
 
         <section>
           <h2>Debugging</h2>
           <br>
-          <p>For web-specific issues, need to debug web builds</p>
+          <p>For web-specific issues, can debug web builds directly</p>
           <br>
           <p>emcc has various levels of debuggability of generated code using the <b>-g</b> argument</p>
         </section>
@@ -455,8 +455,7 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
           <br>
           <p>Use the <b>WebGL-friendly</b> subset of <b>OpenGL ES 2.0</b> :)</p>
           <br>
-          <pre><code contenteditable>
-void do_web_frame() {
+          <pre><code contenteditable>void do_web_frame() {
   /* normal GLES 2.0 code, no clientside data */
   glClear(GL_DEPTH_BUFFER_BIT);
   glBindBuffer(GL_ARRAY_BUFFER, ab);
