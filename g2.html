@@ -100,7 +100,7 @@
               <p><b>Godot</b></p>
             </div>
             <div id="right_col">
-              <p><b>Epic</b></p>
+              <p><b>Unreal Engine</b></p>
               <p><b>Nebula3</b></p>
               <p><b>OpenFL</b></p>
               <p><b>Cocos2D-X</b></p>
@@ -108,7 +108,6 @@
             </div>
             <p>etc.</p>
           </div>
-          logos?
         </section>
 
         <section>
@@ -116,7 +115,7 @@
           <p><b>1.</b> Use an engine that already supports Emscripten (XXX, UE4, etc.)</p>
         </section>
         <section>
-          <p><b>2.</b> Port your own in-house engine (IMVU, Nebula3, etc.)</p>
+          <p><b>2.</b> Port your own in-house engine (IMVU, etc.)</p>
           <br>
           <p class='fragment'>The tools are open source, free, and mature</p>
           <br>
@@ -219,9 +218,9 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
           <br>
           <p>Code on the web must run in <b>short</b> events</p>
           <br>
-          <p>Not returning control to the browser can lead to the dreaded "slow script dialogue" :(</p>
-          <img src="slowscript.gif" style="border: 0">
-          <p>Dialog boxes nicer today ;) but problem remains the same</p>
+          <p class="fragment">Not returning control to the browser can lead to the dreaded "slow script dialogue" :(</p>
+          <img class="fragment" src="slowscript.gif" style="border: 0">
+          <p class="fragment">Dialog boxes nicer today ;) but problem remains the same</p>
         </section>
 
         <section>
@@ -418,7 +417,6 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
 </code></pre>
           <br>
           <p>Can add debug printouts that <b>execute arbitrary JavaScript</b>, show <b>stack traces</b>, etc.</p>
-          <p class="fragment">Can use <b>alert()</b> to pause execution until user interaction</p>
         </section>
 
         <section>
