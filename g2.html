@@ -93,7 +93,7 @@
           <br>
           <div id="wrap">
             <div id="left_col">
-              <p><b>XXX</b></p>
+              <p><b>Unity</b></p>
               <p><b>Unigine</b></p>
               <p><b><!--a href="http://minko.io/"-->Minko<!--/a--></b></p>
               <p><b>Torque 2D</b></p>
@@ -113,15 +113,17 @@
         <section>
           <h3>It's pretty easy to run a C++<br>codebase on the web these days!</h3>
           <br>
-          <p class="fragment"><b>1.</b> Use an engine that already supports Emscripten (XXX, UE4, etc.)</p>
+          <p class="fragment"><b>1.</b> Use an engine that already supports Emscripten (Unity, Unreal, etc.)</p>
         </section>
 
         <section>
           <p><b>2.</b> Port your own in-house engine (IMVU, etc.)</p>
           <br>
-          <p class='fragment'>The tools are open source, free, and mature</p>
+          <p class='fragment'>Tools for this are open source, free, and mature</p>
           <br>
-          <p class='fragment'>This is what I'll focus on, Luke will then talk in more detail about <b>asm.js and performance</b></p>
+          <p class='fragment'><b>This</b> is what I'll focus on - but even if you're using an engine someone else already ported, understanding how the underlying technology works is <b>always useful!</b></p>
+          <br>
+          <p class="fragment">And in 2nd half of the talk, Luke will get into detail about <b>asm.js and performance</b></p>
         </section>
 
         <section>
@@ -430,25 +432,15 @@ tests/hello_world.c:2:3: note: please include &lt;stdio.h&gt;
         </section>
 
         <section>
-          <h2>Rendering: OpenGL</h2>
+          <h2>OpenGL Emulation Options</h2>
           <br>
-          <p><b>Ok:</b> General OpenGL ES 2.0 including non-WebGL features</p>
+          <p><b>Ok:</b> General OpenGL ES 2.0 including non-WebGL features (<b><code>FULL_ES2</code></b> flag)</p>
           <br>
           <p class='fragment'>We emulate things like clientside data for you, adds some overhead</p>
           <br>
-          <p class='fragment'>Requires the <b><code>FULL_ES2</code></b> flag</p>
-        </section>
-
-        <section>
-          <h2>Rendering: OpenGL</h2>
-          <br>
-          <p><b>Bad:</b> Older OpenGL 1.x stuff :(</p>
+          <p class='fragment'><b>Bad:</b> Older OpenGL 1.x stuff (<b><code>LEGACY_GL_EMULATION</code></b> flag)</p>
           <br>
           <p class='fragment'>Much works, but a lot doesn't, and emulation overhead is significant</p>
-          <br>
-          <p class='fragment'>Requires the <b><code>LEGACY_GL_EMULATION</code></b> flag</p>
-          <br>
-          <p class='fragment'>Not recommended!</p>
         </section>
 
         <section>
