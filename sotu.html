@@ -91,7 +91,6 @@
             <li>Backtracking register allocator</li>
             <li>float32</li>
             <li>asm.js</li>
-            <li>SIMD?</li>
           </ul>
         </section>
 
@@ -167,7 +166,7 @@
 </code></pre>
           <p>or</p>
         <pre><code>
-var fround = Math.fround || function(x) { return x }
+var fround = Math.fround || function(x) { return x };
 </code></pre>
         </section>
 
@@ -192,9 +191,17 @@ var fround = Math.fround || function(x) { return x }
         </section>
 
         <section>
-          <h2></h2>
+          <h2>why is float32 faster?</h2>
           <br>
-          <p></p>
+          <p>Less precise, often less CPU cycles</p>
+          <p>Half the size, fewer cache misses</p>
+          <p>WebGL code often stores float32 for space, doing computation in float32 avoids conversions</p>
+        </section>
+
+        <section>
+          <h2>Backtracking Register Allocator</h2>
+          <br>
+          <p>LLVM</p>
         </section>
 
         <section>
@@ -204,13 +211,7 @@ var fround = Math.fround || function(x) { return x }
         </section>
 
         <section>
-          <h2></h2>
-          <br>
-          <p></p>
-        </section>
-
-        <section>
-          <h2></h2>
+          <h2>asm.js</h2>
           <br>
           <p></p>
         </section>
