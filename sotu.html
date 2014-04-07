@@ -69,7 +69,7 @@
         <section>
           <h2>JavaScript VM Opts</h2>
           <br>
-          <p>Many kinds: Object layout (hidden classes, etc.), garbage collection (generational GC, etc.), etc.</p>
+          <p>Many kinds: Object layout (hidden classes, etc.), garbage collection (generational GC, etc.), etc. etc.</p>
           <br>
           <p>Here I'll focus not on those, but on type-based optimizations</p>
         </section>
@@ -88,9 +88,9 @@
           <h2>This talk</h2>
           <br>
           <ul>
-            <li>Backtracking register allocator</li>
             <li>float32</li>
             <li>asm.js</li>
+            <li>backtracking register allocator</li>
           </ul>
         </section>
 
@@ -107,15 +107,31 @@
           <br>
           <p>But VMs has 32-bit ints as well!</p>
           <br>
-          <p>Possible due to mathematical facts like adding 1 to an integer keeps it an integer</p>
+          <p>Possible due to mathematical facts about integer and double math</p>
+          <br>
+        </section>
+
+        <section>
+          <p>Say we are adding two values known to be 32-bit ints:</p>
+          <p>x<sub style="font-size:50%">int</sub> &nbsp; + &nbsp;y<sub style="font-size:50%">int</sub> &nbsp;&nbsp; == &nbsp;&nbsp; double(x<sub style="font-size:50%">int</sub>) &nbsp;+<sub style="font-size:50%">double</sub>&nbsp; double(y<sub style="font-size:50%">int</sub>)</p>
+          <p>== &nbsp;&nbsp; x<sub style="font-size:50%">int</sub> &nbsp; +<sub style="font-size:50%">int</sub> &nbsp;y<sub style="font-size:50%">int</sub> &nbsp;&nbsp;&nbsp;</p>
+          <p><b>assuming</b> no overflow happened</p>
+          <p>Thankfully those checks are cheap, but can do even better:</p>
+          <p>(x<sub style="font-size:50%">int</sub> &nbsp; + &nbsp;y<sub style="font-size:50%">int</sub>)|0 &nbsp;&nbsp; == &nbsp;&nbsp; x<sub style="font-size:50%">int</sub> &nbsp;+<sub style="font-size:50%">int</sub>&nbsp; y<sub style="font-size:50%">int</sub></p>
+        </section>
+
+        <section>
+          <p>These are true because:</p>
+          <p>x<sub style="font-size:50%">int</sub> &nbsp; +<sub style="font-size:50%">int</sub> &nbsp;y<sub style="font-size:50%">int</sub> &nbsp;&nbsp; == &nbsp;&nbsp; int(&nbsp;double(x<sub style="font-size:50%">int</sub>) &nbsp;+<sub style="font-size:50%">double</sub>&nbsp; double(y<sub style="font-size:50%">int</sub>) )</p>
+          <p>I.e., all numbers are doubles, but the ones that <b>happen</b> to be integers can be added as integers, since the math is the same either way</p>
         </section>
 
         <section>
           <h2>float32</h2>
           <br>
-          <p>We can do the same for 32-bit floats</p>
+          <p>We can do the same for 32-bit floats!</p>
           <br>
-          <p>x &nbsp; +<sub style="font-size:50%">32</sub> &nbsp;y == (float)( (double)x &nbsp;+<sub style="font-size:50%">64</sub>&nbsp; (double)y )</p>
+          <p>x<sub style="font-size:50%">f32</sub> &nbsp; +<sub style="font-size:50%">f32</sub> &nbsp;y<sub style="font-size:50%">f32</sub> &nbsp;&nbsp; == &nbsp;&nbsp; f32(&nbsp;f64(x<sub style="font-size:50%">f32</sub>) &nbsp;+<sub style="font-size:50%">f64</sub>&nbsp; f64(y<sub style="font-size:50%">f32</sub>) )</p>
           <br>
           <p>Also true for <code>-,*,/,sqrt, </code> etc. (but not everything, e.g. not <code>sin</code>)</p>
         </section>
