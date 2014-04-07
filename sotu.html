@@ -58,35 +58,151 @@
       <div class="slides">
 
         <section>
-          <h2><b style="color: #f85">Compiling to the Web:</b></h2>
-          <h2>Getting Started With<br>asm.js and Emscripten</h2>
+          <h2>Low-level <b style="color: #f85">Type</b>-Based<br>Optimizations in the<br>SpiderMonkey VM</h2>
           <br>
-          <h2 style="color: #fda">GDC 2014</h2>
-          <p>Alon Zakai/<a href="http://twitter.com/#!/kripken">@kripken</a>, &nbsp; Luke Wagner</p>
+          <h3 style="color: #fda">sotu.js 2014</h3>
+          <br>
+          <p>Alon Zakai/<a href="http://twitter.com/#!/kripken">@kripken</a></p>
           <img src="mozilla_wordmark2.png" style="border:0; background-color: transparent; box-shadow: none; height: 3em">
         </section>
 
         <section>
-          <h2>asm.js</h2>
+          <h2>JavaScript VM Opts</h2>
           <br>
-          <p>A strict subset of <b>JavaScript</b>, the industry-standard language that runs in all web browsers</p>
+          <p>Many kinds: Object layout (hidden classes, etc.), garbage collection (generational GC, etc.), etc.</p>
           <br>
-          <p>Designed to be very <b>easy to optimize</b> and run close to native speed</p>
+          <p>Here I'll focus not on those, but on type-based optimizations</p>
         </section>
 
         <section>
-          <h2>Emscripten</h2>
+          <h2>Type-based opts</h2>
           <br>
-          <p>An open source compiler from <b>C/C++ to asm.js</b></p>
+          <p>Many benchmarks (most of kraken, parts of octane, etc.) test pure computation</p>
           <br>
-          <p>Uses LLVM and clang</p>
+          <p>Optimizations include type profiling, type inference, type specialization</p>
           <br>
-          <p class="fragment">
-            Emscripten &amp; asm.js let you run your C/C++ code in web browsers, at <b>high speed</b>, <b>without plugins</b>
-            <br><br>
-            <img src="browser-logos.png" style="border: 0; box-shadow: none;background-color: transparent">
-          </p>
+          <p>Prominent in modern JS VMs (optimizing JITs like crankshaft, ionmonkey, etc.)</p>
         </section>
+
+        <section>
+          <h2>This talk</h2>
+          <br>
+          <ul>
+            <li>float32</li>
+            <li>Backtracking register allocator</li>
+            <li>asm.js</li>
+            <li>SIMD?</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2></h2>
+          <br>
+          <p></p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <br>
+          <p></p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <br>
+          <p></p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <br>
+          <p></p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <br>
+          <p></p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <br>
+          <p></p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <br>
+          <p></p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <br>
+          <p></p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <br>
+          <p></p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <br>
+          <p></p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <br>
+          <p></p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <br>
+          <p></p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <br>
+          <p></p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <br>
+          <p></p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <br>
+          <p></p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <br>
+          <p></p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <br>
+          <p></p>
+        </section>
+
+        <section>
+          <h2></h2>
+          <br>
+          <p></p>
+        </section>
+
 
     </div>
 
