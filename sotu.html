@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Compiling to the Web</title>
+
+    <meta name="description" content="GDC 2014">
+    <meta name="author" content="Alon Zakai">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <style type="text/css">
+      b {
+        color: #f85;
+      }
+    </style>
+
+    <style type="text/css">
+    #wrap {
+       width:600px;
+       margin:0 auto;
+    }
+    #left_col {
+       float:left;
+       width:300px;
+    }
+    #right_col {
+       float:right;
+       width:300px;
+    }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+
+        <section>
+          <h2><b style="color: #f85">Compiling to the Web:</b></h2>
+          <h2>Getting Started With<br>asm.js and Emscripten</h2>
+          <br>
+          <h2 style="color: #fda">GDC 2014</h2>
+          <p>Alon Zakai/<a href="http://twitter.com/#!/kripken">@kripken</a>, &nbsp; Luke Wagner</p>
+          <img src="mozilla_wordmark2.png" style="border:0; background-color: transparent; box-shadow: none; height: 3em">
+        </section>
+
+        <section>
+          <h2>asm.js</h2>
+          <br>
+          <p>A strict subset of <b>JavaScript</b>, the industry-standard language that runs in all web browsers</p>
+          <br>
+          <p>Designed to be very <b>easy to optimize</b> and run close to native speed</p>
+        </section>
+
+        <section>
+          <h2>Emscripten</h2>
+          <br>
+          <p>An open source compiler from <b>C/C++ to asm.js</b></p>
+          <br>
+          <p>Uses LLVM and clang</p>
+          <br>
+          <p class="fragment">
+            Emscripten &amp; asm.js let you run your C/C++ code in web browsers, at <b>high speed</b>, <b>without plugins</b>
+            <br><br>
+            <img src="browser-logos.png" style="border: 0; box-shadow: none;background-color: transparent">
+          </p>
+        </section>
+
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+
+    <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: 'default', //Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'fade', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+
+          // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>
