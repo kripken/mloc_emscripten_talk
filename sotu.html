@@ -4,9 +4,9 @@
   <head>
     <meta charset="utf-8">
 
-    <title>Compiling to the Web</title>
+    <title>New Type-Based Opts</title>
 
-    <meta name="description" content="GDC 2014">
+    <meta name="description" content="sotu.js 2014">
     <meta name="author" content="Alon Zakai">
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -58,7 +58,7 @@
       <div class="slides">
 
         <section>
-          <h2>Low-level <b style="color: #f85">Type</b>-Based<br>Optimizations in the<br>SpiderMonkey VM</h2>
+          <h2>New <b style="color: #f85">Type</b>-Based<br>Optimizations in the<br>SpiderMonkey VM</h2>
           <br>
           <h3 style="color: #fda">sotu.js 2014</h3>
           <br>
@@ -88,8 +88,8 @@
           <h2>This talk</h2>
           <br>
           <ul>
-            <li>float32</li>
             <li>Backtracking register allocator</li>
+            <li>float32</li>
             <li>asm.js</li>
             <li>SIMD?</li>
           </ul>
@@ -102,21 +102,30 @@
         </section>
 
         <section>
-          <h2></h2>
+          <h2>float32</h2>
           <br>
-          <p></p>
+          <p>JavaScript numbers are 64-bit doubles</p>
+          <br>
+          <p>But VMs has 32-bit ints as well!</p>
+          <br>
+          <p>Possible due to mathematical facts like adding 1 to an interger keeps it an integer</p>
+        </section>
+
+        <section>
+          <h2>float32</h2>
+          <br>
+          <p>We can do the same for 32-bit floats</p>
+          <br>
+          <p>x &nbsp; +<sub style="font-size:50%">32</sub> &nbsp;y == (float)( (double)x &nbsp;+<sub style="font-size:50%">64</sub>&nbsp; (double)y )</p>
+          <br>
+          <p>Also true for <code>-,*,/,sqrt, </code> etc. (but not everything, e.g. not <code>sin</code>)</p>
         </section>
 
         <section>
           <h2></h2>
           <br>
           <p></p>
-        </section>
-
-        <section>
-          <h2></h2>
-          <br>
-          <p></p>
+          <img src="asm1.5b.png"></img>
         </section>
 
         <section>
