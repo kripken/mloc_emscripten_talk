@@ -92,10 +92,13 @@
             <li>asm.js</li>
             <li>backtracking register allocator</li>
           </ul>
+          <br>
+          <br>
+          <p>All of these only make sense given type information</p>
         </section>
 
         <section>
-          <h1>2. float32</h1>
+          <h1>1. float32</h1>
         </section>
 
         <section>
@@ -145,19 +148,31 @@
   }
 
 </code></pre>
+          <p>Stuff like this is common in WebGL code</p>
         </section>
 
         <section>
-          <h2>Where do float32 values come from?</h2>
-          <br>
+          <p>Fragile, though - needs to be case back to float32 immediately</p>
+          <pre><code>
+  var f32 = new Float32Array(1000);
+  for(var i = 0; i < 1000; ++i) {
+    f32[i] = 2*f32[i] + 1;
+  }
+
+</code></pre>
+          <p>Not optimizable :(</p>
+        </section>
+
+        <section>
           <p>Math.fround: explicitly cast a number to 32-bit float precision</p>
           <pre><code>
   var f32 = new Float32Array(1000);
   for(var i = 0; i < 1000; ++i) {
-    f32[i] = Math.fround(f32[i]*2) + 1;
+    f32[i] = Math.fround(2*f32[i]) + 1;
   }
 
 </code></pre>
+          <p>Optimizable :)</p>
         </section>
 
         <section>
@@ -201,15 +216,16 @@ var fround = Math.fround || function(x) { return x };
           <h2>float32 - compiled benchmarks</h2>
           <br>
           <p></p>
-          <img src="asm1.5b.png"></img>
+          <img src="asm1.5b_half.png"></img>
         </section>
 
         <section>
           <h2>why is float32 faster?</h2>
           <br>
           <p>Less precise, often less CPU cycles</p>
-          <p>Half the size, fewer cache misses (&amp; possibly more registers/SIMD lanes)</p>
+          <p>Half the size, fewer cache misses</p>
           <p>WebGL code often stores float32 for space, doing computation in float32 avoids conversions</p>
+          <p>Not yet, but possible: more registers/SIMD lanes</p>
         </section>
 
         <section>
@@ -231,18 +247,32 @@ var fround = Math.fround || function(x) { return x };
           <br>
           <p>E.g., the <code>|0</code> pattern mentioned before</p>
           <pre><code>
-function twice(x) {
-  x = x | 0;
-  return x + x | 0;
-}
+  function twice(x) {
+    x = x | 0;
+    return x + x | 0;
+  }
           </code></pre>
           <p>No need to profile types, can immediately optimize ahead of time</p>
         </section>
 
         <section>
+          <h2>asm.js example</h2>
+          <pre class="fragment"><code contenteditable>  function asmCode(global, env, buffer) {
+    'use asm';
+    var HEAP = new global.Uint8Array(buffer);
+    function fib_like(x) {
+      x = x|0;
+      if ((x >>> 0) < 2) return HEAP[x]|0;
+      return (fib_like(x-2|0)|0) + (fib_like(x-1|0)|0) | 0;
+    }
+    return fib_like;
+  }</code></pre>
+        </section>
+
+        <section>
           <h2>asm.js workflow</h2>
           <br>
-          <p>Low-level and inconvenient to write by hand - primarily intended as a compiler target</p>
+          <p>Low-level and mostly inconvenient to write by hand - primarily intended as a compiler target</p>
           <p>Emscripten is an open source LLVM-based compiler that generates asm.js from C/C++</p>
         </section>
 
@@ -260,9 +290,31 @@ function twice(x) {
         </section>
 
         <section>
-          <h2></h2>
+          <h2>asm.js performance</h2>
           <br>
-          <p></p>
+          <img src="asm1.5b.png"></img>
+          <p>Around 1.5x slower than native (67% of native speed)</p>
+        </section>
+
+        <section>
+          <h2>Optimizations</h2>
+          <br>
+          <p>AOT - full optimizing JIT always run, using full type info</p>
+          <p>AOT done in parallel, results cached</p>
+          <p>No need for bailouts, we know many corner cases are impossible, etc.</p>
+          <p>On 64-bit, can do zero-cost bounds checks using a signal handler</p>
+        </section>
+
+        <section>
+          <h2>Implementation</h2>
+          <br>
+          <p>OdinMonkey is the optimization module for asm.js in SpiderMonkey</p>
+          <p>Fairly small amount of code</p>
+          <p>Mostly just type checks and sends the results into the existing IonMonkey optimizing JIT</p>
+        </section>
+
+        <section>
+          <h1>3. Backtracking Register Allocator</h1>
         </section>
 
         <section>
