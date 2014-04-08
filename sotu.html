@@ -141,21 +141,22 @@
           <h2>Where do float32 values come from?</h2>
           <br>
           <p>Typed arrays</p>
+          <p>Stuff like this is common in WebGL code</p>
           <pre><code>
   var f32 = new Float32Array(1000);
-  for(var i = 0; i < 1000; ++i) {
+  for (var i = 0; i < 1000; ++i) {
     f32[i] = f32[i] + 1;
   }
 
 </code></pre>
-          <p>Stuff like this is common in WebGL code</p>
+          <p>Optimizable :)</p>
         </section>
 
         <section>
           <p>Fragile, though - needs to be case back to float32 immediately</p>
           <pre><code>
   var f32 = new Float32Array(1000);
-  for(var i = 0; i < 1000; ++i) {
+  for (var i = 0; i < 1000; ++i) {
     f32[i] = 2*f32[i] + 1;
   }
 
