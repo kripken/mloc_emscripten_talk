@@ -134,6 +134,7 @@
           <br>
           <p>x<sub style="font-size:50%">f32</sub> &nbsp; +<sub style="font-size:50%">f32</sub> &nbsp;y<sub style="font-size:50%">f32</sub> &nbsp;&nbsp; == &nbsp;&nbsp; f32(&nbsp;f64(x<sub style="font-size:50%">f32</sub>) &nbsp;+<sub style="font-size:50%">f64</sub>&nbsp; f64(y<sub style="font-size:50%">f32</sub>) )</p>
           <br>
+          <p>Only true because of the exact definition of IEEE754 doubles and floats (# of bits in exponent, definition of rounding, etc.)</p>
           <p>Also true for <code>-,*,/,sqrt, </code> etc. (but not everything, e.g. not <code>sin</code>)</p>
         </section>
 
@@ -168,7 +169,7 @@
           <p>Math.fround: explicitly cast a number to 32-bit float precision</p>
           <pre><code>
   var f32 = new Float32Array(1000);
-  for(var i = 0; i < 1000; ++i) {
+  for (var i = 0; i < 1000; ++i) {
     f32[i] = Math.fround(2*f32[i]) + 1;
   }
 
@@ -179,24 +180,21 @@
         <section>
           <h2>fround support</h2>
           <br>
-          <p>In ES6. Already in Firefox, Safari, Chrome (behind a flag)</p>
-          <br>
-          <p>Easy to polyfill</p>
+          <p>In ES6. Already in Firefox, Safari, Chrome (behind a flag), easy to polyfill</p>
           <pre><code>
-  if (!Math.fround) {
-    Math.fround = (function() {
-      var temp = new Float32Array(1);
-      return function fround(x) {
-        temp[0] = +x;
-        return temp[0];
-      }
-    })();
-  }
+  Math.fround = Math.fround || (function() {
+    var temp = new Float32Array(1);
+    return function fround(x) {
+      temp[0] = +x;
+      return temp[0];
+    }
+  })();
 
 </code></pre>
           <p>or</p>
         <pre><code>
-var fround = Math.fround || function(x) { return x };
+  Math.fround = Math.fround || function(x) { return x };
+
 </code></pre>
         </section>
 
@@ -319,60 +317,51 @@ var fround = Math.fround || function(x) { return x };
         </section>
 
         <section>
+          <p>We saw that JavaScript can get very close to native performance</p>
+          <p>When you get that close, things like register allocation start to become significant</p>
+        </section>
+
+        <section>
           <h2>Backtracking Register Allocator</h2>
           <br>
-          <p>LLVM</p>
+          <p>Inspired by LLVM's Greedy Register Allocator (LLVM 3.0)</p>
+          <p>1-2% smaller code, up to 10% faster</p>
+          <p>Takes longer to run, but worth it</p>
         </section>
 
         <section>
-          <h2></h2>
+          <h2>How it works</h2>
           <br>
-          <p></p>
+          <p>...</p>
         </section>
 
         <section>
-          <h2></h2>
+          <h2>Backtracking perf in firefox</h2>
           <br>
-          <p></p>
+          <p>Most benchmark show little or no difference. But when there is a difference, it is large!</p>
+          <br>
+          <p><b>21%</b> speedup on octane-zlib on x86</p>
+          <p><b>7%</b> speedup on x86-64, <b>11%</b> speedup on ARM (more registers, less needed)</p>
+          <br>
+          <p>Other benchmarks: <b>29%</b> speedup on emscripten-life on x86</p>
         </section>
 
         <section>
-          <h2></h2>
+          <h2>Backtracking status</h2>
           <br>
-          <p></p>
+          <p>Enabled a few weeks ago on asm.js code, where it makes the most difference (closest to native speed) and we AOT, so no heuristics considerations</p>
+          <p>Will be enabled everywhere soon, pending some tweaks to heuristics about when to run</p>
         </section>
 
         <section>
-          <h2></h2>
-          <br>
-          <p></p>
+          <ul>
+            <li>float32</li>
+            <li>asm.js</li>
+            <li>backtracking register allocator</li>
+          </ul>
+          <br><br><hr><br>
+          <h2>Questions?</h2>
         </section>
-
-        <section>
-          <h2></h2>
-          <br>
-          <p></p>
-        </section>
-
-        <section>
-          <h2></h2>
-          <br>
-          <p></p>
-        </section>
-
-        <section>
-          <h2></h2>
-          <br>
-          <p></p>
-        </section>
-
-        <section>
-          <h2></h2>
-          <br>
-          <p></p>
-        </section>
-
-
     </div>
 
     <script src="lib/js/head.min.js"></script>
