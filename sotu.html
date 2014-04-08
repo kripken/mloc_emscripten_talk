@@ -95,9 +95,7 @@
         </section>
 
         <section>
-          <h2></h2>
-          <br>
-          <p></p>
+          <h1>2. float32</h1>
         </section>
 
         <section>
@@ -210,14 +208,55 @@ var fround = Math.fround || function(x) { return x };
           <h2>why is float32 faster?</h2>
           <br>
           <p>Less precise, often less CPU cycles</p>
-          <p>Half the size, fewer cache misses</p>
+          <p>Half the size, fewer cache misses (&amp; possibly more registers/SIMD lanes)</p>
           <p>WebGL code often stores float32 for space, doing computation in float32 avoids conversions</p>
         </section>
 
         <section>
-          <h2>asm.js</h2>
+          <h1>2. asm.js</h1>
+        </section>
+
+        <section>
+          <p>Modern JS VMs have powerful optimizing JITs that operate on typed code</p>
           <br>
-          <p></p>
+          <p>What if we let people target those backends as directly as possible, stepping over all the heuristics that normally stand in the way?</p>
+          <br>
+          <p>asm.js is one way to do that</p>
+        </section>
+
+        <section>
+          <p>asm.js is a subset of JavaScript (not a new language, no new semantics, all 100% backwards compatible)</p>
+          <br>
+          <p>Written in a format that is extremely easy to optimize</p>
+          <br>
+          <p>E.g., the <code>|0</code> pattern mentioned before</p>
+          <pre><code>
+function twice(x) {
+  x = x | 0;
+  return x + x | 0;
+}
+          </code></pre>
+          <p>No need to profile types, can immediately optimize ahead of time</p>
+        </section>
+
+        <section>
+          <h2>asm.js workflow</h2>
+          <br>
+          <p>Low-level and inconvenient to write by hand - primarily intended as a compiler target</p>
+          <p>Emscripten is an open source LLVM-based compiler that generates asm.js from C/C++</p>
+        </section>
+
+        <section>
+          <h2>asm.js Industry Adoption</h2>
+          <br>
+          <p>Top-tier game engines support HTML5 as a compilation target, using Emscripten to emit asm.js</p>
+          <p>Unity - as a replacement for their popular web plugin</p>
+          <p>Unreal Engine - as a new target platform</p>
+          <p>etc.</p>
+        </section>
+
+        <section>
+          <p><iframe width="840" height="472" src="//www.youtube.com/embed/cWIRUaR9G4w" frameborder="0" allowfullscreen></iframe></p>
         </section>
 
         <section>
