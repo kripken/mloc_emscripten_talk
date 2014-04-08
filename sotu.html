@@ -154,7 +154,7 @@
         </section>
 
         <section>
-          <p>Fragile, though - needs to be case back to float32 immediately</p>
+          <p>Fragile, though - needs to be cast back to float32 immediately</p>
           <pre><code>
   var f32 = new Float32Array(1000);
   for (var i = 0; i < 1000; ++i) {
@@ -349,10 +349,10 @@
         <section>
           <h2>Backtracking perf in firefox</h2>
           <br>
-          <p>Most benchmark show little or no difference. But when there is a difference, it is large!</p>
+          <p>Most benchmark show little or no difference. But when there is a difference, it can be large!</p>
           <br>
           <p><b>21%</b> speedup on octane-zlib on x86</p>
-          <p><b>7%</b> speedup on x86-64, <b>11%</b> speedup on ARM (more registers, less needed)</p>
+          <p><b>7%</b> speedup on x86-64, <b>11%</b> speedup on ARM (more registers anyhow)</p>
           <br>
           <p>Other benchmarks: <b>29%</b> speedup on emscripten-life on x86</p>
         </section>
@@ -362,6 +362,7 @@
           <br>
           <p>Enabled a few weeks ago on asm.js code, where it makes the most difference (closest to native speed) and we AOT, so no heuristics considerations</p>
           <p>Will be enabled everywhere soon, pending some tweaks to heuristics about when to run</p>
+          <p>TODO: tie the 3 topics together etc.</p>
         </section>
 
         <section>
