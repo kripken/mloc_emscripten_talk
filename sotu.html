@@ -325,6 +325,7 @@
           <h2>Backtracking Register Allocator</h2>
           <br>
           <p>Inspired by LLVM's Greedy Register Allocator (LLVM 3.0)</p>
+          <p>Which replaced LLVM's previous linear scan regalloc</p>
           <p>1-2% smaller code, up to 10% faster</p>
           <p>Takes longer to run, but worth it</p>
         </section>
@@ -332,7 +333,17 @@
         <section>
           <h2>How it works</h2>
           <br>
-          <p>...</p>
+          <p>Use priority queue of virtual registers, instead of linear scan</p>
+          <p>Backtrack to try to find a better solution, splitting live ranges</p>
+          <br>
+          <p>For example: If A and B do <b>not</b> overlap, and are visited first, they may each receive a different register. If C then overlaps with both, it may not have a register left. We can undo the allocation of B so that C receives a physical register (and if necessary can split C's live range so e.g. only the part inside of a loop is prioritized).
+        </section>
+
+        <section>
+          <p>Much like LLVM, IonMonkey began with a linear scan register allocator, then upgraded to backtracking</p>
+          <p>LLVM's experience in both has been informative</p>
+          <br>
+          <p>Differences: IonMonkey's backtracking regalloc [..]</p>
         </section>
 
         <section>
