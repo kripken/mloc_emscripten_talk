@@ -104,7 +104,7 @@
           <p>Possible due to a mathematical fact about integer and double math:</p>
           <br>
           <hr>
-          <p><b><code>x<sub style="font-size:50%">int</sub>  <b style="color: #ff0">+<sub style="font-size:50%">int</sub></b> y<sub style="font-size:50%">int</sub><br><b style="color:#fff">==</b><br><b style="color:#aaf">int(</b> <b style="color:#f57">double(</b>x<sub style="font-size:50%">int</sub><b style="color:#f57">)</b> <b style="color: #ff0">+<sub style="font-size:50%">double</sub></b> <b style="color:#f57">double(</b>y<sub style="font-size:50%">int</sub><b style="color:#f57">)</b> <b style="color:#aaf">)</b></code></b></p>
+          <p><b><code>x<sub style="font-size:50%">int</sub>  <b style="color: #ff5">+<sub style="font-size:50%">int</sub></b> y<sub style="font-size:50%">int</sub><br><b style="color:#fff">==</b><br><b style="color:#aef">int(</b> <b style="color:#8bf">double(</b>x<sub style="font-size:50%">int</sub><b style="color:#8bf">)</b> <b style="color: #ff0">+<sub style="font-size:50%">double</sub></b> <b style="color:#8bf">double(</b>y<sub style="font-size:50%">int</sub><b style="color:#8bf">)</b> <b style="color:#aef">)</b></code></b></p>
           <hr>
         </section>
 
@@ -118,7 +118,7 @@
           <div class="fragment">
           <p>Thankfully overflow checks are cheap, but can do even better:</p>
           <hr>
-          <p>(x<sub style="font-size:50%">int</sub> &nbsp; <b>+</b> &nbsp;y<sub style="font-size:50%">int</sub>)|0 &nbsp;&nbsp; == &nbsp;&nbsp; x<sub style="font-size:50%">int</sub> &nbsp;<b>+<sub style="font-size:50%">int</sub></b>&nbsp; y<sub style="font-size:50%">int</sub></p>
+          <p>(x<sub style="font-size:50%">int</sub> &nbsp; <b>+</b> &nbsp;y<sub style="font-size:50%">int</sub>)&nbsp;|&nbsp;0 &nbsp;&nbsp; == &nbsp;&nbsp; x<sub style="font-size:50%">int</sub> &nbsp;<b>+<sub style="font-size:50%">int</sub></b>&nbsp; y<sub style="font-size:50%">int</sub></p>
           <hr>
           </div>
         </section>
@@ -127,11 +127,11 @@
           <p>We can do the same for 32-bit floats!</p>
           <br>
           <hr>
-          <p><b><code>x<sub style="font-size:50%">f32</sub>  <b style="color: #ff0">+<sub style="font-size:50%">f32</sub></b> y<sub style="font-size:50%">f32</sub><br><b style="color:#fff">==</b><br><b style="color:#aaf">f32(</b> <b style="color:#f57">f64(</b>x<sub style="font-size:50%">f32</sub><b style="color:#f57">)</b> <b style="color: #ff0">+<sub style="font-size:50%">f64</sub></b> <b style="color:#f57">f64(</b>y<sub style="font-size:50%">f32</sub><b style="color:#f57">)</b> <b style="color:#aaf">)</b></code></b></p>
+          <p><b><code>x<sub style="font-size:50%">f32</sub>  <b style="color: #ff0">+<sub style="font-size:50%">f32</sub></b> y<sub style="font-size:50%">f32</sub><br><b style="color:#fff">==</b><br><b style="color:#aef">f32(</b> <b style="color:#8bf">f64(</b>x<sub style="font-size:50%">f32</sub><b style="color:#8bf">)</b> <b style="color: #ff0">+<sub style="font-size:50%">f64</sub></b> <b style="color:#8bf">f64(</b>y<sub style="font-size:50%">f32</sub><b style="color:#8bf">)</b> <b style="color:#aef">)</b></code></b></p>
           <hr>
           <p>Also <code>-,*,/,sqrt, </code> etc. (but not everything, e.g. not <code>sin</code>)</p>
           <br>
-          <p>Only true because of the exact definition of IEEE754 doubles and floats (# of bits in exponent, definition of rounding, etc.)</p>
+          <p class="fragment">Only true because of the exact definition of IEEE754 doubles and floats (# of bits in exponent, definition of rounding, etc.)</p>
         </section>
 
         <section>
@@ -177,7 +177,7 @@
           <br>
           <p>Optimizable :)</p>
           <br>
-          <p class="fragment">Similar to <code>|0</code> which as mentioned before helps optimize integer math</p>
+          <p class="fragment">Similar to <b><code>|0</code></b> which as mentioned before can help optimize integer math</p>
         </section>
 
         <section>
@@ -379,7 +379,7 @@
           <br>
           <p>Like LLVM, began with a linear scan register allocator, improved it until it became too complex, then wrote a backtracking allocator</p>
           <br>
-          <p>LLVM's experience and design has been very informative</p>
+          <p>LLVM's experience and design has been <b>very informative</b>!</p>
         </section>
 
         <section>
@@ -409,10 +409,6 @@
           <p><b>Enabled</b> a few weeks ago on <b>asm.js code</b>, where it makes the most difference (closest to native speed) and we AOT</p>
           <br>
           <p>Heuristics need tuning before enabling everywhere, as compilation is slower, hopefully soon</p>
-        </section>
-
-        <section>
-          <p>TODO: tie the 3 topics together etc.</p>
         </section>
 
         <section>
