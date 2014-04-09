@@ -230,7 +230,7 @@
           <br>
           <p class="fragment">Half the size, fewer cache misses</p>
           <br>
-          <p class="fragment">WebGL code often stores float32 for space, doing computation in float32 avoids conversions</p>
+          <p class="fragment">WebGL code often uses float32s, doing computation in float32 avoids conversions</p>
           <br>
           <p class="fragment">Not yet, but possible: more registers/SIMD lanes</p>
         </section>
@@ -273,11 +273,13 @@
   function asmCode(global, env, buffer) {
     'use asm';
     var HEAP = new global.Uint8Array(buffer);
+
     function fib_like(x) {
       x = x|0;
       if ((x >>> 0) < 2) return HEAP[x]|0;
       return (fib_like(x-2|0)|0) + (fib_like(x-1|0)|0) | 0;
     }
+
     return fib_like;
   }
 
