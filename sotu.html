@@ -327,23 +327,29 @@
           <p>Inspired by LLVM's Greedy Register Allocator (LLVM 3.0)</p>
           <p>Which replaced LLVM's previous linear scan regalloc</p>
           <p>1-2% smaller code, up to 10% faster</p>
-          <p>Takes longer to run, but worth it</p>
+          <p>Takes longer to run - and regalloc is already among the slowest phases - but worth it</p>
         </section>
 
         <section>
           <h2>How it works</h2>
           <br>
-          <p>Use priority queue of virtual registers, instead of linear scan</p>
+          <p>Use priority queue of live ranges, instead of linear scan</p>
           <p>Backtrack to try to find a better solution, splitting live ranges</p>
           <br>
           <p>For example: If A and B do <b>not</b> overlap, and are visited first, they may each receive a different register. If C then overlaps with both, it may not have a register left. We can undo the allocation of B so that C receives a physical register (and if necessary can split C's live range so e.g. only the part inside of a loop is prioritized).
         </section>
 
         <section>
-          <p>Much like LLVM, IonMonkey began with a linear scan register allocator, then upgraded to backtracking</p>
-          <p>LLVM's experience in both has been informative</p>
+          <p>Much like LLVM, IonMonkey began with a linear scan register allocator, improved it until it became too complex, then upgraded to backtracking</p>
           <br>
-          <p>Differences: IonMonkey's backtracking regalloc [..]</p>
+          <p>LLVM's experience in both has been informative</p>
+        </section>
+
+        <section>
+          <p>Differences between LLVM and SpiderMonkey's backtracking regalloc:</p>
+          <br>
+          <p>Different heuristics: When to split, whether to spill or split</p>
+          <p>SpiderMonkey values have a concept of register and non-register uses (values may appear in snapshots, but it doesn't matter if they are in a physical register), can split live ranges based on that</p>
         </section>
 
         <section>
@@ -361,7 +367,10 @@
           <h2>Backtracking status</h2>
           <br>
           <p>Enabled a few weeks ago on asm.js code, where it makes the most difference (closest to native speed) and we AOT, so no heuristics considerations</p>
-          <p>Will be enabled everywhere soon, pending some tweaks to heuristics about when to run</p>
+          <p>Will be enabled everywhere eventually, pending some tweaks to heuristics about when to run</p>
+        </section>
+
+        <section>
           <p>TODO: tie the 3 topics together etc.</p>
         </section>
 
