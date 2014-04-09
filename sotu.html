@@ -317,82 +317,96 @@
           <br>
           <img src="asm1.5b.png"></img>
           <p>Around 1.5x slower than native (67% of native speed)</p>
-          <p class="fragment">As we saw, sufficient even for AAA game engines</p>
+          <p class="fragment">As we saw, sufficient <b>even for AAA game engines</b></p>
         </section>
 
         <section>
-          <h2>Optimizations</h2>
+          <h2>asm.js Opts in Firefox</h2>
           <br>
-          <p>AOT - full optimizing JIT always run, using full type info</p>
-          <p>AOT done in parallel, results cached</p>
-          <p>No need for bailouts, we know many corner cases are impossible, etc.</p>
-          <p>On 64-bit, can do zero-cost bounds checks using a signal handler</p>
-        </section>
-
-        <section>
-          <h2>Implementation</h2>
+          <p><b>AOT</b> - full optimizing JIT <b>always</b> run, using full type info</p>
           <br>
-          <p>OdinMonkey is the optimization module for asm.js in SpiderMonkey</p>
-          <p>Fairly small amount of code</p>
-          <p>Mostly just type checks and sends the results into the existing IonMonkey optimizing JIT</p>
+          <p class="fragment">AOT done in <b>parallel</b>, results <b>cached</b></p>
+          <br>
+          <p class="fragment">No need for bailouts, we know <b>many corner cases are impossible</b>, etc.</p>
+          <br>
+          <p class="fragment">On 64-bit, can do <b>zero-cost bounds checks</b> using a signal handler</p>
         </section>
 
         <section>
-          <h1>3. Backtracking Register Allocator</h1>
+          <h2>Implementation notes</h2>
+          <br>
+          <p><b>OdinMonkey</b> is the optimization module for asm.js in SpiderMonkey</p>
+          <br>
+          <p class="fragment">Fairly <b>small</b> amount of code</p>
+          <br>
+          <p class="fragment">Mostly just <b>type checks</b> and sends the results into the normal optimizing JIT</p>
+        </section>
+
+        <section>
+          <h1>3. Backtracking<br>Register<br>Allocator</h1>
         </section>
 
         <section>
           <p>We saw that JavaScript can get very close to native performance</p>
-          <p>When you get that close, things like register allocation start to become significant</p>
+          <br>
+          <p>When you get that close, <b>every little thing</b> starts to become significant, even register allocation</p>
         </section>
 
         <section>
           <h2>Backtracking Register Allocator</h2>
           <br>
-          <p>Inspired by LLVM's Greedy Register Allocator (LLVM 3.0)</p>
-          <p>Which replaced LLVM's previous linear scan regalloc</p>
-          <p>1-2% smaller code, up to 10% faster</p>
-          <p>Takes longer to run - and regalloc is already among the slowest phases - but worth it</p>
+          <p>Inspired by <b>LLVM's Greedy Register Allocator</b> (added in LLVM 3.0)</p>
+          <br>
+          <p class="fragment">LLVM results: <b>1-2% smaller</b> code, up to <b>10% faster</b></p>
+          <br>
+          <p class="fragment">Takes longer to run - and regalloc is already among the slowest phases - but worth it</p>
         </section>
 
         <section>
           <h2>How it works</h2>
           <br>
-          <p>Use priority queue of live ranges, instead of linear scan</p>
-          <p>Backtrack to try to find a better solution, splitting live ranges</p>
+          <p>Use <b>priority queue</b> of live ranges, instead of linear scan</p>
           <br>
-          <p>For example: If A and B do <b>not</b> overlap, and are visited first, they may each receive a different register. If C then overlaps with both, it may not have a register left. We can undo the allocation of B so that C receives a physical register (and if necessary can split C's live range so e.g. only the part inside of a loop is prioritized).
+          <p class="fragment">If no free physical register, can <b>backtrack</b> - undo a previous allocation, if we need it more</p>
+          <br>
+          <p class="fragment"><b>Split</b> live ranges to ensure physical registers for loops and other important places</p>
         </section>
 
         <section>
-          <p>Much like LLVM, IonMonkey began with a linear scan register allocator, improved it until it became too complex, then upgraded to backtracking</p>
+          <p>SpiderMonkey followed LLVM's progress and in fact mirrored it</p>
           <br>
-          <p>LLVM's experience in both has been informative</p>
+          <p>Like LLVM, began with a linear scan register allocator, improved it until it became too complex, then wrote a backtracking allocator</p>
+          <br>
+          <p>LLVM's experience and design has been very informative</p>
         </section>
 
         <section>
-          <p>Differences between LLVM and SpiderMonkey's backtracking regalloc:</p>
+          <h2>LLVM/SpiderMonkey Differences</h2>
           <br>
-          <p>Different heuristics: When to split, whether to spill or split</p>
-          <p>SpiderMonkey values have a concept of register and non-register uses (values may appear in snapshots, but it doesn't matter if they are in a physical register), can split live ranges based on that</p>
+          <p><b>Heuristics</b> for when to split, whether to spill or split, etc.</p>
+          <br>
+          <p>SpiderMonkey values do <b>not always require a physical register</b> (e.g. for snapshots), can split live ranges based on that</p>
         </section>
 
         <section>
-          <h2>Backtracking perf in firefox</h2>
+          <h2>Backtracking perf in SpiderMonkey</h2>
           <br>
           <p>Most benchmark show little or no difference. But when there is a difference, it can be large!</p>
           <br>
-          <p><b>21%</b> speedup on octane-zlib on x86</p>
-          <p><b>7%</b> speedup on x86-64, <b>11%</b> speedup on ARM (more registers anyhow)</p>
+          <div class="fragment">
+            <p><b>21%</b> speedup on octane-zlib on x86</p>
+            <p><b>7%</b> speedup on x86-64, <b>11%</b> speedup on ARM (more registers anyhow)</p>
+          </div>
           <br>
-          <p>Other benchmarks: <b>29%</b> speedup on emscripten-life on x86</p>
+          <p class="fragment">Other benchmarks: <b>29%</b> speedup on emscripten-life on x86</p>
         </section>
 
         <section>
           <h2>Backtracking status</h2>
           <br>
-          <p>Enabled a few weeks ago on asm.js code, where it makes the most difference (closest to native speed) and we AOT, so no heuristics considerations</p>
-          <p>Will be enabled everywhere eventually, pending some tweaks to heuristics about when to run</p>
+          <p><b>Enabled</b> a few weeks ago on <b>asm.js code</b>, where it makes the most difference (closest to native speed) and we AOT</p>
+          <br>
+          <p>Heuristics need tuning before enabling everywhere, as compilation is slower, hopefully soon</p>
         </section>
 
         <section>
