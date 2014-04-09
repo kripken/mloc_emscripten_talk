@@ -227,9 +227,12 @@
           <h2>why is float32 faster?</h2>
           <br>
           <p>Less precise, often less CPU cycles</p>
-          <p>Half the size, fewer cache misses</p>
-          <p>WebGL code often stores float32 for space, doing computation in float32 avoids conversions</p>
-          <p>Not yet, but possible: more registers/SIMD lanes</p>
+          <br>
+          <p class="fragment">Half the size, fewer cache misses</p>
+          <br>
+          <p class="fragment">WebGL code often stores float32 for space, doing computation in float32 avoids conversions</p>
+          <br>
+          <p class="fragment">Not yet, but possible: more registers/SIMD lanes</p>
         </section>
 
         <section>
@@ -237,31 +240,37 @@
         </section>
 
         <section>
-          <p>Modern JS VMs have powerful optimizing JITs that operate on typed code</p>
+          <p>Modern JS VMs have <b>powerful optimizing JITs</b> that operate on typed code</p>
           <br>
-          <p>What if we let people target those backends as directly as possible, stepping over all the heuristics that normally stand in the way?</p>
+          <p class='fragment'>But many heuristics lie between source code and actually being fully typed and optimized</p>
           <br>
-          <p>asm.js is one way to do that</p>
+          <p class='fragment'>What if we made some JS code <b>really really easy</b> to optimize, with as few heuristics as possible?</p>
+          <br>
+          <p class='fragment'>asm.js is one way to do that</p>
         </section>
 
         <section>
-          <p>asm.js is a subset of JavaScript (not a new language, no new semantics, all 100% backwards compatible)</p>
+          <p>asm.js is a <b>subset</b> of JavaScript (not a new language, no new semantics, all 100% backwards compatible), written in a format that is extremely <b>easy to optimize</b></p>
           <br>
-          <p>Written in a format that is extremely easy to optimize</p>
+          <div class="fragment">
+          <p>E.g., the <code>|0</code> pattern mentioned before:</p>
           <br>
-          <p>E.g., the <code>|0</code> pattern mentioned before</p>
           <pre><code>
   function twice(x) {
     x = x | 0;
     return x + x | 0;
   }
           </code></pre>
-          <p>No need to profile types, can immediately optimize ahead of time</p>
+          <br>
+          <p>No need to profile types, can be optimized ahead of time (AOT) from source</p>
+          </div>
         </section>
 
         <section>
           <h2>asm.js example</h2>
-          <pre class="fragment"><code contenteditable>  function asmCode(global, env, buffer) {
+          <br>
+          <pre><code contenteditable>
+  function asmCode(global, env, buffer) {
     'use asm';
     var HEAP = new global.Uint8Array(buffer);
     function fib_like(x) {
@@ -270,27 +279,37 @@
       return (fib_like(x-2|0)|0) + (fib_like(x-1|0)|0) | 0;
     }
     return fib_like;
-  }</code></pre>
+  }
+
+</code></pre>
         </section>
 
         <section>
           <h2>asm.js workflow</h2>
           <br>
-          <p>Low-level and mostly inconvenient to write by hand - primarily intended as a compiler target</p>
-          <p>Emscripten is an open source LLVM-based compiler that generates asm.js from C/C++</p>
+          <p>Low-level and mostly inconvenient to write by hand - primarily intended as a <b>compiler target</b></p>
+          <br>
+          <p><a href="http://emscripten.org">Emscripten</a> is an open source LLVM-based compiler that generates asm.js from C/C++</p>
+          <br>
+          <p class="fragment">Can compile existing C/C++ codebases, or write new ones - fits in with the "<b>compile-to-js</b>" movement (CoffeeScript, etc.)</p>
         </section>
 
         <section>
           <h2>asm.js Industry Adoption</h2>
           <br>
-          <p>Top-tier game engines support HTML5 as a compilation target, using Emscripten to emit asm.js</p>
-          <p>Unity - as a replacement for their popular web plugin</p>
-          <p>Unreal Engine - as a new target platform</p>
-          <p>etc.</p>
+          <p>Lots of interest from the <b>games industry</b>: Top-tier game engines starting to support HTML5 as a compilation target, using Emscripten to emit asm.js</p>
+          <br>
+          <p class="fragment"><b>Unity</b> - Replacement for their popular web plugin</p>
+          <p class="fragment"><b>Unreal Engine</b> - HTML5 as new target platform</p>
+          <p class="fragment">&amp; many others</p>
         </section>
 
         <section>
+          <h2>Unity demo</h2>
+          <br>
           <p><iframe width="840" height="472" src="//www.youtube.com/embed/cWIRUaR9G4w" frameborder="0" allowfullscreen></iframe></p>
+          <br>
+          <p class="fragment">Should see stuff like this ship on the web <b>later this year</b>, will be interesting times!</p>
         </section>
 
         <section>
@@ -298,6 +317,7 @@
           <br>
           <img src="asm1.5b.png"></img>
           <p>Around 1.5x slower than native (67% of native speed)</p>
+          <p class="fragment">As we saw, sufficient even for AAA game engines</p>
         </section>
 
         <section>
