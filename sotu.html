@@ -69,9 +69,9 @@
         <section>
           <h2>JavaScript VM Opts</h2>
           <br>
-          <p>Many kinds: Object layout (hidden classes, etc.), garbage collection (generational GC, etc.), etc. etc.</p>
+          <p>Many kinds constantly being worked on: <b>Object layout</b> (hidden classes, etc.), <b>garbage collection</b> (generational GC, etc.), etc. etc.</p>
           <br>
-          <p>Here I'll focus not on those, but on type-based optimizations</p>
+          <p>Here I'll focus only on <b>type</b>-based optimizations</p>
         </section>
 
         <section>
@@ -79,22 +79,19 @@
           <br>
           <p>Many benchmarks (most of kraken, parts of octane, etc.) test pure computation</p>
           <br>
-          <p>Optimizations include type profiling, type inference, type specialization</p>
+          <p>Optimizations include <b>type profiling</b>, <b>type inference</b>, <b>type specialization</b></p>
           <br>
           <p>Prominent in modern JS VMs (optimizing JITs like crankshaft, ionmonkey, etc.)</p>
         </section>
 
         <section>
-          <h2>This talk</h2>
+          <p>I'll discuss three areas of optimization, all of which only make sense given type information:</p>
           <br>
           <ul>
-            <li>float32</li>
-            <li>asm.js</li>
-            <li>backtracking register allocator</li>
+            <li><b>float32</b></li>
+            <li><b>asm.js</b></li>
+            <li><b>backtracking register allocator</b></li>
           </ul>
-          <br>
-          <br>
-          <p>All of these only make sense given type information</p>
         </section>
 
         <section>
@@ -102,47 +99,46 @@
         </section>
 
         <section>
-          <h2>float32</h2>
+          <p>JavaScript numbers are 64-bit doubles, but VMs has <b>32-bit ints</b> as well!</p>
           <br>
-          <p>JavaScript numbers are 64-bit doubles</p>
+          <p>Possible due to a mathematical fact about integer and double math:</p>
           <br>
-          <p>But VMs has 32-bit ints as well!</p>
-          <br>
-          <p>Possible due to mathematical facts about integer and double math</p>
-          <br>
+          <hr>
+          <p><b><code>x<sub style="font-size:50%">int</sub>  <b style="color: #ff0">+<sub style="font-size:50%">int</sub></b> y<sub style="font-size:50%">int</sub><br><b style="color:#fff">==</b><br><b style="color:#aaf">int(</b> <b style="color:#f57">double(</b>x<sub style="font-size:50%">int</sub><b style="color:#f57">)</b> <b style="color: #ff0">+<sub style="font-size:50%">double</sub></b> <b style="color:#f57">double(</b>y<sub style="font-size:50%">int</sub><b style="color:#f57">)</b> <b style="color:#aaf">)</b></code></b></p>
+          <hr>
         </section>
 
         <section>
           <p>Say we are adding two values known to be 32-bit ints:</p>
-          <p>x<sub style="font-size:50%">int</sub> &nbsp; + &nbsp;y<sub style="font-size:50%">int</sub> &nbsp;&nbsp; == &nbsp;&nbsp; double(x<sub style="font-size:50%">int</sub>) &nbsp;+<sub style="font-size:50%">double</sub>&nbsp; double(y<sub style="font-size:50%">int</sub>)</p>
-          <p>== &nbsp;&nbsp; x<sub style="font-size:50%">int</sub> &nbsp; +<sub style="font-size:50%">int</sub> &nbsp;y<sub style="font-size:50%">int</sub> &nbsp;&nbsp;&nbsp;</p>
+          <hr>
+          <p>x<sub style="font-size:50%">int</sub> &nbsp; <b>+</b> &nbsp;y<sub style="font-size:50%">int</sub> &nbsp;&nbsp; == &nbsp;&nbsp; x<sub style="font-size:50%">int</sub> &nbsp; <b>+<sub style="font-size:50%">int</sub></b> &nbsp;y<sub style="font-size:50%">int</sub> &nbsp;&nbsp;&nbsp;,</p>
           <p><b>assuming</b> no overflow happened</p>
-          <p>Thankfully those checks are cheap, but can do even better:</p>
-          <p>(x<sub style="font-size:50%">int</sub> &nbsp; + &nbsp;y<sub style="font-size:50%">int</sub>)|0 &nbsp;&nbsp; == &nbsp;&nbsp; x<sub style="font-size:50%">int</sub> &nbsp;+<sub style="font-size:50%">int</sub>&nbsp; y<sub style="font-size:50%">int</sub></p>
-        </section>
-
-        <section>
-          <p>These are true because:</p>
-          <p>x<sub style="font-size:50%">int</sub> &nbsp; +<sub style="font-size:50%">int</sub> &nbsp;y<sub style="font-size:50%">int</sub> &nbsp;&nbsp; == &nbsp;&nbsp; int(&nbsp;double(x<sub style="font-size:50%">int</sub>) &nbsp;+<sub style="font-size:50%">double</sub>&nbsp; double(y<sub style="font-size:50%">int</sub>) )</p>
-          <p>I.e., all numbers are doubles, but the ones that <b>happen</b> to be integers can be added as integers, since the math is the same either way</p>
-        </section>
-
-        <section>
-          <h2>float32</h2>
+          <hr>
           <br>
+          <div class="fragment">
+          <p>Thankfully overflow checks are cheap, but can do even better:</p>
+          <hr>
+          <p>(x<sub style="font-size:50%">int</sub> &nbsp; <b>+</b> &nbsp;y<sub style="font-size:50%">int</sub>)|0 &nbsp;&nbsp; == &nbsp;&nbsp; x<sub style="font-size:50%">int</sub> &nbsp;<b>+<sub style="font-size:50%">int</sub></b>&nbsp; y<sub style="font-size:50%">int</sub></p>
+          <hr>
+          </div>
+        </section>
+
+        <section>
           <p>We can do the same for 32-bit floats!</p>
           <br>
-          <p>x<sub style="font-size:50%">f32</sub> &nbsp; +<sub style="font-size:50%">f32</sub> &nbsp;y<sub style="font-size:50%">f32</sub> &nbsp;&nbsp; == &nbsp;&nbsp; f32(&nbsp;f64(x<sub style="font-size:50%">f32</sub>) &nbsp;+<sub style="font-size:50%">f64</sub>&nbsp; f64(y<sub style="font-size:50%">f32</sub>) )</p>
+          <hr>
+          <p><b><code>x<sub style="font-size:50%">f32</sub>  <b style="color: #ff0">+<sub style="font-size:50%">f32</sub></b> y<sub style="font-size:50%">f32</sub><br><b style="color:#fff">==</b><br><b style="color:#aaf">f32(</b> <b style="color:#f57">f64(</b>x<sub style="font-size:50%">f32</sub><b style="color:#f57">)</b> <b style="color: #ff0">+<sub style="font-size:50%">f64</sub></b> <b style="color:#f57">f64(</b>y<sub style="font-size:50%">f32</sub><b style="color:#f57">)</b> <b style="color:#aaf">)</b></code></b></p>
+          <hr>
+          <p>Also <code>-,*,/,sqrt, </code> etc. (but not everything, e.g. not <code>sin</code>)</p>
           <br>
           <p>Only true because of the exact definition of IEEE754 doubles and floats (# of bits in exponent, definition of rounding, etc.)</p>
-          <p>Also true for <code>-,*,/,sqrt, </code> etc. (but not everything, e.g. not <code>sin</code>)</p>
         </section>
 
         <section>
           <h2>Where do float32 values come from?</h2>
           <br>
-          <p>Typed arrays</p>
-          <p>Stuff like this is common in WebGL code</p>
+          <p><b>Typed arrays</b>, e.g. stuff like this is common in <b>WebGL</b> code</p>
+          <br>
           <pre><code>
   var f32 = new Float32Array(1000);
   for (var i = 0; i < 1000; ++i) {
@@ -150,11 +146,13 @@
   }
 
 </code></pre>
+          <br>
           <p>Optimizable :)</p>
         </section>
 
         <section>
           <p>Fragile, though - needs to be cast back to float32 immediately</p>
+          <br>
           <pre><code>
   var f32 = new Float32Array(1000);
   for (var i = 0; i < 1000; ++i) {
@@ -162,11 +160,13 @@
   }
 
 </code></pre>
-          <p>Not optimizable :(</p>
+          <br>
+          <p><b>Not</b> optimizable :(</p>
         </section>
 
         <section>
-          <p>Math.fround: explicitly cast a number to 32-bit float precision</p>
+          <p><b>Math.fround</b>: explicitly cast a number to 32-bit float precision</p>
+          <br>
           <pre><code>
   var f32 = new Float32Array(1000);
   for (var i = 0; i < 1000; ++i) {
@@ -174,13 +174,17 @@
   }
 
 </code></pre>
+          <br>
           <p>Optimizable :)</p>
+          <br>
+          <p class="fragment">Similar to <code>|0</code> which as mentioned before helps optimize integer math</p>
         </section>
 
         <section>
           <h2>fround support</h2>
           <br>
-          <p>In ES6. Already in Firefox, Safari, Chrome (behind a flag), easy to polyfill</p>
+          <p>In ES6, already in Firefox, Safari, Chrome (behind a flag), easy to polyfill:</p>
+          <br>
           <pre><code>
   Math.fround = Math.fround || (function() {
     var temp = new Float32Array(1);
@@ -201,14 +205,15 @@
         <section>
           <h2>float32 microbenchmarks</h2>
           <br>
-          <p>% speedup with float optimizations</p>
+          <hr>
 <table>
-<tr><td>Device</td><td>Matrix Inversions</td><td>Matrix Graphics</td><td>Exponential</td><td>FFT</td></tr>
-<tr><td>Desktop (x86)</td><td>33%</td><td>60%</td><td>30%</td><td>16%</td></tr>
-<tr><td>Nexus 10</td><td>38%</td><td>38%</td><td>24%</td><td>33%</td></tr>
+<tr><td></td><td>Matrix Inversions</td><td>Matrix Graphics</td><td>Exponential</td><td>FFT</td></tr>
+<tr><td>x86</td><td><b>33%</b></td><td><b>60%</b></td><td><b>30%</b></td><td><b>16%</b></td></tr>
+<tr><td>ARM</td><td><b>38%</b></td><td><b>38%</b></td><td><b>24%</b></td><td><b>33%</b></td></tr>
 </table>
-<a href=https://blog.mozilla.org/javascript/2013/11/07/efficient-float32-arithmetic-in-javascript/">source</a>
-          <p></p>
+          <hr>
+          <br>
+          <p>% speedup with float optimizations (higher is better; <a href=https://blog.mozilla.org/javascript/2013/11/07/efficient-float32-arithmetic-in-javascript/">source)</a>
         </section>
 
         <section>
