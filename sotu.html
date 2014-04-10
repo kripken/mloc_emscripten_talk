@@ -101,11 +101,13 @@
         <section>
           <p>JavaScript numbers are 64-bit doubles, but VMs has <b>32-bit ints</b> as well!</p>
           <br>
+          <div class="fragment">
           <p>Possible due to a mathematical fact about integer and double math:</p>
           <br>
           <hr>
           <p><b><code>x<sub style="font-size:50%">int</sub>  <b style="color: #ff5">+<sub style="font-size:50%">int</sub></b> y<sub style="font-size:50%">int</sub><br><b style="color:#fff">==</b><br><b style="color:#aef">int(</b> <b style="color:#8bf">double(</b>x<sub style="font-size:50%">int</sub><b style="color:#8bf">)</b> <b style="color: #ff0">+<sub style="font-size:50%">double</sub></b> <b style="color:#8bf">double(</b>y<sub style="font-size:50%">int</sub><b style="color:#8bf">)</b> <b style="color:#aef">)</b></code></b></p>
           <hr>
+          </div>
         </section>
 
         <section>
@@ -161,7 +163,7 @@
 
 </code></pre>
           <br>
-          <p><b>Not</b> optimizable :(</p>
+          <p><b>Not</b> optimizable, and also no parallel to overflow checks that ints can use :(</p>
         </section>
 
         <section>
@@ -177,7 +179,7 @@
           <br>
           <p>Optimizable :)</p>
           <br>
-          <p class="fragment">Similar to <b><code>|0</code></b> which as mentioned before can help optimize integer math</p>
+          <p class="fragment">Parallel to <b><code>|0</code></b> which as mentioned before can help optimize integer math</p>
         </section>
 
         <section>
