@@ -105,7 +105,7 @@
           <p>Possible due to a mathematical fact about integer and double math:</p>
           <br>
           <hr>
-          <p><b><code>x<sub style="font-size:50%">int</sub>  <b style="color: #ff5">+<sub style="font-size:50%">int</sub></b> y<sub style="font-size:50%">int</sub><br><b style="color:#fff">==</b><br><b style="color:#aef">int(</b> <b style="color:#8bf">double(</b>x<sub style="font-size:50%">int</sub><b style="color:#8bf">)</b> <b style="color: #ff0">+<sub style="font-size:50%">double</sub></b> <b style="color:#8bf">double(</b>y<sub style="font-size:50%">int</sub><b style="color:#8bf">)</b> <b style="color:#aef">)</b></code></b></p>
+          <p><b><code>x<sub style="font-size:50%">int</sub>  <b style="color: #ff5">+<sub style="font-size:50%">int</sub></b> y<sub style="font-size:50%">int</sub><br><b style="color:#fff">==</b><br><b style="color:#84f">int(</b> <b style="color:#f04">double(</b>x<sub style="font-size:50%">int</sub><b style="color:#f04">)</b> <b style="color: #ff0">+<sub style="font-size:50%">double</sub></b> <b style="color:#f04">double(</b>y<sub style="font-size:50%">int</sub><b style="color:#f04">)</b> <b style="color:#84f">)</b></code></b></p>
           <hr>
           </div>
         </section>
@@ -129,7 +129,7 @@
           <p>We can do the same for 32-bit floats!</p>
           <br>
           <hr>
-          <p><b><code>x<sub style="font-size:50%">f32</sub>  <b style="color: #ff0">+<sub style="font-size:50%">f32</sub></b> y<sub style="font-size:50%">f32</sub><br><b style="color:#fff">==</b><br><b style="color:#aef">f32(</b> <b style="color:#8bf">f64(</b>x<sub style="font-size:50%">f32</sub><b style="color:#8bf">)</b> <b style="color: #ff0">+<sub style="font-size:50%">f64</sub></b> <b style="color:#8bf">f64(</b>y<sub style="font-size:50%">f32</sub><b style="color:#8bf">)</b> <b style="color:#aef">)</b></code></b></p>
+          <p><b><code>x<sub style="font-size:50%">f32</sub>  <b style="color: #ff0">+<sub style="font-size:50%">f32</sub></b> y<sub style="font-size:50%">f32</sub><br><b style="color:#fff">==</b><br><b style="color:#84f">f32(</b> <b style="color:#f04">f64(</b>x<sub style="font-size:50%">f32</sub><b style="color:#f04">)</b> <b style="color: #ff0">+<sub style="font-size:50%">f64</sub></b> <b style="color:#f04">f64(</b>y<sub style="font-size:50%">f32</sub><b style="color:#f04">)</b> <b style="color:#84f">)</b></code></b></p>
           <hr>
           <p>Also <code>-,*,/,sqrt, </code> etc. (but not everything, e.g. not <code>sin</code>)</p>
           <br>
@@ -137,7 +137,7 @@
         </section>
 
         <section>
-          <h2>Where do float32 values come from?</h2>
+          <h2>Where are float32 values?</h2>
           <br>
           <p><b>Typed arrays</b>, e.g. stuff like this is common in <b>WebGL</b> code</p>
           <br>
@@ -391,7 +391,7 @@
         </section>
 
         <section>
-          <h2>Backtracking perf in SpiderMonkey</h2>
+          <h2>Perf in SpiderMonkey</h2>
           <br>
           <p>Most benchmark show little or no difference. But when there is a difference, it can be large!</p>
           <br>
