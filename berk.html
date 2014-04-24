@@ -392,6 +392,150 @@
           <p class="fragment">Thankfully the JS standards bodies are open to improving JS as a compiler target: <b>Math.imul</b>, <strong>Math.fround</strong></p>
         </section>
 
+
+
+        <section>
+          <p>JavaScript numbers are 64-bit doubles, but VMs has <b>32-bit ints</b> as well!</p>
+          <br>
+          <div class="fragment">
+          <p>Possible due to a mathematical fact about integer and double math:</p>
+          <br>
+          <hr>
+          <p><b><code>x<sub style="font-size:50%">int</sub>  <b style="color: #ff5">+<sub style="font-size:50%">int</sub></b> y<sub style="font-size:50%">int</sub><br><b style="color:#fff">==</b><br><b style="color:#84f">int(</b> <b style="color:#f04">double(</b>x<sub style="font-size:50%">int</sub><b style="color:#f04">)</b> <b style="color: #ff0">+<sub style="font-size:50%">double</sub></b> <b style="color:#f04">double(</b>y<sub style="font-size:50%">int</sub><b style="color:#f04">)</b> <b style="color:#84f">)</b></code></b></p>
+          <hr>
+          </div>
+        </section>
+
+        <section>
+          <p>Say we are adding two values known to be 32-bit ints:</p>
+          <hr>
+          <p>x<sub style="font-size:50%">int</sub> &nbsp; <b>+</b> &nbsp;y<sub style="font-size:50%">int</sub> &nbsp;&nbsp; == &nbsp;&nbsp; x<sub style="font-size:50%">int</sub> &nbsp; <b>+<sub style="font-size:50%">int</sub></b> &nbsp;y<sub style="font-size:50%">int</sub> &nbsp;&nbsp;&nbsp;,</p>
+          <p><b>assuming</b> no overflow happened</p>
+          <hr>
+          <br>
+          <div class="fragment">
+          <p>Thankfully overflow checks are cheap, but can do even better:</p>
+          <hr>
+          <p>(x<sub style="font-size:50%">int</sub> &nbsp; <b>+</b> &nbsp;y<sub style="font-size:50%">int</sub>)&nbsp;|&nbsp;0 &nbsp;&nbsp; == &nbsp;&nbsp; x<sub style="font-size:50%">int</sub> &nbsp;<b>+<sub style="font-size:50%">int</sub></b>&nbsp; y<sub style="font-size:50%">int</sub></p>
+          <hr>
+          </div>
+        </section>
+
+        <section>
+          <p>We can do the same for 32-bit floats!</p>
+          <br>
+          <hr>
+          <p><b><code>x<sub style="font-size:50%">f32</sub>  <b style="color: #ff0">+<sub style="font-size:50%">f32</sub></b> y<sub style="font-size:50%">f32</sub><br><b style="color:#fff">==</b><br><b style="color:#84f">f32(</b> <b style="color:#f04">f64(</b>x<sub style="font-size:50%">f32</sub><b style="color:#f04">)</b> <b style="color: #ff0">+<sub style="font-size:50%">f64</sub></b> <b style="color:#f04">f64(</b>y<sub style="font-size:50%">f32</sub><b style="color:#f04">)</b> <b style="color:#84f">)</b></code></b></p>
+          <hr>
+          <p>Also <code>-,*,/,sqrt, </code> etc. (but not everything, e.g. not <code>sin</code>)</p>
+          <br>
+          <p class="fragment">Only true because of the exact definition of IEEE754 doubles and floats (# of bits in exponent, definition of rounding, etc.)</p>
+        </section>
+
+        <section>
+          <h2>Where are float32 values?</h2>
+          <br>
+          <p><b>Typed arrays</b>, e.g. stuff like this is common in <b>WebGL</b> code</p>
+          <br>
+          <pre><code>
+  var f32 = new Float32Array(1000);
+  for (var i = 0; i < 1000; ++i) {
+    f32[i] = f32[i] + 1;
+  }
+
+</code></pre>
+          <br>
+          <p>Optimizable :)</p>
+        </section>
+
+        <section>
+          <p>Fragile, though - needs to be cast back to float32 immediately</p>
+          <br>
+          <pre><code>
+  var f32 = new Float32Array(1000);
+  for (var i = 0; i < 1000; ++i) {
+    f32[i] = 2*f32[i] + 1;
+  }
+
+</code></pre>
+          <br>
+          <p><b>Not</b> optimizable, and also no parallel to overflow checks that ints can use :(</p>
+        </section>
+
+        <section>
+          <p><b>Math.fround</b>: explicitly cast a number to 32-bit float precision</p>
+          <br>
+          <pre><code>
+  var f32 = new Float32Array(1000);
+  for (var i = 0; i < 1000; ++i) {
+    f32[i] = Math.fround(2*f32[i]) + 1;
+  }
+
+</code></pre>
+          <br>
+          <p>Optimizable :)</p>
+          <br>
+          <p class="fragment">Parallel to <b><code>|0</code></b> which as mentioned before can help optimize integer math</p>
+        </section>
+
+        <section>
+          <h2>fround support</h2>
+          <br>
+          <p>In ES6, already in Firefox, Safari, Chrome (behind a flag), easy to polyfill:</p>
+          <br>
+          <pre><code>
+  Math.fround = Math.fround || (function() {
+    var temp = new Float32Array(1);
+    return function fround(x) {
+      temp[0] = +x;
+      return temp[0];
+    }
+  })();
+
+</code></pre>
+          <p>or</p>
+        <pre><code>
+  Math.fround = Math.fround || function(x) { return x };
+
+</code></pre>
+        </section>
+
+        <section>
+          <h2>float32 microbenchmarks</h2>
+          <br>
+          <hr>
+<table>
+<tr><td></td><td>Matrix Inversions</td><td>Matrix Graphics</td><td>Exponential</td><td>FFT</td></tr>
+<tr><td>x86</td><td><b>33%</b></td><td><b>60%</b></td><td><b>30%</b></td><td><b>16%</b></td></tr>
+<tr><td>ARM</td><td><b>38%</b></td><td><b>38%</b></td><td><b>24%</b></td><td><b>33%</b></td></tr>
+</table>
+          <hr>
+          <br>
+          <p>% speedup with float optimizations (higher is better; <a href=https://blog.mozilla.org/javascript/2013/11/07/efficient-float32-arithmetic-in-javascript/">source)</a>
+        </section>
+
+        <section>
+          <h2>float32 - compiled benchmarks</h2>
+          <br>
+          <p></p>
+          <img src="asm1.5b_half.png"></img>
+        </section>
+
+        <section>
+          <h2>why is float32 faster?</h2>
+          <br>
+          <p>Less precise, often less CPU cycles</p>
+          <br>
+          <p class="fragment">Half the size, fewer cache misses</p>
+          <br>
+          <p class="fragment">WebGL code often uses float32s, doing computation in float32 avoids conversions</p>
+          <br>
+          <p class="fragment">Not yet, but possible: more registers/SIMD lanes</p>
+        </section>
+
+
+
+
         <section>
           <h3><b>Benchmarks</b></h3>
           <a href="asm_apr_2014.png"><img src="asm_apr_2014.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></a>
