@@ -68,6 +68,17 @@
         </section>
 
         <section>
+          <h3><b>The Web</b></h3>
+          <img src="browser-logos.png" style="border: 0; box-shadow: none; height: 4em">
+          <br>
+          <p class="fragment">Biggest <b>open</b> and <b>standards-based</b> platform</p>
+          <p class="fragment">Great way to reach people</p>
+          <p class="fragment">But it only runs JavaScript..</p>
+          <br>
+          <img src="HTML5.png" style="border: 0; box-shadow: none; height: 4em">
+        </section>
+
+        <section>
           <a href="http://emscripten.org"><img src="emscripten_switch_logo.png" height=150></a>
           <br>
           <center>
@@ -76,6 +87,11 @@
           </table>
           </center>
           <br>
+          <p>Lets people port existing C/C++ codebases to the web</p>
+        </section>
+
+        <section>
+          <p>How does it work?</p>
         </section>
 
         <section>
@@ -198,7 +214,7 @@
       b = b + 1 | 0;
     } while ((b | 0) < 5000);
   }</code></pre>
-          <p class="fragment">(this "style" of code is a subset of JS called <b><a href="http://asmjs.org">asm.js</a></b>)</p>
+          <p class="fragment">This "style" of code is a subset of JS called <b><a href="http://asmjs.org">asm.js</a></b></p>
         </section>
 
         <section>
@@ -211,6 +227,16 @@
           <p class="fragment">Those are very good at <b>statically typed</b> code</p>
           <br>
           <p class="fragment">LLVM compiled through Emscripten is <strong>exactly that</strong>, so it can be fast</p>
+        </section>
+
+        <section>
+          <p>Modern JS VMs have <b>powerful optimizing JITs</b> that operate on typed code</p>
+          <br>
+          <p class='fragment'>But many heuristics lie between source code and actually being fully typed and optimized</p>
+          <br>
+          <p class='fragment'>What if we made some JS code <b>really really easy</b> to optimize, with as few heuristics as possible?</p>
+          <br>
+          <p class='fragment'>asm.js is one way to do that</p>
         </section>
 
         <section>
@@ -255,8 +281,6 @@
           <h3><b>Optimizing JS</b></h3>
           <br>
           <p>Emscripten has <strong>3 optimizations</strong> we found are very important for JS</p>
-          <br>
-          <p class="fragment">Whatever the best architecture is, it should be able to implement those - let's go over them now</p>
         </section>
 
         <section>
@@ -372,16 +396,6 @@
         </section>
 
         <section>
-          <h3><b>Opts Summary</b></h3>
-          <br>
-          <p>Expressionize &amp; registerize require precise modelling of <b>JS semantics</b> (and order of operations is in some cases surprising!)</p>
-          <br>
-          <p class="fragment">Is there a nice way to do these opts in an <strong>LLVM backend</strong>, or do we need a JS AST?</p>
-          <br>
-          <p class="fragment"><b>Questions</b>: Should Emscripten change how it interfaces with LLVM? What would LLVM like upstreamed?</p>
-        </section>
-
-        <!--section>
           <h3><b>Missing Pieces</b></h3>
           <br>
           <p>(Surprisingly!) JS already had almost everything a compiler target needs</p>
@@ -397,7 +411,7 @@
           <p>JS engines will continue to get <b>faster</b>, compiled code will get even <b>closer</b> to native speed</p>
           <br>
           <p class="fragment">There is a SIMD (SSE, NEON, etc.) <a href="https://github.com/johnmccutchan/ecmascript_simd">spec</a> for JS, and Emscripten supports LLVM vector types &rArr; <strong>LLVM autovectorization</strong> etc. will be fast</p>
-        </section-->
+        </section>
 
         <section>
           <h3><b>Conclusion</b></h3>
