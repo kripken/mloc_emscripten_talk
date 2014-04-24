@@ -90,7 +90,17 @@
           <br>
           <p>Lets people port existing C/C++ codebases to the web</p>
           <br>
-          <p>Can also port VMs and run their languages on the web too: Python, Lua, Ruby</p>
+          <p>Can also port virtual machines (VMs) and run their languages on the web too: Python, Lua, Ruby</p>
+        </section>
+
+        <section>
+          <a href="http://emscripten.org"><img src="emscripten_switch_logo.png" height=150></a>
+          <br>
+          <p><strong>Open source</strong> (MIT/LLVM)</p>
+          <br>
+          <p class="fragment">Began in <b>2010</b></p>
+          <br>
+          <p class="fragment">Most of the codebase is not the core compiler, but <b>libraries + toolchain + test suite</b></p>
         </section>
 
         <section>
@@ -247,29 +257,34 @@
         </section>
 
         <section>
-          <h3><b>Speed: More Detail</b></h3>
+          <p>asm.js is a <b>subset</b> of JavaScript (not a new language, no new semantics, all 100% backwards compatible), written in a format that is extremely <b>easy to optimize</b></p>
+          <br>
+          <div class="fragment">
+          <pre><code>
+  function twice(x) {
+    x = x | 0;
+    return x + x | 0;
+  }
+          </code></pre>
           <br>
           <p><code>(x+1)|0</code> &nbsp; <b>&rArr;</b> &nbsp; 32-bit integer + in modern JS VMs</p>
           <br>
+          <p>No need to profile types, can be optimized ahead of time (AOT) from source</p>
+          </div>
+        </section>
+
+        <section>
           <p class="fragment"><strong>Loads</strong> in LLVM IR become <strong>reads</strong> from typed array in JS, which become <strong>reads</strong> in machine code</p>
           <br>
           <p class="fragment">Emscripten's <b>memory model</b> is identical to LLVM's (flat C-like, aliasing, etc.), so can use <b>all</b> LLVM opts</p>
         </section>
 
         <section>
-          <a href="http://emscripten.org"><img src="emscripten_switch_logo.png" height=150></a>
+          <h3><b>Optimizing</b></h3>
           <br>
-          <p><strong>Open source</strong> (MIT/LLVM)</p>
+          <p>We run all LLVM optimizations (licm, alias analysis, etc.) - just like a normal compiler</p>
           <br>
-          <p class="fragment">Began in <b>2010</b></p>
-          <br>
-          <p class="fragment">Most of the codebase is not the core compiler, but <b>libraries + toolchain + test suite</b></p>
-        </section>
-
-        <section>
-          <h3><b>Optimizing JS</b></h3>
-          <br>
-          <p>Emscripten has <strong>3 optimizations</strong> we found are very important for JS</p>
+          <p>Emscripten has <strong>3 JS-specific optimizations</strong> as well</p>
         </section>
 
         <section>
@@ -392,37 +407,8 @@
           <p class="fragment">Thankfully the JS standards bodies are open to improving JS as a compiler target: <b>Math.imul</b>, <strong>Math.fround</strong></p>
         </section>
 
-
-
         <section>
-          <p>JavaScript numbers are 64-bit doubles, but VMs has <b>32-bit ints</b> as well!</p>
-          <br>
-          <div class="fragment">
-          <p>Possible due to a mathematical fact about integer and double math:</p>
-          <br>
-          <hr>
-          <p><b><code>x<sub style="font-size:50%">int</sub>  <b style="color: #ff5">+<sub style="font-size:50%">int</sub></b> y<sub style="font-size:50%">int</sub><br><b style="color:#fff">==</b><br><b style="color:#84f">int(</b> <b style="color:#f04">double(</b>x<sub style="font-size:50%">int</sub><b style="color:#f04">)</b> <b style="color: #ff0">+<sub style="font-size:50%">double</sub></b> <b style="color:#f04">double(</b>y<sub style="font-size:50%">int</sub><b style="color:#f04">)</b> <b style="color:#84f">)</b></code></b></p>
-          <hr>
-          </div>
-        </section>
-
-        <section>
-          <p>Say we are adding two values known to be 32-bit ints:</p>
-          <hr>
-          <p>x<sub style="font-size:50%">int</sub> &nbsp; <b>+</b> &nbsp;y<sub style="font-size:50%">int</sub> &nbsp;&nbsp; == &nbsp;&nbsp; x<sub style="font-size:50%">int</sub> &nbsp; <b>+<sub style="font-size:50%">int</sub></b> &nbsp;y<sub style="font-size:50%">int</sub> &nbsp;&nbsp;&nbsp;,</p>
-          <p><b>assuming</b> no overflow happened</p>
-          <hr>
-          <br>
-          <div class="fragment">
-          <p>Thankfully overflow checks are cheap, but can do even better:</p>
-          <hr>
-          <p>(x<sub style="font-size:50%">int</sub> &nbsp; <b>+</b> &nbsp;y<sub style="font-size:50%">int</sub>)&nbsp;|&nbsp;0 &nbsp;&nbsp; == &nbsp;&nbsp; x<sub style="font-size:50%">int</sub> &nbsp;<b>+<sub style="font-size:50%">int</sub></b>&nbsp; y<sub style="font-size:50%">int</sub></p>
-          <hr>
-          </div>
-        </section>
-
-        <section>
-          <p>We can do the same for 32-bit floats!</p>
+          <p>Float32</p>
           <br>
           <hr>
           <p><b><code>x<sub style="font-size:50%">f32</sub>  <b style="color: #ff0">+<sub style="font-size:50%">f32</sub></b> y<sub style="font-size:50%">f32</sub><br><b style="color:#fff">==</b><br><b style="color:#84f">f32(</b> <b style="color:#f04">f64(</b>x<sub style="font-size:50%">f32</sub><b style="color:#f04">)</b> <b style="color: #ff0">+<sub style="font-size:50%">f64</sub></b> <b style="color:#f04">f64(</b>y<sub style="font-size:50%">f32</sub><b style="color:#f04">)</b> <b style="color:#84f">)</b></code></b></p>
@@ -459,7 +445,7 @@
 
 </code></pre>
           <br>
-          <p><b>Not</b> optimizable, and also no parallel to overflow checks that ints can use :(</p>
+          <p><b>Not</b> optimizable :(</p>
         </section>
 
         <section>
@@ -474,8 +460,6 @@
 </code></pre>
           <br>
           <p>Optimizable :)</p>
-          <br>
-          <p class="fragment">Parallel to <b><code>|0</code></b> which as mentioned before can help optimize integer math</p>
         </section>
 
         <section>
@@ -537,7 +521,7 @@
 
 
         <section>
-          <h3><b>Benchmarks</b></h3>
+          <h3><b>Benchmark Summary</b></h3>
           <a href="asm_apr_2014.png"><img src="asm_apr_2014.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></a>
           <p><small>(run on 64-bit linux)</small></p>
         </section>
@@ -545,9 +529,23 @@
         <section>
           <h2>asm.js performance</h2>
           <br>
-          <img src="asm1.5b.png"></img>
-          <p>Around 1.5x slower than native (67% of native speed)</p>
-          <p class="fragment">As we saw, sufficient <b>even for AAA game engines</b></p>
+          <p>Around 1.5x slower than native (67% of native speed) on Firefox, not much worse on other browsers</p>
+          <p class="fragment">Sufficient <b>even for AAA game engines</b></p>
+        </section>
+
+        <section>
+          <h2>asm.js Industry Adoption</h2>
+          <br>
+          <p>Lots of interest from the <b>games industry</b>: Top-tier game engines starting to support HTML5 as a compilation target, using Emscripten to emit asm.js</p>
+          <br>
+          <p class="fragment"><b>Unity</b> - Replacement for their popular web plugin</p>
+          <p class="fragment"><b>Unreal Engine</b> - HTML5 as new target platform</p>
+          <p class="fragment">&amp; many others</p>
+        </section>
+
+        <section>
+          <h2>Unity demo</h2>
+          <p><iframe width="840" height="472" src="//www.youtube.com/embed/cWIRUaR9G4w" frameborder="0" allowfullscreen></iframe></p>
         </section>
 
         <section>
@@ -573,36 +571,11 @@
         </section>
 
         <section>
-          <h2>asm.js Industry Adoption</h2>
-          <br>
-          <p>Lots of interest from the <b>games industry</b>: Top-tier game engines starting to support HTML5 as a compilation target, using Emscripten to emit asm.js</p>
-          <br>
-          <p class="fragment"><b>Unity</b> - Replacement for their popular web plugin</p>
-          <p class="fragment"><b>Unreal Engine</b> - HTML5 as new target platform</p>
-          <p class="fragment">&amp; many others</p>
-        </section>
-
-        <section>
-          <h2>Unity demo</h2>
-          <p><iframe width="840" height="472" src="//www.youtube.com/embed/cWIRUaR9G4w" frameborder="0" allowfullscreen></iframe></p>
-          <p class="fragment">Should see stuff like this ship on the web <b>later this year</b>, will be interesting times!</p>
-        </section>
-
-        <section>
           <h3><b>The Future</b></h3>
           <br>
           <p>JS engines will continue to get <b>faster</b>, compiled code will get even <b>closer</b> to native speed</p>
           <br>
           <p class="fragment">There is a SIMD (SSE, NEON, etc.) <a href="https://github.com/johnmccutchan/ecmascript_simd">spec</a> for JS, and Emscripten supports LLVM vector types &rArr; <strong>LLVM autovectorization</strong> etc. will be fast</p>
-        </section>
-
-        <section>
-          <h3><b>Conclusion</b></h3>
-          <br>
-          <p><b>LLVM bitcode</b> can be compiled to <b>JavaScript</b> and run in <b>all browers</b>, at <b>high speed</b>, in a <b>standards-compliant</b> way</p>
-          <img src="dragon-browsers3.png" style="border: 0; box-shadow: none;" height="150">
-          <br>
-          <p class="fragment">For more info, see <b><a href="http://emscripten.org">emscripten.org</a></b> - feedback &amp; contributions always welcome</p>
           <br>
           <p class="fragment"><b style="color: #c11">Thank you for listening!</b></p>
         </section>
