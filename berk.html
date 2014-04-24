@@ -83,15 +83,22 @@
           <br>
           <center>
           <table style="background-color: white; padding: 0.6em; border: 0.1em solid #027; border-radius: 1em; box-shadow: 7px 7px 7px rgba(0,0,0,0.6);">
-            <tr><td><center style="white-space: nowrap">C/C++</center></td><td><center><strong>&nbsp;&nbsp;&nbsp;&rAarr;&rAarr;&rAarr;&nbsp;&nbsp;&nbsp;<br><br>Clang</strong></center></td><td><center>LLVM IR</center></td><td><center><b>&rAarr;&rAarr;&rAarr;<br><br>Emscripten</b></center></td><td><center>JS</center></td></tr>
+            <tr><td><center style="white-space: nowrap">C/C++</center></td><td><center><strong>&nbsp;&rAarr;&rAarr;&rAarr;&nbsp;<br><br>Clang+LLVM</strong></center></td><td><center>LLVM IR</center></td><td><center><b>&rAarr;&rAarr;&rAarr;<br><br>Emscripten</b></center></td><td><center>JS</center></td></tr>
           </table>
           </center>
           <br>
+          <br>
           <p>Lets people port existing C/C++ codebases to the web</p>
+          <br>
+          <p>Can also port VMs and run their languages on the web too: Python, Lua, Ruby</p>
         </section>
 
         <section>
           <p>How does it work?</p>
+          <br>
+          <p>Compiling C++ is incredibly complicated, so we let Clang+LLVM reduce it to LLVM IR first</p>
+          <br>
+          <p>Compiling LLVM IR to JS is still pretty hard though!</p>
         </section>
 
         <section>
@@ -250,24 +257,6 @@
         </section>
 
         <section>
-          <h3><b>Benchmarks</b></h3>
-          <a href="benchmarks_nov4_2013.png"><img src="benchmarks_nov4_2013.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></a>
-          <p><small>(VMs and Emscripten from Oct 28th 2013, run on 64-bit linux)</small></p>
-        </section>
-
-        <!--section>
-          <h3><b>Low-level downsides</b></h3>
-          <br>
-          <p>LLVM optimizer sometimes surprises us</p>
-          <p class="fragment">E.g. load <b>2 floats</b> as <strong>i64</strong>, then <b>split&amp;bitcast</b></p>
-          <p class="fragment">Bad for JS since no fast way to bitcast int to float!</p>
-          <div class="fragment">
-            <p>Emscripten has code to optimize that away (are we doing it wrong?)</p>
-            <p><img src="doingitwrong.jpg" style="border: 1px solid black; box-shadow: 5px 5px 5px rgba(0,0,0,0.2)" width="33%"></p>
-          </div>
-        </section-->
-
-        <section>
           <a href="http://emscripten.org"><img src="emscripten_switch_logo.png" height=150></a>
           <br>
           <p><strong>Open source</strong> (MIT/LLVM)</p>
@@ -335,8 +324,6 @@
           <p>Relooping allows JS VM to optimize better, as it can <strong>understand</strong> control flow</p>
           <br>
           <p class="fragment">Emscripten Relooper code is <b>generic</b>, written in C++, and used by other projects (e.g., Duetto)</p>
-          <br>
-          <p class="fragment">This one seems like it could work in <b>any</b> architecture, in an LLVM backend or not</p>
         </section>
 
         <section>
@@ -403,6 +390,58 @@
           <p class="fragment">But a few things turn out to be missing: <b>32-bit integer multiply</b>, <strong>single-precision floats</strong> etc.</p>
           <br>
           <p class="fragment">Thankfully the JS standards bodies are open to improving JS as a compiler target: <b>Math.imul</b>, <strong>Math.fround</strong></p>
+        </section>
+
+        <section>
+          <h3><b>Benchmarks</b></h3>
+          <a href="asm_apr_2014.png"><img src="asm_apr_2014.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></a>
+          <p><small>(run on 64-bit linux)</small></p>
+        </section>
+
+        <section>
+          <h2>asm.js performance</h2>
+          <br>
+          <img src="asm1.5b.png"></img>
+          <p>Around 1.5x slower than native (67% of native speed)</p>
+          <p class="fragment">As we saw, sufficient <b>even for AAA game engines</b></p>
+        </section>
+
+        <section>
+          <h2>asm.js Opts in Firefox</h2>
+          <br>
+          <p><b>AOT</b> - full optimizing JIT <b>always</b> run, using full type info</p>
+          <br>
+          <p class="fragment">AOT done in <b>parallel</b>, results <b>cached</b></p>
+          <br>
+          <p class="fragment">No need for bailouts, we know <b>many corner cases are impossible</b>, etc.</p>
+          <br>
+          <p class="fragment">On 64-bit, can do <b>zero-cost bounds checks</b> using a signal handler</p>
+        </section>
+
+        <section>
+          <h2>Implementation notes</h2>
+          <br>
+          <p><b>OdinMonkey</b> is the optimization module for asm.js in SpiderMonkey</p>
+          <br>
+          <p class="fragment">Fairly <b>small</b> amount of code</p>
+          <br>
+          <p class="fragment">Mostly just <b>type checks</b> and sends the results into the normal optimizing JIT</p>
+        </section>
+
+        <section>
+          <h2>asm.js Industry Adoption</h2>
+          <br>
+          <p>Lots of interest from the <b>games industry</b>: Top-tier game engines starting to support HTML5 as a compilation target, using Emscripten to emit asm.js</p>
+          <br>
+          <p class="fragment"><b>Unity</b> - Replacement for their popular web plugin</p>
+          <p class="fragment"><b>Unreal Engine</b> - HTML5 as new target platform</p>
+          <p class="fragment">&amp; many others</p>
+        </section>
+
+        <section>
+          <h2>Unity demo</h2>
+          <p><iframe width="840" height="472" src="//www.youtube.com/embed/cWIRUaR9G4w" frameborder="0" allowfullscreen></iframe></p>
+          <p class="fragment">Should see stuff like this ship on the web <b>later this year</b>, will be interesting times!</p>
         </section>
 
         <section>
