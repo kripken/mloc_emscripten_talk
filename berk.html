@@ -573,13 +573,83 @@
         </section>
 
         <section>
-          <h3><b>The Future</b></h3>
+          <h2>Possible reasons</h2>
           <br>
-          <p>JS engines will continue to get <b>faster</b>, compiled code will get even <b>closer</b> to native speed</p>
+          <p>JavaScript VM optimizing JITs are not as good as C compilers?</p>
           <br>
-          <p class="fragment">There is a SIMD (SSE, NEON, etc.) <a href="https://github.com/johnmccutchan/ecmascript_simd">spec</a> for JS, and Emscripten supports LLVM vector types &rArr; <strong>LLVM autovectorization</strong> etc. will be fast</p>
+          <p class="fragment">Limitations of the JavaScript language?</p>
           <br>
-          <p class="fragment"><b style="color: #c11">Thank you for listening!</b></p>
+          <p class="fragment">Limitations of the asm.js format?</p>
+        </section>
+
+        <section>
+          <h3>JS JITs not as good as C compilers?</h3>
+          <br>
+          <p>Plausible, C compilers have many more years of development, many more optimizations implemented, etc.</p>
+          <br>
+          <p>Very hard today to speed up gcc by even 1% - it's already so optimized</p>
+          <br>
+          <p>The last few % to catch up to gcc are the hardest</p>
+        </section>
+
+        <section>
+          <h3>Limitations of the JS?</h3>
+          <br>
+          <p>Plausible, we've seen Math.imul and Math.fround which were necessary to add</p>
+          <br>
+          <p>We still lack things like ctlz, float-to-int bitcasts, etc. - those are rare though</p>
+          <br>
+          <p>JS is portable and sandboxed, natural to expect some overhead there</p>
+        </section>
+
+        <section>
+          <h3>Limitations of asm.js?</h3>
+          <br>
+          <p>Plausible, asm.js has some differences from C, like the memory model is a single big array, so there's a base offset that must always be added</p>
+          <br>
+          <p>Limitations of Emscripten's optimization passes (e.g., perhaps some loop structures are not well relooped)</p>
+        </section>
+
+        <section>
+          <p>Many possibilities here, how can we estimate them?</p>
+        </section>
+
+        <section>
+          <p>Idea: Run asm.js in a normal C compiler</p>
+          <br>
+          <p>
+          <table style="background-color: white; padding: 0.6em; border: 0.1em solid #027; border-radius: 1em; box-shadow: 7px 7px 7px rgba(0,0,0,0.6);">
+            <tr><td><center style="white-space: nowrap">C/C++</center></td><td><center><strong>&nbsp;&rAarr;&rAarr;&rAarr;&nbsp;<br><br>Clang +<br>LLVM+<br>Emscripten</strong></center></td><td><center>asm.js</center></td><td><center><b>&rAarr;&rAarr;&rAarr;<br><br>Emscripten<br>C Backend</b></center></td><td><center>C</center></td></tr>
+          </table>
+          </p>
+          <br>
+          <p>If it's as fast as the original C, nothing was lost when compiling to asm.js that a sufficiently smart compiler could optimize</p>
+        </section>
+
+        <section>
+          <a href="cbackend.png"><img src="cbackend.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></a>
+        </section>
+
+        <section>
+          <p>On most benchmarks C backend output is very close to the original performance, and much better than asm.js</p>
+          <br>
+          <p>Indicates most of the slowdown is stuff JS VMs can improve on</p>
+          <br>
+          <p>Not conclusive, though - does not split out measurement of sandboxing, for example</p>
+        </section>
+
+        <section>
+          <p>Varies a lot between benchmarks - e.g., zlib in C backend is closer to asm.js than original. Some of that is noise (one was faster in C backend than original!)</p>
+          <br>
+          <p>But looking at those where the C backend output is slower has been interesting than the original has helped focus us on areas to improve</p>
+          <br>
+          <p>zlib and fannkuch, the slowest, seem to suffer from the base offset used in every load and store preventing addressing mode optimizations, for example</p>
+        </section>
+
+        <section>
+          <p><b style="color: #c11">Thank you for listening!</b></p>
+          <br>
+          <p><b>Questions?</b></p>
         </section>
 
       </div>
