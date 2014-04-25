@@ -88,9 +88,9 @@
           </center>
           <br>
           <br>
-          <p>Lets people port existing C/C++ codebases to the web</p>
+          <p>Lets people port C/C++ codebases to the web</p>
           <br>
-          <p>Can also port virtual machines (VMs) and run their languages on the web too: Python, Lua, Ruby</p>
+          <p class="fragment">Can also port virtual machines (VMs) and run their languages on the web too: Python, Lua, Ruby</p>
         </section>
 
         <section>
@@ -104,11 +104,11 @@
         </section>
 
         <section>
-          <p>How does it work?</p>
+          <h3><b>How does it work?</b></h3>
           <br>
-          <p>Compiling C++ is incredibly complicated, so we let Clang+LLVM reduce it to LLVM IR first</p>
+          <p class="fragment">Compiling C++ is incredibly complicated, so we let Clang+LLVM reduce it to <b>LLVM IR</b> first</p>
           <br>
-          <p>Compiling LLVM IR to JS is still pretty hard though!</p>
+          <p class="fragment">Compiling LLVM IR to JS is still pretty hard though!</p>
         </section>
 
         <section>
@@ -236,8 +236,6 @@
         </section>
 
         <section>
-          <h3><b>JS as a compilation target</b></h3>
-          <br>
           <p>JS began as a slow interpreted language</p>
           <br>
           <p class="fragment">Competition &rArr; <b>type-specializing</b> JITs</p>
@@ -246,11 +244,11 @@
         </section>
 
         <section>
-          <p>But many heuristics lie between source code and actually being fully typed and optimized</p>
+          <p>But many <b>heuristics</b> lie between source code and actually being fully typed and optimized</p>
           <br>
           <p class='fragment'>What if we made some JS code <b>really really easy</b> to optimize, with as few heuristics as possible?</p>
           <br>
-          <p class='fragment'>asm.js is one way to do that</p>
+          <p class='fragment'>That's basically what <strong>asm.js</strong> is</p>
         </section>
 
         <section>
@@ -282,15 +280,13 @@
           <br>
           <p><strong>Loads</strong> in LLVM IR become <strong>reads</strong> from typed array in JS, which become <strong>reads</strong> in machine code</p>
           <br>
-          <p class="fragment">Emscripten's <b>memory model</b> is identical to LLVM's, by using a singleton typed array with aliasing views to represent memory, so can use <b>all</b> LLVM opts</p>
+          <p class="fragment">Emscripten's <b>memory model</b> is identical to LLVM's, including aliasing, so can use <b>all</b> LLVM opts</p>
         </section>
 
         <section>
           <h3><b>Optimizing</b></h3>
           <br>
-          <p>We run all LLVM optimizations (licm, alias analysis, etc.) - just like a normal compiler</p>
-          <br>
-          <p>Emscripten has <strong>3 JS-specific optimizations</strong> as well</p>
+          <p>Aside from LLVM running normal compiler optimizations (licm, alias analysis, etc.), Emscripten has <strong>3 JS-specific optimizations</strong> as well</p>
         </section>
 
         <section>
@@ -414,16 +410,18 @@
         <section>
           <h3><b>32-bit integer mul</b></h3>
           <br>
-          <p>As already mentioned, <code>(x+y)|0</code> is semantically identical to 32-bit integer addition<p>
-          <p>However, <code>(x*y)|0</code> is <b>not</b> identical to 32-bit integer multiplication!<p>
-          <p>Numbers are doubles in JS, and multiplying large-enough 32-bit values reaches the range (53 bits) where doubles get rounded</p>
+          <p>As mentioned, <code>(x+y)|0</code> is identical to 32-bit +<p>
+          <br>
+          <p>However, <code>(x*y)|0</code> is <strong>not</strong> identical to 32-bit *<p>
+          <br>
+          <p class="fragment">Numbers are <b>doubles</b> in JS, and multiplying large-enough 32-bit values reaches the range (53 bits) where doubles get rounded</p>
         </section>
 
 
         <section>
           <p>Solution: Add <b>Math.imul</b> to the JavaScript language</p>
           <br>
-          <p>In practice, not as important as you might think: Most integer multiplies are of small constants, where the 53 bit "danger zone" is unreachable</p>
+          <p>(In practice, not as important as you might think: Most integer multiplies are of small constants, where the 53 bit "danger zone" is unreachable)</p>
         </section>
 
         <section>
@@ -436,7 +434,7 @@
         </section>
 
         <section>
-          <h3>float32 in practice</h3>
+          <h3><b>float32 in practice</b></h3>
           <br>
           <p><b>Typed arrays</b>, e.g. stuff like this is common in <b>WebGL</b> code</p>
           <br>
@@ -480,7 +478,7 @@
         </section>
 
         <section>
-          <h2>fround support</h2>
+          <h3><b>fround support</b></h3>
           <br>
           <p>In ES6, already in Firefox, Safari, Chrome (behind a flag), easy to polyfill:</p>
           <br>
@@ -502,7 +500,7 @@
         </section>
 
         <section>
-          <h2>float32 microbenchmarks</h2>
+          <h3><b>float32 benchmarks</b></h3>
           <br>
           <hr>
 <table>
@@ -516,13 +514,13 @@
         </section>
 
         <section>
-          <h2>why is float32 faster?</h2>
+          <h3><b>why is float32 faster?</b></h3>
           <br>
           <p>Less precise, often less CPU cycles</p>
           <br>
           <p class="fragment">Half the size, fewer cache misses</p>
           <br>
-          <p class="fragment">WebGL code often uses float32s, doing computation in float32 avoids conversions</p>
+          <p class="fragment">WebGL code often uses float32s, doing computation in float32 avoids <b>conversions</b></p>
           <br>
           <p class="fragment">Not yet, but possible: more registers/SIMD lanes</p>
         </section>
@@ -534,13 +532,13 @@
         </section>
 
         <section>
-          <h2>Unity demo</h2>
+          <h3><b>Unity demo</b></h3>
           <p><iframe width="840" height="472" src="//www.youtube.com/embed/cWIRUaR9G4w" frameborder="0" allowfullscreen></iframe></p>
           <p class="fragment">Also support from many other engines in the games industry</p>
         </section>
 
         <section>
-          <h2>asm.js Opts in Firefox</h2>
+          <h3><b>asm.js Opts in Firefox</b></h3>
           <br>
           <p><b>AOT</b> - full optimizing JIT <b>always</b> run, using full type info</p>
           <br>
@@ -552,9 +550,9 @@
         </section>
 
         <section>
-          <h2>asm.js perf summary</h2>
+          <h3><b>asm.js perf summary</b></h3>
           <br>
-          <p>Around 67% of native speed on Firefox, not much worse on other browsers</p>
+          <p>Around <strong>67%</strong> of native speed on Firefox, not much worse on other browsers</p>
           <br>
           <p class="fragment">Sufficient <b>even for AAA game engines</b></p>
           <br>
@@ -562,7 +560,7 @@
         </section>
 
         <section>
-          <h2>Possible reasons</h2>
+          <h3><b>Possible reasons</b></h3>
           <br>
           <p>JavaScript VM limitations?</p>
           <br>
@@ -572,7 +570,7 @@
         </section>
 
         <section>
-          <h3>JS VM limitations?</h3>
+          <h3><b>1. JS VM limitations?</b></h3>
           <br>
           <p>Plausible, C compilers have many more years of development, many more optimizations implemented, etc.</p>
           <br>
@@ -582,7 +580,7 @@
         </section>
 
         <section>
-          <h3>JS limitations?</h3>
+          <h3><b>2. JS limitations?</b></h3>
           <br>
           <p>Plausible, we've seen Math.imul and Math.fround which were necessary to add</p>
           <br>
@@ -592,11 +590,11 @@
         </section>
 
         <section>
-          <h3>asm.js/Emscripten limitations?</h3>
+          <h3><b>3. asm.js/Emscripten limitations?</b></h3>
           <br>
           <p>Plausible, asm.js has some differences from C, like the memory model is a single big array, so there's a base offset that must always be added</p>
           <br>
-          <p>Limitations of Emscripten's optimization passes (e.g., perhaps some loop structures are not well relooped)</p>
+          <p>Limitations of Emscripten's additional optimization passes (relooper, etc)</p>
         </section>
 
         <section>
@@ -604,15 +602,15 @@
         </section>
 
         <section>
-          <p>Idea: Run asm.js in a normal C compiler</p>
+          <p>One idea: Run asm.js in a normal C compiler</p>
           <br>
-          <p>
+          <br>
           <table style="background-color: white; padding: 0.6em; border: 0.1em solid #027; border-radius: 1em; box-shadow: 7px 7px 7px rgba(0,0,0,0.6);">
             <tr><td><center style="white-space: nowrap">C/C++</center></td><td><center><strong>&nbsp;&rAarr;&rAarr;&rAarr;&nbsp;<br><br>Clang +<br>LLVM+<br>Emscripten</strong></center></td><td><center>asm.js</center></td><td><center><b>&rAarr;&rAarr;&rAarr;<br><br>Emscripten<br>C Backend</b></center></td><td><center>C</center></td></tr>
           </table>
-          </p>
           <br>
-          <p>If it's as fast as the original C, nothing was lost when compiling to asm.js that a sufficiently smart compiler could optimize</p>
+          <br>
+          <p>If it's as fast as the original C, nothing was lost that a sufficiently smart compiler cannot optimize</p>
         </section>
 
         <section>
@@ -622,17 +620,26 @@
         <section>
           <img src="cbackend.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2); width: 50%">
           <br>
-          <p>On most benchmarks C backend output is very close to the original performance, and much better than asm.js</p>
           <br>
-          <p>Indicates most of the slowdown is stuff JS VMs can improve on</p>
+          <p>C backend output is <b>closer to original</b> than asm.js</p>
+          <br>
+          <p>Indicates much of the slowdown is due to <strong>JS VMs</strong></p>
         </section>
 
         <section>
           <img src="cbackend.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2); width: 50%">
           <br>
-          <p>Looking where the C backend output is slower has been interesting</p>
           <br>
-          <p>zlib and fannkuch, the slowest, seem to suffer from the base offset - which we will focus to optimize (using addressing modes perhaps)</p>
+          <p>Cases where the C backend output is <b>slower</b> than the original are interesting</p>
+          <br>
+          <p>zlib and fannkuch, seem to suffer from the <strong>base offset</strong> issue - which we will try to optimize (using addressing modes perhaps)</p>
+        </section>
+
+        <section>
+          <img src="cbackend.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2); width: 50%">
+          <br>
+          <br>
+          <p>(why is the C backend <b>faster</b> than the original in one case..?)</p>
         </section>
 
         <section>
