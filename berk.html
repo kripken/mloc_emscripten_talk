@@ -51,7 +51,7 @@
       <div class="slides">
 
         <section>
-          <h2><b>Emscripten and asm.js:<br>Approaching native<br>speed in JavaScript</b></h2>
+          <h2><b style="color: #f00">Emscripten</b> <b>and</b> <b style="color: #f00">asm.js</b><b>:<br>Approaching native<br>speed in JavaScript</b></h2>
           <br>
           <h3>Alon Zakai (Mozilla)</h3>
           <br>
@@ -222,11 +222,12 @@
     }
   }</code></pre>
           <p><b>&rArr;</b> Emscripten <b>&rArr;</b></p>
-          <pre><code contenteditable>  var g = Float32Array(5000); // JS
+          <pre><code contenteditable>  var heap = new ArrayBuffer(32768); // JS
+  var g = new Float32Array(heap);
   function main() {
     var a = 0, b = 0;
     do {
-      a = b << 2;
+      a = 8 + (b << 2) | 0;
       g[a >> 2] = +g[a >> 2] + 1.0;
       b = b + 1 | 0;
     } while ((b | 0) < 5000);
@@ -242,14 +243,10 @@
           <p class="fragment">Competition &rArr; <b>type-specializing</b> JITs</p>
           <br>
           <p class="fragment">Those are very good at <b>statically typed</b> code</p>
-          <br>
-          <p class="fragment">LLVM compiled through Emscripten is <strong>exactly that</strong>, so it can be fast</p>
         </section>
 
         <section>
-          <p>Modern JS VMs have <b>powerful optimizing JITs</b> that operate on typed code</p>
-          <br>
-          <p class='fragment'>But many heuristics lie between source code and actually being fully typed and optimized</p>
+          <p>But many heuristics lie between source code and actually being fully typed and optimized</p>
           <br>
           <p class='fragment'>What if we made some JS code <b>really really easy</b> to optimize, with as few heuristics as possible?</p>
           <br>
@@ -274,9 +271,17 @@
         </section>
 
         <section>
-          <p class="fragment"><strong>Loads</strong> in LLVM IR become <strong>reads</strong> from typed array in JS, which become <strong>reads</strong> in machine code</p>
+          <p><strong>Loads</strong> in LLVM IR become <strong>reads</strong> from typed array in JS, which become <strong>reads</strong> in machine code</p>
           <br>
-          <p class="fragment">Emscripten's <b>memory model</b> is identical to LLVM's (flat C-like, aliasing, etc.), so can use <b>all</b> LLVM opts</p>
+          <p class="fragment">Emscripten's <b>memory model</b> is identical to LLVM's, by using a singleton typed array with aliasing views to represent memory, so can use <b>all</b> LLVM opts</p>
+          <pre class="fragment"><code>  var heap = new ArrayBuffer(32768);
+  var heap8 = new Int8Array(heap);
+  var heap16 = new Int16Array(heap);
+  var heap32 = new Int32Array(heap);
+
+  function mem_access() {
+    return heap32[heap8[100] >> 2];
+  }</code></pre>
         </section>
 
         <section>
@@ -408,11 +413,24 @@
         </section>
 
         <section>
-          <p>Float32</p>
+          <h3><b>Math.imul</b></h3>
           <br>
-          <hr>
-          <p><b><code>x<sub style="font-size:50%">f32</sub>  <b style="color: #ff0">+<sub style="font-size:50%">f32</sub></b> y<sub style="font-size:50%">f32</sub><br><b style="color:#fff">==</b><br><b style="color:#84f">f32(</b> <b style="color:#f04">f64(</b>x<sub style="font-size:50%">f32</sub><b style="color:#f04">)</b> <b style="color: #ff0">+<sub style="font-size:50%">f64</sub></b> <b style="color:#f04">f64(</b>y<sub style="font-size:50%">f32</sub><b style="color:#f04">)</b> <b style="color:#84f">)</b></code></b></p>
-          <hr>
+          <p>As already mentioned, <code>(x+y)|0</code> is semantically identical to 32-bit integer addition<p>
+          <p>However, <code>(x*y)|0</code> is <b>not</b> identical to 32-bit integer multiplication!<p>
+          <p>Numbers are doubles in JS, and multiplying large-enough 32-bit values reaches the range (53 bits) where doubles get rounded</p>
+        </section>
+
+
+        <section>
+          <p>Solution: Add <b>Math.imul</b> to the JavaScript language</p>
+          <br>
+          <p>In practice, not as important as you might think: Most integer multiplies are of small constants, where the 53 bit "danger zone" is unreachable</p>
+        </section>
+
+        <section>
+          <h3><b>Math.fround</b></h3>
+          <br>
+          <p style="box-shadow: 5px 5px 5px rgba(0,0,0,0.4); background-color: black; padding: 1em"><b style="color: #f7f"><code>x<sub style="font-size:50%">f32</sub>  <b style="color: #ff0">+<sub style="font-size:50%">f32</sub></b> y<sub style="font-size:50%">f32</sub><br><b style="color:#fff">==</b><br><b style="color:#84f">f32(</b> <b style="color:#f04">f64(</b>x<sub style="font-size:50%">f32</sub><b style="color:#f04">)</b> <b style="color: #ff0">+<sub style="font-size:50%">f64</sub></b> <b style="color:#f04">f64(</b>y<sub style="font-size:50%">f32</sub><b style="color:#f04">)</b> <b style="color:#84f">)</b></code></b></p>
           <p>Also <code>-,*,/,sqrt, </code> etc. (but not everything, e.g. not <code>sin</code>)</p>
           <br>
           <p class="fragment">Only true because of the exact definition of IEEE754 doubles and floats (# of bits in exponent, definition of rounding, etc.)</p>
@@ -499,13 +517,6 @@
         </section>
 
         <section>
-          <h2>float32 - compiled benchmarks</h2>
-          <br>
-          <p></p>
-          <img src="asm1.5b_half.png"></img>
-        </section>
-
-        <section>
           <h2>why is float32 faster?</h2>
           <br>
           <p>Less precise, often less CPU cycles</p>
@@ -517,35 +528,16 @@
           <p class="fragment">Not yet, but possible: more registers/SIMD lanes</p>
         </section>
 
-
-
-
         <section>
-          <h3><b>Benchmark Summary</b></h3>
-          <a href="asm_apr_2014.png"><img src="asm_apr_2014.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></a>
-          <p><small>(run on 64-bit linux)</small></p>
-        </section>
-
-        <section>
-          <h2>asm.js performance</h2>
-          <br>
-          <p>Around 1.5x slower than native (67% of native speed) on Firefox, not much worse on other browsers</p>
-          <p class="fragment">Sufficient <b>even for AAA game engines</b></p>
-        </section>
-
-        <section>
-          <h2>asm.js Industry Adoption</h2>
-          <br>
-          <p>Lots of interest from the <b>games industry</b>: Top-tier game engines starting to support HTML5 as a compilation target, using Emscripten to emit asm.js</p>
-          <br>
-          <p class="fragment"><b>Unity</b> - Replacement for their popular web plugin</p>
-          <p class="fragment"><b>Unreal Engine</b> - HTML5 as new target platform</p>
-          <p class="fragment">&amp; many others</p>
+          <p>Overall, where does performance stand now?</p>
+          <a class="fragment" href="asm_apr_2014.png"><img src="asm_apr_2014.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2)"></a>
+          <!--p><small>(run on 64-bit linux)</small></p-->
         </section>
 
         <section>
           <h2>Unity demo</h2>
           <p><iframe width="840" height="472" src="//www.youtube.com/embed/cWIRUaR9G4w" frameborder="0" allowfullscreen></iframe></p>
+          <p class="fragment">Also support from many other engines in the games industry</p>
         </section>
 
         <section>
@@ -568,6 +560,16 @@
           <p class="fragment">Fairly <b>small</b> amount of code</p>
           <br>
           <p class="fragment">Mostly just <b>type checks</b> and sends the results into the normal optimizing JIT</p>
+        </section>
+
+        <section>
+          <h2>asm.js perf summary</h2>
+          <br>
+          <p>Around 67% of native speed on Firefox, not much worse on other browsers</p>
+          <br>
+          <p class="fragment">Sufficient <b>even for AAA game engines</b></p>
+          <br>
+          <p class="fragment">But why isn't it <b>100%</b>?</p>
         </section>
 
         <section>
