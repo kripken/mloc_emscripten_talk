@@ -271,10 +271,7 @@
         </section>
 
         <section>
-          <p><strong>Loads</strong> in LLVM IR become <strong>reads</strong> from typed array in JS, which become <strong>reads</strong> in machine code</p>
-          <br>
-          <p class="fragment">Emscripten's <b>memory model</b> is identical to LLVM's, by using a singleton typed array with aliasing views to represent memory, so can use <b>all</b> LLVM opts</p>
-          <pre class="fragment"><code>  var heap = new ArrayBuffer(32768);
+          <pre><code>  var heap = new ArrayBuffer(32768);
   var heap8 = new Int8Array(heap);
   var heap16 = new Int16Array(heap);
   var heap32 = new Int32Array(heap);
@@ -282,6 +279,10 @@
   function mem_access() {
     return heap32[heap8[100] >> 2];
   }</code></pre>
+          <br>
+          <p><strong>Loads</strong> in LLVM IR become <strong>reads</strong> from typed array in JS, which become <strong>reads</strong> in machine code</p>
+          <br>
+          <p class="fragment">Emscripten's <b>memory model</b> is identical to LLVM's, by using a singleton typed array with aliasing views to represent memory, so can use <b>all</b> LLVM opts</p>
         </section>
 
         <section>
@@ -408,12 +409,10 @@
           <p>(Surprisingly!) JS already had almost everything a compiler target needs</p>
           <br>
           <p class="fragment">But a few things turn out to be missing: <b>32-bit integer multiply</b>, <strong>single-precision floats</strong> etc.</p>
-          <br>
-          <p class="fragment">Thankfully the JS standards bodies are open to improving JS as a compiler target: <b>Math.imul</b>, <strong>Math.fround</strong></p>
         </section>
 
         <section>
-          <h3><b>Math.imul</b></h3>
+          <h3><b>32-bit integer mul</b></h3>
           <br>
           <p>As already mentioned, <code>(x+y)|0</code> is semantically identical to 32-bit integer addition<p>
           <p>However, <code>(x*y)|0</code> is <b>not</b> identical to 32-bit integer multiplication!<p>
@@ -428,7 +427,7 @@
         </section>
 
         <section>
-          <h3><b>Math.fround</b></h3>
+          <h3><b>32-bit Floats</b></h3>
           <br>
           <p style="box-shadow: 5px 5px 5px rgba(0,0,0,0.4); background-color: black; padding: 1em"><b style="color: #f7f"><code>x<sub style="font-size:50%">f32</sub>  <b style="color: #ff0">+<sub style="font-size:50%">f32</sub></b> y<sub style="font-size:50%">f32</sub><br><b style="color:#fff">==</b><br><b style="color:#84f">f32(</b> <b style="color:#f04">f64(</b>x<sub style="font-size:50%">f32</sub><b style="color:#f04">)</b> <b style="color: #ff0">+<sub style="font-size:50%">f64</sub></b> <b style="color:#f04">f64(</b>y<sub style="font-size:50%">f32</sub><b style="color:#f04">)</b> <b style="color:#84f">)</b></code></b></p>
           <p>Also <code>-,*,/,sqrt, </code> etc. (but not everything, e.g. not <code>sin</code>)</p>
@@ -437,7 +436,7 @@
         </section>
 
         <section>
-          <h2>Where are float32 values?</h2>
+          <h3>float32 in practice</h3>
           <br>
           <p><b>Typed arrays</b>, e.g. stuff like this is common in <b>WebGL</b> code</p>
           <br>
@@ -553,16 +552,6 @@
         </section>
 
         <section>
-          <h2>Implementation notes</h2>
-          <br>
-          <p><b>OdinMonkey</b> is the optimization module for asm.js in SpiderMonkey</p>
-          <br>
-          <p class="fragment">Fairly <b>small</b> amount of code</p>
-          <br>
-          <p class="fragment">Mostly just <b>type checks</b> and sends the results into the normal optimizing JIT</p>
-        </section>
-
-        <section>
           <h2>asm.js perf summary</h2>
           <br>
           <p>Around 67% of native speed on Firefox, not much worse on other browsers</p>
@@ -575,15 +564,15 @@
         <section>
           <h2>Possible reasons</h2>
           <br>
-          <p>JavaScript VM optimizing JITs are not as good as C compilers?</p>
+          <p>JavaScript VM limitations?</p>
           <br>
-          <p class="fragment">Limitations of the JavaScript language?</p>
+          <p>JavaScript language limitations?</p>
           <br>
-          <p class="fragment">Limitations of the asm.js format?</p>
+          <p>asm.js/Emscripten limitations?</p>
         </section>
 
         <section>
-          <h3>JS JITs not as good as C compilers?</h3>
+          <h3>JS VM limitations?</h3>
           <br>
           <p>Plausible, C compilers have many more years of development, many more optimizations implemented, etc.</p>
           <br>
@@ -593,7 +582,7 @@
         </section>
 
         <section>
-          <h3>Limitations of the JS?</h3>
+          <h3>JS limitations?</h3>
           <br>
           <p>Plausible, we've seen Math.imul and Math.fround which were necessary to add</p>
           <br>
@@ -603,7 +592,7 @@
         </section>
 
         <section>
-          <h3>Limitations of asm.js?</h3>
+          <h3>asm.js/Emscripten limitations?</h3>
           <br>
           <p>Plausible, asm.js has some differences from C, like the memory model is a single big array, so there's a base offset that must always be added</p>
           <br>
@@ -631,19 +620,19 @@
         </section>
 
         <section>
+          <img src="cbackend.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2); width: 50%">
+          <br>
           <p>On most benchmarks C backend output is very close to the original performance, and much better than asm.js</p>
           <br>
           <p>Indicates most of the slowdown is stuff JS VMs can improve on</p>
-          <br>
-          <p>Not conclusive, though - does not split out measurement of sandboxing, for example</p>
         </section>
 
         <section>
-          <p>Varies a lot between benchmarks - e.g., zlib in C backend is closer to asm.js than original. Some of that is noise (one was faster in C backend than original!)</p>
+          <img src="cbackend.png" style="box-shadow: 5px 5px 5px rgba(0,0,0,0.2); width: 50%">
           <br>
-          <p>But looking at those where the C backend output is slower has been interesting than the original has helped focus us on areas to improve</p>
+          <p>Looking where the C backend output is slower has been interesting</p>
           <br>
-          <p>zlib and fannkuch, the slowest, seem to suffer from the base offset used in every load and store preventing addressing mode optimizations, for example</p>
+          <p>zlib and fannkuch, the slowest, seem to suffer from the base offset - which we will focus to optimize (using addressing modes perhaps)</p>
         </section>
 
         <section>
