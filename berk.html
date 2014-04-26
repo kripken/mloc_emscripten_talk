@@ -562,37 +562,37 @@
         <section>
           <h3><b>Possible reasons</b></h3>
           <br>
-          <p>JavaScript VM limitations?</p>
+          <p>JavaScript <b>VM</b> limitations?</p>
           <br>
-          <p>JavaScript language limitations?</p>
+          <p>JavaScript <b>language</b> limitations?</p>
           <br>
-          <p>asm.js/Emscripten limitations?</p>
+          <p><b>asm.js/Emscripten</b> limitations?</p>
         </section>
 
         <section>
-          <h3><b>1. JS VM limitations?</b></h3>
+          <h3><b>1. JS VMs?</b></h3>
           <br>
           <p>Plausible, C compilers have many more years of development, many more optimizations implemented, etc.</p>
           <br>
           <p>Very hard today to speed up gcc by even 1% - it's already so optimized</p>
           <br>
-          <p>The last few % to catch up to gcc are the hardest</p>
+          <p>The <b>last few %</b> to catch up to gcc are the hardest</p>
         </section>
 
         <section>
-          <h3><b>2. JS limitations?</b></h3>
+          <h3><b>2. JS language?</b></h3>
           <br>
           <p>Plausible, we've seen Math.imul and Math.fround which were necessary to add</p>
           <br>
-          <p>We still lack things like ctlz, float-to-int bitcasts, etc. - those are rare though</p>
+          <p>We still lack things like ctlz, float-to-int bitcasts, etc.</p>
           <br>
-          <p>JS is portable and sandboxed, natural to expect some overhead there</p>
+          <p>JS is <b>portable</b> and <b>sandboxed</b>, natural to expect some overhead there</p>
         </section>
 
         <section>
-          <h3><b>3. asm.js/Emscripten limitations?</b></h3>
+          <h3><b>3. asm.js/Emscripten?</b></h3>
           <br>
-          <p>Plausible, asm.js has some differences from C, like the memory model is a single big array, so there's a base offset that must always be added</p>
+          <p>Plausible, asm.js's memory model is a single big array, so there's a <b>base offset</b> that must always be added</p>
           <br>
           <p>Limitations of Emscripten's additional optimization passes (relooper, etc)</p>
         </section>
@@ -610,7 +610,7 @@
           </table>
           <br>
           <br>
-          <p>If it's as fast as the original C, nothing was lost that a sufficiently smart compiler cannot optimize</p>
+          <p class="fragment">If it's as fast as the original C, nothing was lost that a sufficiently smart compiler cannot optimize</p>
         </section>
 
         <section>
@@ -640,6 +640,16 @@
           <br>
           <br>
           <p>(why is the C backend <b>faster</b> than the original in one case..?)</p>
+        </section>
+
+        <section>
+          <h3><b>Open Questions</b></h3>
+          <br>
+          <p class="fragment">Can we compile <b>more languages</b> into asm.js?</p>
+          <br>
+          <p class="fragment">Better <b>sandboxing</b> models?</p>
+          <br>
+          <p class="fragment"><b>Safe multithreading</b> models?</p>
         </section>
 
         <section>
