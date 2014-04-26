@@ -57,7 +57,6 @@
           <br>
           <!--p>(these slides just tweeted at <a href="http://twitter.com/#!/kripken">@kripken</a>)</p-->
           <p><a href="http://twitter.com/#!/kripken">@kripken</a></p>
-          <a href="http://emscripten.org"><img src="emscripten_switch_logo.png" height=100></a>
         </section>
 
         <section>
@@ -278,7 +277,7 @@
     return heap32[heap8[100] >> 2];
   }</code></pre>
           <br>
-          <p><strong>Loads</strong> in LLVM IR become <strong>reads</strong> from typed array in JS, which become <strong>reads</strong> in machine code</p>
+          <p><strong>Loads</strong> in LLVM IR become <strong>reads</strong> from typed arrays in JS, which become <strong>reads</strong> in machine code</p>
           <br>
           <p class="fragment">Emscripten's <b>memory model</b> is identical to LLVM's, including aliasing, so can use <b>all</b> LLVM opts</p>
         </section>
@@ -645,7 +644,7 @@
         <section>
           <h3><b>Open Questions</b></h3>
           <br>
-          <p class="fragment">Can we compile <b>more languages</b> into asm.js?</p>
+          <p class="fragment">Can we compile <b>more languages</b> into asm.js? (<strong>JITs</strong>!)</p>
           <br>
           <p class="fragment">Better <b>sandboxing</b> models?</p>
           <br>
