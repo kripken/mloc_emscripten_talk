@@ -180,7 +180,6 @@
           </center>
           <br>
           <div>
-            <p class="fragment"><img src="thesame.jpg" style="border: 1px solid black; box-shadow: 5px 5px 5px rgba(0,0,0,0.2); float: left" height="250"></p>
             <p class="fragment" style="margin: 0 auto; text-align:center; padding: 2em">Ironic, actually - many wish JS had <strong>block</strong> scope, like most languages...</p>
           </div>
         </section>
@@ -510,18 +509,6 @@
           <hr>
           <br>
           <p>% speedup with float optimizations (higher is better; <a href=https://blog.mozilla.org/javascript/2013/11/07/efficient-float32-arithmetic-in-javascript/">source)</a>
-        </section>
-
-        <section>
-          <h3><b>why is float32 faster?</b></h3>
-          <br>
-          <p>Less precise, often less CPU cycles</p>
-          <br>
-          <p class="fragment">Half the size, fewer cache misses</p>
-          <br>
-          <p class="fragment">WebGL code often uses float32s, doing computation in float32 avoids <b>conversions</b></p>
-          <br>
-          <p class="fragment">Not yet, but possible: more registers/SIMD lanes</p>
         </section>
 
         <section>
