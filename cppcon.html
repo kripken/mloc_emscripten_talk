@@ -1,15 +1,70 @@
+<html lang="en">
 
+  <head>
+    <meta charset="utf-8">
 
+    <title>Emscripten and asm.js: Approaching native speed in JavaScript</title>
 
+    <meta name="description" content="Emscripten: Compiling LLVM bitcode to JavaScript">
+    <meta name="author" content="Alon Zakai">
 
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/sky.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <style type="text/css">
+      h2 b {
+        color: #048;
+      }
+      h3 b {
+        color: #369;
+      }
+      b {
+        color: #63a;
+      }
+      strong {
+        color: #c11;
+      }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+
+<section>
+  <h2><b style="color: #f00">Emscripten</b> <b>and</b> <b style="color: #f00">asm.js</b><b>:<br>Approaching native<br>speed in JavaScript</b></h2>
+  <br>
+  <h3>Alon Zakai (Mozilla)</h3>
+  <br>
+  <!--p>(these slides just tweeted at <a href="http://twitter.com/#!/kripken">@kripken</a>)</p-->
+  <p><a href="http://twitter.com/#!/kripken">@kripken</a></p>
+</section>
 
 <section>
   <h3><b>C++ and the Web</b></h3>
   <br>
   <p>All major web browsers are written in C++ [image]</p>
   <p>For the obvious reasons: Fast, familiar, plenty of libraries</p>
-  <p>But that's <b>not</b> what I'm going to talk about here!</p>
+  <p>For the same reasons, people want to use C++ to write web <b>content</b>, that is, websites</p>
 </section>
 
 <section>
@@ -42,7 +97,7 @@
 </section>
 
 <section>
-  <h3><b>C and C++ on the Web</b></h3>
+  <h3><b>C++ on the Web</b></h3>
   <br>
   <p>We can't run C &amp; C++ on the web, but we can compile it into JavaScript which does</p>
   <p>Instead of compiling to x86 or ARM assembly, we compile to JavaScript as the "assembly of the web"</p>
@@ -71,15 +126,6 @@
 </section>
 
 <section>
-  <h3><b>C and C++ as JavaScript</b></h3>
-  <br>
-  <p>As JavaScript, our code will be portable and sandboxed - we can't get around that (nor do we want to!)</p>
-  <p>No direct access to local system libs, local filesystem, etc. - can only do things a website can</p>
-  <p>Different performance between different browsers/JS VMs</p>
-  <p>Overall a very different environment than C and C++ are usually run on!</p>
-</section>
-
-<section>
   <h3><b>Example Ports</b></h3>
   <br>
   <p>Unity, Epic, etc. - multimillion-line C++ codebases work fine</p>
@@ -90,7 +136,18 @@
   <br>
   <p><b>Emscripten</b>, the compiler used in those examples, is LLVM-based</p>
   <p>clang frontend, LLVM optimizations, then convert LLVM bitcode into JavaScript</p>
-  <p>robustness is comparable to native backends: we can run the csmith fuzzer without finding new Emscripten-specific issues</p>
+  <p>robustness is comparable to native builds with clang+LLVM: we can run the csmith fuzzer without finding new Emscripten-specific issues</p>
+  <p>projects in production</p>
+  <p>We build for a 32-bit target</p>
+</section>
+
+<section>
+  <h3><b>C++ &rightarrow; JavaScript</b></h3>
+  <br>
+  <p>As JavaScript, our code will be portable and sandboxed - we can't get around that (nor do we want to!)</p>
+  <p>No direct access to local system libs, local filesystem, etc. - can only do things a website can</p>
+  <p>Different performance between different browsers/JS VMs</p>
+  <p>Overall a very different environment than C++ is usually run on!</p>
 </section>
 
 <section>
@@ -98,7 +155,7 @@
   <br>
   <center>
   <table>
-    <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>i8, i16, i32, float, double</center></td></tr>
+    <tr><td><b>C++</b></td><td width="5%"></td><td><center>char, short, int, int64, float, double</center></td></tr>
     <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
     <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>double</center></td></tr>
   </table>
@@ -110,39 +167,11 @@
   <br>
   <center>
   <table>
-    <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>types and ops map ~1:1 to CPU</center></td></tr>
+    <tr><td><b>C++</b></td><td width="5%"></td><td><center>predictable (C-style code maps closely to CPU; higher-level C++ aspects can use RAII etc.)</center></td></tr>
     <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
     <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>virtual machine (VM), just in time (JIT) compilers w/ type profiling, garbage collection, etc.</center></td></tr>
   </table>
   </center>
-</section>
-
-<section>
-  <h3><b>Control Flow</b></h3>
-  <br>
-  <center>
-  <table>
-    <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>Functions, basic blocks &amp; branches</center></td></tr>
-    <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
-    <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>Functions, ifs and loops - no goto!</center></td></tr>
-  </table>
-  </center>
-</section>
-
-<section>
-  <h3><b>Variables</b></h3>
-  <br>
-  <center>
-  <table>
-    <tr><td><b>LLVM</b></td><td width="5%"></td><td><center>Local vars have function scope</center></td></tr>
-    <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
-    <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center class="fragment">Local vars have function scope</center></td></tr>
-  </table>
-  </center>
-  <br>
-  <div>
-    <p class="fragment" style="margin: 0 auto; text-align:center; padding: 2em">Ironic, actually - many wish JS had <strong>block</strong> scope, like most languages...</p>
-  </div>
 </section>
 
 <section>
@@ -151,22 +180,20 @@
 
 <section>
   <pre><code>
-// LLVM IR
-define i32 @func(i32* %p) {
-%r = load i32* %p
-%s = shl i32 %r, 16
-%t = call i32 @calc(i32 %r, i32 %s)
-ret i32 %t
-}
+  // C++
+  int func(int *p) {
+    int r = *p;
+    return calc(r, r << 16);
+  }
 
 </code></pre>
   <p><b>&rArr;</b> Emscripten <b>&rArr;</b></p>
   <pre><code>
-// JS
-function func(p) {
-var r = HEAP[p];
-return calc(r, r << 16);
-}
+  // JS
+  function func(p) {
+    var r = HEAP[p];
+    return calc(r, r << 16);
+  }
 
 </code></pre>
   <p class="fragment">Almost direct mapping in many cases</p>
@@ -175,22 +202,22 @@ return calc(r, r << 16);
 <section>
   <p>Another example:</p>
   <pre><code contenteditable>  float array[5000]; // C++
-int main() {
-for (int i = 0; i < 5000; ++i) {
-array[i] += 1.0f;
-}
-}</code></pre>
+  int main() {
+    for (int i = 0; i < 5000; ++i) {
+      array[i] += 1.0f;
+    }
+  }</code></pre>
   <p><b>&rArr;</b> Emscripten <b>&rArr;</b></p>
   <pre><code contenteditable>  var heap = new ArrayBuffer(32768); // JS
-var g = new Float32Array(heap);
-function main() {
-var a = 0, b = 0;
-do {
-a = 8 + (b << 2) | 0;
-g[a >> 2] = +g[a >> 2] + 1.0;
-b = b + 1 | 0;
-} while ((b | 0) < 5000);
-}</code></pre>
+  var g = new Float32Array(heap);
+  function main() {
+    var a = 0, b = 0;
+    do {
+      a = 8 + (b << 2) | 0;
+      g[a >> 2] = +g[a >> 2] + 1.0;
+      b = b + 1 | 0;
+    } while ((b | 0) < 5000);
+  }</code></pre>
   <p class="fragment">This "style" of code is a subset of JS called <b><a href="http://asmjs.org">asm.js</a></b></p>
 </section>
 
@@ -215,10 +242,10 @@ b = b + 1 | 0;
   <br>
   <div class="fragment">
   <pre><code>
-function twice(x) {
-x = x | 0;
-return x + x | 0;
-}
+  function twice(x) {
+    x = x | 0;
+    return x + x | 0;
+  }
   </code></pre>
   <br>
   <p><code>(x+1)|0</code> &nbsp; <b>&rArr;</b> &nbsp; 32-bit integer + in modern JS VMs</p>
@@ -229,15 +256,15 @@ return x + x | 0;
 
 <section>
   <pre><code>  var heap = new ArrayBuffer(32768);
-var heap8 = new Int8Array(heap);
-var heap16 = new Int16Array(heap);
-var heap32 = new Int32Array(heap);
+  var heap8 = new Int8Array(heap);
+  var heap16 = new Int16Array(heap);
+  var heap32 = new Int32Array(heap);
 
-function mem_access() {
-return heap32[heap8[100] >> 2];
-}</code></pre>
+  function mem_access() {
+    return heap32[heap8[100] >> 2];
+  }</code></pre>
   <br>
-  <p><strong>Loads</strong> in LLVM IR become <strong>reads</strong> from typed arrays in JS, which become <strong>reads</strong> in machine code</p>
+  <p><strong>Loads</strong> in C++ become loads in LLVM IR which become <strong>reads</strong> from typed arrays in JS, which become <strong>reads</strong> in machine code</p>
   <br>
   <p class="fragment">Emscripten's <b>memory model</b> is identical to LLVM's, including aliasing, so can use <b>all</b> LLVM opts</p>
 </section>
@@ -251,45 +278,44 @@ return heap32[heap8[100] >> 2];
 <section>
   <h3><b>1. Reloop</b></h3>
   <pre><code>  block0:
-; code0
-br i1 %cond, label %block0, label %block1
+    ; code0
+    br i1 %cond, label %block0, label %block1
 
-block1:
-; code1
-br %label block0
+  block1:
+    ; code1
+    br %label block0
 </code></pre>
   <p>Without relooping (emulated gotos):</p>
   <pre><code>  var label = 0;
-while (1) switch (label) {
-case 0:
-// code0
-label = cond ? 0 : 1; break;
-case 1:
-// code1
-label = 0; break;
-}
+  while (1) switch (label) {
+    case 0:
+      // code0
+      label = cond ? 0 : 1; break;
+    case 1:
+      // code1
+      label = 0; break;
+  }
 </code></pre>
 </section>
 
 <section>
   <h3><b>1. Reloop</b></h3>
   <pre><code>  block0:
-; code0
-br i1 %cond, label %block0, label %block1
+    ; code0
+    br i1 %cond, label %block0, label %block1
 
-block1:
-; code1
-br %label block0
+  block1:
+    ; code1
+    br %label block0
 </code></pre>
   <p>With relooping:</p>
   <pre><code>
-while (1) {
-do {
-// code0
-} while (cond);
-// code1
-}
-
+  while (1) {
+    do {
+    // code0
+    } while (cond);
+    // code1
+  }
 
 </code></pre>
 </section>
@@ -305,18 +331,18 @@ do {
 <section>
   <h3><b>2. Expressionize</b></h3>
   <pre><code>
-var a = g(x);
-var b = a + y;
-var c = HEAP[b];
-var d = HEAP[20];
-var e = x + y + z;
-var f = h(d, e);
-FUNCTION_TABLE[c](f);
+  var a = g(x);
+  var b = a + y;
+  var c = HEAP[b];
+  var d = HEAP[20];
+  var e = x + y + z;
+  var f = h(d, e);
+  FUNCTION_TABLE[c](f);
 
 </code></pre>
   <h3><b>&rArr;</b></h3>
   <pre><code>
-FUNCTION_TABLE[HEAP[g(x) + y](h(HEAP[20], x + y + z));
+  FUNCTION_TABLE[HEAP[g(x) + y](h(HEAP[20], x + y + z));
 
 </code></pre>
 </section>
@@ -332,18 +358,18 @@ FUNCTION_TABLE[HEAP[g(x) + y](h(HEAP[20], x + y + z));
 <section>
   <h3><b>3. Registerize</b></h3>
   <pre><code>
-var a = g(x) | 0; // integers 
-var b = a + y | 0;
-var c = HEAP[b] | 0;
-var d = +HEAP[20]; // double
+  var a = g(x) | 0; // integers 
+  var b = a + y | 0;
+  var c = HEAP[b] | 0;
+  var d = +HEAP[20]; // double
 
 </code></pre>
   <h3><b>&rArr;</b></h3>
   <pre><code>
-var a = g(x) | 0;
-a = a + y | 0;
-a = HEAP[a] | 0;
-var d = +HEAP[20];
+  var a = g(x) | 0;
+  a = a + y | 0;
+  a = HEAP[a] | 0;
+  var d = +HEAP[20];
 
 </code></pre>
 </section>
@@ -359,13 +385,13 @@ var d = +HEAP[20];
 </section>
 
 
+
+
+<section>
 advanced topics
   memory spaces (moving around typed arrays, no shared memory)
   memory fragmentation
 
-
-
-<section>
   <h3><b>Remaining issues</b></h3>
   <br>
   <p>Practically any portable C or C++ applications can be ported to the web using this approach, generally with few or no changes</p>
@@ -517,4 +543,43 @@ advanced topics
   <br>
   <p></p>
 </section>
+
+        <section>
+          <p><b style="color: #c11">Thank you for listening!</b></p>
+          <br>
+          <p><b>Questions?</b></p>
+        </section>
+
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+
+    <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: 'sky', //Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'fade', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+
+          // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>
 
