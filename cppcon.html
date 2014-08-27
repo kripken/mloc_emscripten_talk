@@ -5,7 +5,7 @@
 
     <title>Emscripten and asm.js: Approaching native speed in JavaScript</title>
 
-    <meta name="description" content="Emscripten: Compiling LLVM bitcode to JavaScript">
+    <meta name="description" content="Emscripten and asm.js: C++'s role in the modern web">
     <meta name="author" content="Alon Zakai">
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -51,41 +51,77 @@
       <div class="slides">
 
 <section>
-  <h2><b style="color: #f00">Emscripten</b> <b>and</b> <b style="color: #f00">asm.js</b><b>:<br>Approaching native<br>speed in JavaScript</b></h2>
+  <h2><b style="color: #f00">Emscripten</b> <b>and</b> <b style="color: #f00">asm.js</b><b>:<br>C++'s role in<br>the modern web</b></h2>
   <br>
-  <h3>Alon Zakai (Mozilla)</h3>
+  <h3>Alon Zakai / Mozilla</h3>
   <br>
   <!--p>(these slides just tweeted at <a href="http://twitter.com/#!/kripken">@kripken</a>)</p-->
   <p><a href="http://twitter.com/#!/kripken">@kripken</a></p>
 </section>
 
 <section>
-  <h3><b>C++ and the Web</b></h3>
-  <br>
-  <p>All major web browsers are written in C++ [image]</p>
-  <p>For the obvious reasons: Fast, familiar, plenty of libraries</p>
-  <p>For the same reasons, people want to use C++ to write web <b>content</b>, that is, websites</p>
+  <center><img src="browser-logos.png" style="box-shadow: none"></center>
+  <hr>
+  <p>All major web <strong>browsers</strong> are written in C++</p>
+  <p>For the obvious reasons:<br><b>fast</b>, <b>familiar</b>, <b>library support</b></p>
+  <hr>
+  <p>For the <b>same</b> reasons, people want to use C++ to write web <strong>content</strong> too, that is, websites</p>
+  <p>That's what this talk is about</p>
 </section>
 
 <section>
   <h3><b>The Modern Web</b></h3>
   <br>
-  <p>Modern, standards-compliant web content is built using HTML, CSS, JavaScript and GLSL</p>
-  <p>There are also plugins that are not standard and work only in some browsers and operating systems (Flash, Java, Silverlight, Unity, NaCl, etc.)</p>
-  <p>Plugins, for the most part, are on the way out</p>
+  <p>Modern, standards-compliant websites are built using HTML, CSS, JavaScript and GLSL</p>
+  <p>There are also plugins that are not standard, and work only in some browsers and operating systems (Flash, Java, Silverlight, Unity, PNaCl, etc.)</p>
+  <p>Plugins, for the most part, are on the way out - browsers are dropping support</p>
 </section>
 
 <section>
-  <h3><b></b></h3>
+  <h3><b>C++ on the Web: History</b></h3>
   <br>
-  <p>Writing code for the modern web, we therefore have... JavaScript</p>
+  <hr>
+  <p>Microsoft's ActiveX: unsafe, unportable, unstandardized</p>
+  <p>Miscellaneous plugins (Unity, etc.): unstandardized, perhaps unsafe</p>
+  <p>Google's Native CLient (NaCl)+Pepper: unportable, unstandardized</p>
+  <p>Google's Portable Native CLient (PNaCl)+Pepper: unstandardized</p>
+  <hr>
+  <p>Plugins have failed to reach significant adoption and/or standardization</p>
+</section>
+
+<section>
+  <p>Can we run C++ on the web in a standards-compliant way, so it runs in all browsers?</p>
+  <p>Well, JavaScript is already standardized, so how about if we... compile C++ into that?</p>
+  <hr>
+  <p>This has happened with many languages, in fact:</p>
+  <ul>
+    <li>Java</li>
+    <li>C#</li>
+    <li>Python</li>
+    <li>Lua</li>
+    <li>C++ too, as we'll soon see!</li>
+  </ul>
+</section>
+
+<section>
+  <h3><b>Compiling to JavaScript?</b></h3>
+  <br>
   <p>JavaScript is a dynamic language</p>
   <pre><code>
-  var x = waka() // no types
+  var x = 42;
+  var y = "some text";
+  var z = x + y; // z = "42sometext"
   </code></pre>
-  <p>It runs in a VM, is just-in-time (JIT) compiled, etc.</p>
+  <p>It runs in a Virtual Machine (VM), is just-in-time (JIT) compiled, etc.</p>
   <p>Portable</p>
   <p>Sandboxed</p>
+  <p>Kind of a weird compiler target...</p>
+</section>
+
+<section>
+  <p>Yes, it's weird. But it makes sense for two main reasons:</p>
+  <p>First, the web space is <b>standardized</b>. That's why websites run on your windows desktop and on your iPhone (and will run on a new device someone invents tomorrow)</p>
+  <p>Second, on a <b>technical</b> level, having just one VM in browsers makes them simpler, safer and more performant</p>
 </section>
 
 <section>
@@ -97,30 +133,20 @@
 </section>
 
 <section>
-  <h3><b>C++ on the Web</b></h3>
-  <br>
-  <p>We can't run C &amp; C++ on the web, but we can compile it into JavaScript which does</p>
-  <p>Instead of compiling to x86 or ARM assembly, we compile to JavaScript as the "assembly of the web"</p>
-</section>
-
-<section>
-  <h3><b>Usage</b></h3>
+  <h3><b>Concrete Usage</b></h3>
   <br>
   <pre><code>  // hello.cpp
   #include <stdio.h>
   int main() {
     printf("hello, world!\n");
-  }
-  </code></pre>
+  }  </code></pre>
   <hr>
   <pre><code>  $ gcc hello.cpp -o hello
   $ ./hello
-  hello, world!
-  </code></pre>
+  hello, world!</code></pre>
   <hr>
-  <pre><code> $ emcc hello.coo -o hello.html
-  $ firefox hello.html
-  </code></pre>
+  <pre><code>  $ emcc hello.coo -o hello.html
+  $ firefox hello.html  </code></pre>
   <hr>
   <p>[live iframe!]</p>
 </section>
@@ -148,6 +174,7 @@
   <p>No direct access to local system libs, local filesystem, etc. - can only do things a website can</p>
   <p>Different performance between different browsers/JS VMs</p>
   <p>Overall a very different environment than C++ is usually run on!</p>
+Overall a bit of a hack. So why are we doing this? Web is portable, standardized, 
 </section>
 
 <section>
