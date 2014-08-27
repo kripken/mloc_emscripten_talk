@@ -81,10 +81,11 @@
   <h3><b>C++ on the Web: History</b></h3>
   <br>
   <hr>
-  <p>Microsoft's ActiveX: unsafe, unportable, unstandardized</p>
-  <p>Miscellaneous plugins (Unity, etc.): unstandardized, perhaps unsafe</p>
-  <p>Google's Native CLient (NaCl)+Pepper: unportable, unstandardized</p>
-  <p>Google's Portable Native CLient (PNaCl)+Pepper: unstandardized</p>
+  <p>Microsoft's ActiveX: unportable, unstandardized, unsafe</p>
+  <p>Miscellaneous plugins (Unity, etc.): unstandardized, generally unsafe</p>
+  <p>Adobe's Alchemy (compile C++ to Flash Bytecode): unstandardized</p>
+  <p>Google's Native Client (NaCl)+Pepper: unportable, unstandardized</p>
+  <p>Google's Portable Native Client (PNaCl)+Pepper: unstandardized</p>
   <hr>
   <p>Plugins have failed to reach significant adoption and/or standardization</p>
 </section>
@@ -155,16 +156,29 @@
   <h3><b>Example Ports</b></h3>
   <br>
   <p>Unity, Epic, etc. - multimillion-line C++ codebases work fine</p>
+  <p>Products are shipping</p>
 </section>
 
 <section>
   <h3><b>How does this work?</b></h3>
   <br>
   <p><b>Emscripten</b>, the compiler used in those examples, is LLVM-based</p>
-  <p>clang frontend, LLVM optimizations, then convert LLVM bitcode into JavaScript</p>
-  <p>robustness is comparable to native builds with clang+LLVM: we can run the csmith fuzzer without finding new Emscripten-specific issues</p>
-  <p>projects in production</p>
-  <p>We build for a 32-bit target</p>
+  <p>[chart]</p>
+</section>
+
+<section>
+  <h3><b>Builds on LLVM tools/projects</b></h3>
+  <br>
+  <p>clang (great c++11 etc. support)</p>
+  <p>LLVM optimizations</p>
+  <p>libc++ C++ standard library</p>
+  <p>libc++abi low-level C++ support</p>
+</section>
+
+<section>
+  <p>Hybrid libc, musl + plus parts written in JavaScript</p>
+  <p>Robustness is comparable to native builds with clang+LLVM: we can run the csmith fuzzer without finding new Emscripten-specific issues</p>
+  <p>Currently an out-of-tree fork of LLVM, but we hope to get upstream eventually</p>
 </section>
 
 <section>
@@ -174,7 +188,6 @@
   <p>No direct access to local system libs, local filesystem, etc. - can only do things a website can</p>
   <p>Different performance between different browsers/JS VMs</p>
   <p>Overall a very different environment than C++ is usually run on!</p>
-Overall a bit of a hack. So why are we doing this? Web is portable, standardized, 
 </section>
 
 <section>
@@ -187,6 +200,8 @@ Overall a bit of a hack. So why are we doing this? Web is portable, standardized
     <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>double</center></td></tr>
   </table>
   </center>
+  <br><br>
+  <p>We build for a 32-bit target, because 64-bit integers cannot all fit in doubles, and so must be emulated in JavaScript</p>
 </section>
 
 <section>
@@ -430,6 +445,7 @@ advanced topics
 <section>
   <h3><b></b></h3>
   <br>
+C++ Exceptions
   <p></p>
 </section>
 
