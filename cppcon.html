@@ -84,8 +84,8 @@
   <p>Microsoft's ActiveX: unportable, unstandardized, unsafe</p>
   <p>Miscellaneous plugins (Unity, etc.): unstandardized, generally unsafe</p>
   <p>Adobe's Alchemy (compile C++ to Flash Bytecode): unstandardized</p>
-  <p>Google's Native Client (NaCl)+Pepper: unportable, unstandardized</p>
-  <p>Google's Portable Native Client (PNaCl)+Pepper: unstandardized</p>
+  <p>Google's Native Client (NaCl)+Pepper (PPAPI): unportable, unstandardized</p>
+  <p>Google's Portable Native Client (PNaCl)+Pepper (PPAPI): unstandardized</p>
   <hr>
   <p>Plugins have failed to reach significant adoption and/or standardization</p>
 </section>
@@ -99,7 +99,7 @@
     <li>Java</li>
     <li>C#</li>
     <li>Python</li>
-    <li>Lua</li>
+    <li>New languages like TypeScript</li>
     <li>C++ too, as we'll soon see!</li>
   </ul>
 </section>
@@ -125,19 +125,19 @@
   <p>Second, on a <b>technical</b> level, having just one VM in browsers makes them simpler, safer and more performant</p>
 </section>
 
-<section>
+<!--section>
   <h3><b>JavaScript</b></h3>
   <br>
   <p>Some people hate it</p>
   <p>Some people love it so much they use it on their servers too (node.js)</p>
   <p>Other people happen to prefer another language, and <b>compile</b> it to JavaScript</p>
-</section>
+</section-->
 
 <section>
   <h3><b>Concrete Usage</b></h3>
   <br>
   <pre><code>  // hello.cpp
-  #include <stdio.h>
+  #include &lt;stdio.h&gt;
   int main() {
     printf("hello, world!\n");
   }  </code></pre>
@@ -146,7 +146,7 @@
   $ ./hello
   hello, world!</code></pre>
   <hr>
-  <pre><code>  $ emcc hello.coo -o hello.html
+  <pre><code>  $ emcc hello.cpp -o hello.html
   $ firefox hello.html  </code></pre>
   <hr>
   <p>[live iframe!]</p>
@@ -176,6 +176,8 @@
 </section>
 
 <section>
+  <h3><b>Emscripten details</b></h3>
+  <br>
   <p>Hybrid libc, musl + plus parts written in JavaScript</p>
   <p>Robustness is comparable to native builds with clang+LLVM: we can run the csmith fuzzer without finding new Emscripten-specific issues</p>
   <p>Currently an out-of-tree fork of LLVM, but we hope to get upstream eventually</p>
@@ -235,11 +237,11 @@
 </section>
 
 <section>
-  <h3><b>Portability</b></h3>
+  <h3><b>Build Portability</b></h3>
   <br>
   <center>
   <table>
-    <tr><td><b>C++</b></td><td width="5%"></td><td><center>Numeric types change by OS and CPU</center></td></tr>
+    <tr><td><b>C++</b></td><td width="5%"></td><td><center>Need to recompile for another OS or CPU</center></td></tr>
     <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
     <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>Runs the same everywhere</center></td></tr>
   </table>
@@ -287,10 +289,8 @@
     <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>virtual machine (VM), just in time (JIT) compilers w/ type profiling, garbage collection, etc.</center></td></tr>
   </table>
   </center>
-</section>
-
-<section>
-  <h3><b>Speaking of performance...</b></h3>
+  <br>
+  <p>Yet, we need to be able to run code at reasonable speeds, or else this is pointless...</p>
 </section>
 
 <section>
@@ -362,12 +362,12 @@
   <pre><code>  // JS
   void func() {
     invoke(10); // call a function pointer, checking for throw
-    if (__threw__) {
-      T = get_thrown();
-      if (can_handle(T)) {
-        handle(T)
+    var T = get_thrown();
+    if (T) {
+      if (can_handle(T, 400)) { // 400 -> typeid of Type
+        handle(T);
       } else {
-        throw T;
+        do_throw(T);
       }
     }
   }
@@ -376,7 +376,7 @@
 </section>
 
 <section>
-  What does that "invoke" utility function do?
+  ...what do those utility function do?
   <pre><code>  // JS
   function invoke(ptr) {
     try {
@@ -385,6 +385,12 @@
     } catch (e) {
       __thrown__ = e;
     }
+  }
+  function do_throw(ptr) {
+    throw T;
+  }
+  function can_handle(ptr, type) {
+    // call into libcxxabi internals
   }
 </code></pre>
   <p>We implement C++ exceptions using JavaScript exceptions</p>
