@@ -78,21 +78,40 @@
 </section>
 
 <section>
-  <h3><b>C++ on the Web: History</b></h3>
+  <p>Where does C++ fit in here? Historically, the only way to run it on the web has been through plugins (yes, those things I just said were being dropped)</p>
+</section>
+
+<section>
+  <p><b>Unstandardized, unportable, unsafe</b></p>
+  <p>Microsoft ActiveX, Unity, miscellaneous specific plugins (e.g. QuakeLive)</p>
   <br>
-  <hr>
-  <p>Microsoft's ActiveX: unportable, unstandardized, unsafe</p>
-  <p>Miscellaneous plugins (Unity, etc.): unstandardized, generally unsafe</p>
-  <p>Adobe's Alchemy (compile C++ to Flash Bytecode): unstandardized</p>
-  <p>Google's Native Client (NaCl)+Pepper (PPAPI): unportable, unstandardized</p>
-  <p>Google's Portable Native Client (PNaCl)+Pepper (PPAPI): unstandardized</p>
-  <hr>
+  <p><b>Unstandardized, unportable</b></p>
+  <p>Google Native Client (NaCl) + Pepper (PPAPI)</p>
+  <br>
+  <p><b>Unstandardized</b></p>
+  <p>Adobe Alchemy (C++ &rightarrow; Flash)</p>
+  <p>Google's Portable NaCl (PNaCl) + PPAPI</p>
+  <br>
   <p>Plugins have failed to reach significant adoption and/or standardization</p>
 </section>
 
 <section>
-  <p>Can we run C++ on the web in a standards-compliant way, so it runs in all browsers?</p>
-  <p>Well, JavaScript is already standardized, so how about if we... compile C++ into that?</p>
+  <p>Why?</p>
+  <br>
+  <p>Taken a long time to sort out the portability and security issues</p>
+  <p>Very hard to standardize a new web technology, both for technical and non-technical reasons</p>
+</section>
+
+<section>
+  <p><b>Technically</b>, having just one Virtual Machine (VM) in browsers makes them simpler, safer and more performant</p>
+  <br>
+  <p><b>Non-technically</b>, standardization requires Google, Microsoft, Apple, Mozilla and others to agree</p>
+  <p>Standardization is why websites work on both your laptop and your phone, but it's a long and messy process!</p>
+</section>
+
+<section>
+  <p>...where does that leave us, then?</p>
+  <p>Well, JavaScript <b>is</b> already standardized, so how about if we... compile C++ into that?</p>
   <hr>
   <p>This has happened with many languages, in fact:</p>
   <ul>
@@ -113,16 +132,10 @@
   var y = "some text";
   var z = x + y; // z = "42sometext"
   </code></pre>
-  <p>It runs in a Virtual Machine (VM), is just-in-time (JIT) compiled, etc.</p>
+  <p>It runs in a VM, is just-in-time (JIT) compiled, etc.</p>
   <p>Portable</p>
   <p>Sandboxed</p>
   <p>Kind of a weird compiler target...</p>
-</section>
-
-<section>
-  <p>Yes, it's weird. But it makes sense for two main reasons:</p>
-  <p>First, the web space is <b>standardized</b>. That's why websites run on your windows desktop and on your iPhone (and will run on a new device someone invents tomorrow)</p>
-  <p>Second, on a <b>technical</b> level, having just one VM in browsers makes them simpler, safer and more performant</p>
 </section>
 
 <!--section>
@@ -179,10 +192,15 @@
   <h3><b>Emscripten details</b></h3>
   <br>
   <p>Hybrid libc, musl + plus parts written in JavaScript</p>
-  <p>Robustness is comparable to native builds with clang+LLVM: we can run the csmith fuzzer without finding new Emscripten-specific issues</p>
-  <p>Currently an out-of-tree fork of LLVM, but we hope to get upstream eventually</p>
-  <p>We have some JavaScript-specific optimizations that we run on a JavaScript AST</p>
   <p>Open source (MIT)</p>
+  <p>Currently an out-of-tree fork of LLVM, but we hope to get upstream eventually</p>
+</section>
+
+<section>
+  <h3><b>Emscripten details</b></h3>
+  <br>
+  <p>We have some JavaScript-specific optimizations that we run on a JavaScript AST</p>
+  <p>Robustness is comparable to native builds with clang+LLVM: we can run the csmith fuzzer without finding new Emscripten-specific issues</p>
 </section>
 
 <section>
@@ -243,7 +261,7 @@
   <table>
     <tr><td><b>C++</b></td><td width="5%"></td><td><center>Need to recompile for another OS or CPU</center></td></tr>
     <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
-    <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>Runs the same everywhere</center></td></tr>
+    <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>Single build runs the same everywhere</center></td></tr>
   </table>
   </center>
   <br><br>
@@ -255,14 +273,14 @@
   <br>
   <center>
   <table>
-    <tr><td><b>C++</b></td><td width="5%"></td><td><center>Applications generally use the system libs, access the local filesystem, etc.</center></td></tr>
+    <tr><td><b>C++</b></td><td width="5%"></td><td><center>Applications can use the system libs, access the local filesystem, etc.</center></td></tr>
     <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
     <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>Sandboxed, cannot see the machine it is running on</center></td></tr>
   </table>
   </center>
   <br><br>
   <p>Applications must ship their own system libraries</p>
-  <p>We "fake" a filesystem</p>
+  <p>We "fake" a filesystem to make porting easy</p>
 </section>
 
 <section>
@@ -276,7 +294,7 @@
   </table>
   </center>
   <br><br>
-  <p>We build for a 32-bit target, because 64-bit integers cannot all fit in doubles, and so must be emulated in JavaScript</p>
+  <p>We build for a 32-bit target, because 64-bit integers cannot all fit in doubles (but 32-bit ones can)</p>
 </section>
 
 <section>
