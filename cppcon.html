@@ -73,40 +73,26 @@
   <h3><b>The Modern Web</b></h3>
   <br>
   <p>Modern, standards-compliant websites are built using HTML, CSS, JavaScript and GLSL</p>
-  <p>There are also plugins that are not standard, and work only in some browsers and operating systems (Flash, Java, Silverlight, Unity, PNaCl, etc.)</p>
-  <p>Plugins, for the most part, are on the way out - browsers are dropping support</p>
+  <p>No C++ there :(</p>
+  <p>Maybe we can run it in a <b>non</b>-standards-compliant way, using a plugin..?</p>
 </section>
 
 <section>
-  <p>Where does C++ fit in here? Historically, the only way to run it on the web has been through plugins (yes, those things I just said were being dropped)</p>
+  <p>History of running C++ in plugins</p>
+  <br>
+  <p><b>Unstandardized, unportable, unsafe</b>: Microsoft ActiveX, Unity, miscellaneous specific plugins (e.g. QuakeLive)</p>
+  <br>
+  <p><b>Unstandardized, unportable</b>: Google Native Client (NaCl)+Pepper (PPAPI)</p>
+  <br>
+  <p><b>Unstandardized</b>: Adobe Alchemy (C++ &rArr; Flash), Google Portable NaCl (PNaCl)+PPAPI</p>
 </section>
 
 <section>
-  <p><b>Unstandardized, unportable, unsafe</b></p>
-  <p>Microsoft ActiveX, Unity, miscellaneous specific plugins (e.g. QuakeLive)</p>
+  <p>All those plugins have failed to reach significant adoption or standardization, for both technical and non-technical reasons</p>
   <br>
-  <p><b>Unstandardized, unportable</b></p>
-  <p>Google Native Client (NaCl) + Pepper (PPAPI)</p>
+  <p>And plugins in general are on the way out - web browsers are dropping support</p>
   <br>
-  <p><b>Unstandardized</b></p>
-  <p>Adobe Alchemy (C++ &rightarrow; Flash)</p>
-  <p>Google's Portable NaCl (PNaCl) + PPAPI</p>
-  <br>
-  <p>Plugins have failed to reach significant adoption and/or standardization</p>
-</section>
-
-<section>
-  <p>Why?</p>
-  <br>
-  <p>Taken a long time to sort out the portability and security issues</p>
-  <p>Very hard to standardize a new web technology, both for technical and non-technical reasons</p>
-</section>
-
-<section>
-  <p><b>Technically</b>, having just one Virtual Machine (VM) in browsers makes them simpler, safer and more performant</p>
-  <br>
-  <p><b>Non-technically</b>, standardization requires Google, Microsoft, Apple, Mozilla and others to agree</p>
-  <p>Standardization is why websites work on both your laptop and your phone, but it's a long and messy process!</p>
+  <p>This is a good trend - standardization is why websites work on both your laptop and your phone</p>
 </section>
 
 <section>
@@ -182,8 +168,8 @@
 <section>
   <h3><b>Builds on LLVM tools/projects</b></h3>
   <br>
-  <p>clang (great c++11 etc. support)</p>
-  <p>LLVM optimizations</p>
+  <p>clang C++ frontend</p>
+  <p>LLVM optimizer</p>
   <p>libc++ C++ standard library</p>
   <p>libc++abi low-level C++ support</p>
 </section>
@@ -259,7 +245,7 @@
   <br>
   <center>
   <table>
-    <tr><td><b>C++</b></td><td width="5%"></td><td><center>Need to recompile for another OS or CPU</center></td></tr>
+    <tr><td><b>C++</b></td><td width="5%"></td><td><center>Need to recompile for another CPU or OS</center></td></tr>
     <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
     <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>Single build runs the same everywhere</center></td></tr>
   </table>
@@ -302,13 +288,13 @@
   <br>
   <center>
   <table>
-    <tr><td><b>C++</b></td><td width="5%"></td><td><center>predictable (C-style code maps closely to CPU; higher-level C++ aspects can use RAII etc.)</center></td></tr>
+    <tr><td><b>C++</b></td><td width="5%"></td><td><center>C-style code maps closely to CPU, higher-level C++ aspects can use RAII, etc., giving predictability</center></td></tr>
     <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
     <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>virtual machine (VM), just in time (JIT) compilers w/ type profiling, garbage collection, etc.</center></td></tr>
   </table>
   </center>
   <br>
-  <p>Yet, we need to be able to run code at reasonable speeds, or else this is pointless...</p>
+  <p>Yet, we need to be able to run code at reasonable speeds in a predictable way, or else this is pointless...</p>
 </section>
 
 <section>
@@ -358,11 +344,10 @@
 </section>
 
 <section>
-  <p>Overall, performance is around 67% of native speed</p>
+  <p>Overall, performance is around 67% of native speed, and still improving</p>
   <p>More than enough for many applications already</p>
-  <p>Sandboxing and portability impose some limitations, so might never get 100%, but still getting better</p>
   <p>Work is underway in the standards bodies for SIMD</p>
-  <p>Some other specific perf issues: setjmp, C++ exceptions</p>
+  <p>However, some specific perf issues: setjmp, C++ exceptions</p>
 </section>
 
 <section>
@@ -413,7 +398,7 @@
 </code></pre>
   <p>We implement C++ exceptions using JavaScript exceptions</p>
   <p>JavaScript provides call stack unwinding, we just hook into libc++abi code to check what to catch</p>
-  <p>However try-catch is not fast in JavaScript VMs, at least for now...</p>
+  <p>Performance of C++ exceptions using Emscripten therefore depends on the performance of JavaScript exceptions</p>
 </section>
 
 <section>
