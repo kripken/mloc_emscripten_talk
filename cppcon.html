@@ -402,161 +402,58 @@
 </section>
 
 <section>
-advanced topics
-  memory spaces (moving around typed arrays, no shared memory)
-  memory fragmentation
-
-  <h3><b>Remaining issues</b></h3>
+  <h3><b>Back to Memory</b></h3>
   <br>
-  <p>Practically any portable C or C++ applications can be ported to the web using this approach, generally with few or no changes</p>
-  <p>However, some content will run more slowly: 64-bit integers, setjmp, C++ exceptions</p>
-  <p>Those are current limitations in JavaScript and/or Emscripten, hopefully will vanish</p>
-  <p>But there are some bigger problems</p>
+  <p>As mentioned, we represent memory using a single flat array</p>
+  <p>Pointers are indexes into the array</p>
+  <pre><code>
+  var HEAP = new Uint8Array(20*1024*1024);
+  function compiledCode(ptr) {
+    HEAP[ptr] = 12; // write to an address
+    return HEAP[ptr + 4]; // read from an address
+  }
+  </code></pre>
+  <p>Which is basically how C and C++ see memory - a pointer can point anywhere in all of memory</p>
 </section>
 
 <section>
-  <h3><b></b></h3>
-  <br>
-  <p></p>
+  <p>But this is not how languages like JavaScript, C#, Java, Python etc. see memory</p>
+  <p>Each object or array in those languages is in its own "space", which is even bounds-checked, and there is no pointer that can point to anywhere, pointers are references to objects</p>
 </section>
 
 <section>
-  <h3><b></b></h3>
-  <br>
-  <p></p>
+  <p>This isn't just an academic point!</p>
+  <pre><code>
+  // same as before
+  var HEAP = new Uint8Array(20*1024*1024);
+  function compiledCode(ptr) {
+    HEAP[ptr] = 12;
+    return HEAP[ptr + 4];
+  }
+  function getInput(array) {
+    // array is a NORMAL JavaScript array
+    // compiledCode cannot refer to it!
+    // must copy into the HEAP
+    var buffer = malloc(array.length);
+    HEAP.set(array, buffer);
+    // buffer is now a pointer to a copy of array
+    return compiledCode(buffer);
+  }
+  </code></pre>
+  <p>These problems happen when connecting compiled code and outside JavaScript</p>
+  <p>Ideas?</p>
 </section>
 
 <section>
-  <h3><b></b></h3>
+  <h3><b>Summary</b></h3>
   <br>
-  <p></p>
-</section>
-
-<section>
-  <h3><b></b></h3>
+  <p>We can compile C++ into JavaScript and run it on the web, in a fast and standards-compliant way</p>
+  <p>JavaScript is a weird compiler target</p>
   <br>
-  <p></p>
-</section>
-
-<section>
-  <h3><b></b></h3>
+  <p><b style="color: #c11">Thank you for listening!</b></p>
   <br>
-  <p></p>
+  <p><b>Questions?</b></p>
 </section>
-
-<section>
-  <h3><b></b></h3>
-  <br>
-  <p></p>
-</section>
-
-<section>
-  <h3><b></b></h3>
-  <br>
-  <p></p>
-</section>
-
-<section>
-  <h3><b></b></h3>
-  <br>
-  <p></p>
-</section>
-
-<section>
-  <h3><b></b></h3>
-  <br>
-  <p></p>
-</section>
-
-<section>
-  <h3><b></b></h3>
-  <br>
-  <p></p>
-</section>
-
-<section>
-  <h3><b></b></h3>
-  <br>
-  <p></p>
-</section>
-
-<section>
-  <h3><b></b></h3>
-  <br>
-  <p></p>
-</section>
-
-<section>
-  <h3><b></b></h3>
-  <br>
-  <p></p>
-</section>
-
-<section>
-  <h3><b></b></h3>
-  <br>
-  <p></p>
-</section>
-
-<section>
-  <h3><b></b></h3>
-  <br>
-  <p></p>
-</section>
-
-<section>
-  <h3><b></b></h3>
-  <br>
-  <p></p>
-</section>
-
-<section>
-  <h3><b></b></h3>
-  <br>
-  <p></p>
-</section>
-
-<section>
-  <h3><b></b></h3>
-  <br>
-  <p></p>
-</section>
-
-<section>
-  <h3><b></b></h3>
-  <br>
-  <p></p>
-</section>
-
-<section>
-  <h3><b></b></h3>
-  <br>
-  <p></p>
-</section>
-
-<section>
-  <h3><b></b></h3>
-  <br>
-  <p></p>
-</section>
-
-<section>
-  <h3><b></b></h3>
-  <br>
-  <p></p>
-</section>
-
-<section>
-  <h3><b></b></h3>
-  <br>
-  <p></p>
-</section>
-
-        <section>
-          <p><b style="color: #c11">Thank you for listening!</b></p>
-          <br>
-          <p><b>Questions?</b></p>
-        </section>
 
       </div>
     </div>
