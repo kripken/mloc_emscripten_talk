@@ -72,7 +72,8 @@
 <section>
   <h3><b>The Modern Web</b></h3>
   <br>
-  <p>Modern, standards-compliant websites are built using HTML, CSS, JavaScript and GLSL</p>
+  <p>The web is the largest open platform in existence - everyone can access it, no one owns it</p>
+  <p>Modern, standards-compliant websites are built using HTML, CSS, JavaScript (JS) and GLSL</p>
   <p>No C++ there :(</p>
   <p>Maybe we can run it in a <b>non</b>-standards-compliant way, using a plugin..?</p>
 </section>
@@ -80,7 +81,7 @@
 <section>
   <p>History of running C++ in plugins</p>
   <br>
-  <p><b>Unstandardized, unportable, unsafe</b>: Microsoft ActiveX, Unity, miscellaneous specific plugins (e.g. QuakeLive)</p>
+  <p><b>Unstandardized, unportable, unsafe</b>: Microsoft ActiveX, miscellaneous specific plugins (e.g. QuakeLive, Unity)</p>
   <br>
   <p><b>Unstandardized, unportable</b>: Google Native Client (NaCl)+Pepper (PPAPI)</p>
   <br>
@@ -118,9 +119,7 @@
   var y = "some text";
   var z = x + y; // z = "42sometext"
   </code></pre>
-  <p>It runs in a VM, is just-in-time (JIT) compiled, etc.</p>
-  <p>Portable</p>
-  <p>Sandboxed</p>
+  <p>Very high-level: Has first-class functions, eval(), exceptions, etc.</p>
   <p>Kind of a weird compiler target...</p>
 </section>
 
@@ -145,6 +144,7 @@
   $ ./hello
   hello, world!</code></pre>
   <hr>
+  <p>Compiling to JavaScript using Emscripten:</p>
   <pre><code>  $ emcc hello.cpp -o hello.html
   $ firefox hello.html  </code></pre>
   <hr>
@@ -204,7 +204,7 @@
 </code></pre>
   <p><b>&rArr;</b> Emscripten <b>&rArr;</b></p>
   <pre><code>
-  // JS
+  // JavaScript
   function func(p) {
     var r = HEAP[p];
     return calc(r, r << 16);
@@ -223,8 +223,8 @@
     }
   }</code></pre>
   <p><b>&rArr;</b> Emscripten <b>&rArr;</b></p>
-  <pre><code contenteditable>  var heap = new ArrayBuffer(32768); // JS
-  var g = new Float32Array(heap);
+  <pre><code contenteditable>  var HEAP = new ArrayBuffer(32768); // JavaScript
+  var g = new Float32Array(HEAP);
   function main() {
     var a = 0, b = 0;
     do {
@@ -312,13 +312,13 @@
 </section>
 
 <section>
-  <pre><code>  var heap = new ArrayBuffer(32768);
-  var heap8 = new Int8Array(heap);
-  var heap16 = new Int16Array(heap);
-  var heap32 = new Int32Array(heap);
+  <pre><code>  var HEAP = new ArrayBuffer(32768);
+  var HEAP8 = new Int8Array(HEAP);
+  var HEAP16 = new Int16Array(HEAP);
+  var HEAP32 = new Int32Array(HEAP);
 
   function mem_access() {
-    return heap32[heap8[100] >> 2];
+    return HEAP32[HEAP8[100] >> 2];
   }</code></pre>
   <br>
   <p><strong>Loads</strong> in C++ become loads in LLVM IR which become <strong>reads</strong> from typed arrays in JS, which become <strong>reads</strong> in machine code</p>
