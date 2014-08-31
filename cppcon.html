@@ -104,28 +104,34 @@
 
 <section>
   <p>...where does that leave C++, then?</p>
-  <p>Well, JavaScript <b>is</b> already standardized, so how about if we... compile C++ into that?</p>
-  <hr>
-  <p>This has happened with many languages, in fact:</p>
-  <ul>
-    <li>Java</li>
-    <li>C#</li>
-    <li>Python</li>
-    <li>New languages like TypeScript</li>
-    <li>C++ too, as we'll soon see!</li>
-  </ul>
+  <p class="fragment">Well, JavaScript <b>is</b> already standardized, so how about if we... <strong>compile</strong> C++ into that?</p>
+  <br>
+  <p class="fragment">This has happened with many languages, in fact:
+    <ul class="fragment">
+      <li>Java</li>
+      <li>C#</li>
+      <li>Python</li>
+      <li>New languages like TypeScript</li>
+      <li>etc.</li>
+    </ul>
+  </p>
 </section>
 
 <section>
   <h3><b>Compiling to JavaScript?</b></h3>
   <br>
-  <p>JavaScript is a dynamic language</p>
+  <p>JavaScript is a dynamic scripting language</p>
   <pre><code>
   var x = 42;
-  var y = "some text";
-  var z = x + y; // z = "42sometext"
+  var y = "a string";
+  var z = x + y; // z = "42a string"
+
+  eval("z = z.substr(1, 2)"); // z = "2a"
+
+  [1, "two", { three: 3 }].forEach(function(item) {
+    if (typeof item === typeof z) console.log([z, item]);
+  }); // emits ["2a", "two"]
   </code></pre>
-  <p>Very high-level: Has first-class functions, eval(), exceptions, etc.</p>
   <p>Kind of a weird compiler target...</p>
 </section>
 
@@ -150,11 +156,11 @@
   $ ./hello
   hello, world!</code></pre>
   <hr>
-  <p>Compiling to JavaScript using Emscripten:</p>
-  <pre><code>  $ emcc hello.cpp -o hello.html
+  <p class="fragment">Compiling to JS using <b>Emscripten</b>:</p>
+  <pre class="fragment"><code>  $ emcc hello.cpp -o hello.html
   $ firefox hello.html  </code></pre>
-  <hr>
-  <p>[live iframe!]</p>
+  <hr class="fragment">
+  <p class="fragment">[live iframe!]</p>
 </section>
 
 <section>
