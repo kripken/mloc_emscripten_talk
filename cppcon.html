@@ -61,43 +61,49 @@
 
 <section>
   <center><img src="browser-logos.png" style="box-shadow: none"></center>
-  <hr>
+  <br>
   <p>All major web <strong>browsers</strong> are written in C++</p>
-  <p>For the obvious reasons:<br><b>fast</b>, <b>familiar</b>, <b>library support</b></p>
-  <hr>
-  <p>For the <b>same</b> reasons, people want to use C++ to write web <strong>content</strong> too, that is, websites</p>
-  <p>That's what this talk is about</p>
+  <p class="fragment">For the obvious reasons:<br><b>fast</b>, <b>familiar</b>, <b>library support</b></p>
+  <br>
+  <p class="fragment">For the <b>same</b> reasons, people want to use C++ to write web <strong>content</strong> too, that is, websites</p>
+  <p class="fragment">That's what this talk is about</p>
 </section>
 
 <section>
-  <h3><b>The Modern Web</b></h3>
+  <h3><b>The Web</b></h3>
   <br>
-  <p>The web is the largest open platform in existence - everyone can access it, no one owns it</p>
-  <p>Modern, standards-compliant websites are built using HTML, CSS, JavaScript (JS) and GLSL</p>
-  <p>No C++ there :(</p>
-  <p>Maybe we can run it in a <b>non</b>-standards-compliant way, using a plugin..?</p>
+  <p><b>Largest</b> <strong>open</strong> platform in existence, owned by no one</p>
+  <br>
+  <table class="fragment"><tr>
+    <td style="vertical-align: top">Modern, standards-compliant websites are built using <b>HTML</b>, <b>CSS</b>, and <b>JavaScript (JS)</b></td>
+    <td><img src="HTML5_Logo_256.png" width="100px"></td>
+    <td><img src="js.jpg" width="100px" height="100px"></td>
+  </tr></table>
+  <br>
+  <p class="fragment">No C++ there :(</p>
+  <p class="fragment">Maybe we can run it in a <b>non</b>-standards-compliant way, using a plugin..?</p>
 </section>
 
 <section>
-  <p>History of running C++ in plugins</p>
+  <p><strong>History</strong> of C++ in browser plugins</p>
   <br>
-  <p><b>Unstandardized, unportable, unsafe</b>: Microsoft ActiveX, miscellaneous specific plugins (e.g. QuakeLive, Unity)</p>
+  <p class="fragment"><b>Unstandardized, unportable, unsafe</b>: Microsoft ActiveX, miscellaneous specific plugins (e.g. QuakeLive, Unity)</p>
   <br>
-  <p><b>Unstandardized, unportable</b>: Google Native Client (NaCl)+Pepper (PPAPI)</p>
+  <p class="fragment"><b>Unstandardized, unportable</b>: Google Native Client (NaCl)+Pepper (PPAPI)</p>
   <br>
-  <p><b>Unstandardized</b>: Adobe Alchemy (C++ &rArr; Flash), Google Portable NaCl (PNaCl)+PPAPI</p>
+  <p class="fragment"><b>Unstandardized</b>: Adobe Alchemy (C++ &rArr; Flash), Google Portable NaCl (PNaCl)+PPAPI</p>
 </section>
 
 <section>
-  <p>All those plugins have failed to reach significant adoption or standardization, for both technical and non-technical reasons</p>
+  <p>All those plugins have failed to reach significant adoption or standardization, for both <b>technical</b> and <b>non-technical</b> reasons</p>
   <br>
-  <p>And plugins in general are on the way out - web browsers are dropping support</p>
+  <p class="fragment">And plugins in general are on the way out - web browsers are <b>dropping support</b> (no Flash on iPhones, etc.)</p>
   <br>
-  <p>This is a good trend - standardization is why websites work on both your laptop and your phone</p>
+  <p class="fragment">This is a <strong>good</strong> trend - standardization is why websites work on both your laptop and your phone</p>
 </section>
 
 <section>
-  <p>...where does that leave us, then?</p>
+  <p>...where does that leave C++, then?</p>
   <p>Well, JavaScript <b>is</b> already standardized, so how about if we... compile C++ into that?</p>
   <hr>
   <p>This has happened with many languages, in fact:</p>
