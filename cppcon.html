@@ -168,45 +168,34 @@
 </section>
 
 <section>
-  <h3><b>Example Ports</b></h3>
+  <img src="emscripten_switch_logo.png">
   <br>
-  <p>Unity, Epic, etc. - multimillion-line C++ codebases work fine</p>
-  <p>Products are shipping</p>
-</section>
-
-<section>
-  <h3><b>How does this work?</b></h3>
   <br>
-  <p><b>Emscripten</b>, the compiler used in those examples, is LLVM-based</p>
-  <p>[chart]</p>
-</section>
-
-<section>
-  <h3><b>Builds on LLVM tools/projects</b></h3>
+  <p><b style="color: #f42">C++</b>&nbsp&nbsp<b style="color: #000">&rArr;</b>&nbsp&nbsp<b style="color: #7af">LLVM</b>&nbsp&nbsp<b style="color: #000">&rArr;</b>&nbsp&nbsp<b style="color: #8f5"><a href="http://emscripten.org">Emscripten</a></b>&nbsp&nbsp<b style="color: #000">&rArr;</b>&nbsp&nbsp<b style="color: #f58">JavaScript</b></p>
   <br>
-  <p>clang C++ frontend</p>
-  <p>LLVM optimizer</p>
-  <p>libc++ C++ standard library</p>
-  <p>libc++abi low-level C++ support</p>
-</section>
-
-<section>
-  <h3><b>Emscripten details</b></h3>
-  <br>
-  <p>Hybrid libc, musl + plus parts written in JavaScript</p>
   <p>Open source (MIT)</p>
-  <p>Currently an out-of-tree fork of LLVM, but we hope to get upstream eventually</p>
 </section>
 
 <section>
-  <h3><b>Emscripten details</b></h3>
+  <p>Emscripten Builds on the LLVM family of projects:</p>
   <br>
-  <p>We have some JavaScript-specific optimizations that we run on a JavaScript AST</p>
-  <p>Robustness is comparable to native builds with clang+LLVM: we can run the csmith fuzzer without finding new Emscripten-specific issues</p>
+  <p><b>clang</b> C++ frontend</p>
+  <p><b>LLVM</b> optimizer</p>
+  <p><b>libc++</b> C++ standard library</p>
+  <p><b>libc++abi</b> low-level C++ support</p>
+  <br>
+  <p class="fragment">Currently an out-of-tree fork of LLVM, but we hope to get upstream eventually</p>
 </section>
 
 <section>
-  <h3><b>You might be curious at this point what the emitted code looks like...</b></h3>
+  <h3><b>Other libraries</b></h3>
+  <br>
+  <p>Hybrid libc: <b>musl</b> + plus parts written in JavaScript</p>
+  <p>Implementations of <b>SDL</b>, <b>OpenGL</b>, etc., using Web APIs</p>
+</section>
+
+<section>
+  <p>You might be curious at this point what the emitted code looks like...</p>
 </section>
 
 <section>
@@ -253,7 +242,7 @@
 </section>
 
 <section>
-  <h3><b>So that's what the code can look like. But there are some fundamental differences here...</b></h3>
+  <p>So that's what the code can look like. But there are some fundamental differences here...</p>
 </section>
 
 <section>
@@ -469,6 +458,22 @@
   <p><b style="color: #c11">Thank you for listening!</b></p>
   <br>
   <p><b>Questions?</b></p>
+</section>
+
+<section>
+  <h3><b>Example Ports</b></h3>
+  <br>
+  <p>Unity, Epic, etc. - multimillion-line C++ codebases work fine</p>
+  <p>Products are shipping</p>
+
+
+  <p>We have some JavaScript-specific optimizations that we run on a JavaScript AST</p>
+</section>
+
+<section>
+  <h3><b>Emscripten details</b></h3>
+  <br>
+  <p>Robustness is comparable to native builds with clang+LLVM: we can run the csmith fuzzer without finding new Emscripten-specific issues</p>
 </section>
 
       </div>
