@@ -144,23 +144,27 @@
 </section-->
 
 <section>
-  <h3><b>Concrete Usage</b></h3>
-  <br>
+  <p>Compiling to a <b>native executable</b>:</p>
   <pre><code>  // hello.cpp
   #include &lt;stdio.h&gt;
   int main() {
     printf("hello, world!\n");
   }  </code></pre>
-  <hr>
+  <br>
   <pre><code>  $ gcc hello.cpp -o hello
   $ ./hello
   hello, world!</code></pre>
-  <hr>
-  <p class="fragment">Compiling to JS using <b>Emscripten</b>:</p>
+</section>
+
+<section>
+  <p>Compiling to JS using <b>Emscripten</b>:</p>
   <pre class="fragment"><code>  $ emcc hello.cpp -o hello.html
   $ firefox hello.html  </code></pre>
-  <hr class="fragment">
-  <p class="fragment">[live iframe!]</p>
+  <br>
+  <p class="fragment">Here's the output, running in an iframe right here on this web page:</p>
+  <iframe class="fragment" src="hello/a.html" width="80%" scrolling=no></iframe>
+  <br><br>
+  <p class="fragment"><strong>emcc</strong> is a drop-in replacement for a native compiler, workflow is almost identical</p>
 </section>
 
 <section>
