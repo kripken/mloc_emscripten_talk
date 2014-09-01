@@ -412,8 +412,8 @@
 
 
 <section>
-  <p>Emscripten supports exceptions... differently:</p>
-  <pre><code>  // C++
+  <p>Emscripten supports C++ exceptions... differently</p>
+  <pre class="fragment"><code>  // C++
   void func() {
     try {
       something();
@@ -422,8 +422,8 @@
     }
   }
 </code></pre>
-  <p><b>&rArr;</b> Emscripten <b>&rArr;</b></p>
-  <pre><code>  // JS
+  <p class="fragment"><b>&rArr;</b> Emscripten <b>&rArr;</b></p>
+  <pre class="fragment"><code>  // JS
   void func() {
     invoke(10); // call a function pointer, checking for throw
     var T = get_thrown();
@@ -440,7 +440,7 @@
 </section>
 
 <section>
-  ...what do those utility function do?
+  Here are those runtime functions:
   <pre><code>  // JS
   function invoke(ptr) {
     try {
@@ -457,16 +457,15 @@
     // call into libcxxabi internals
   }
 </code></pre>
-  <p>We implement C++ exceptions using JavaScript exceptions</p>
-  <p>JavaScript provides call stack unwinding, we just hook into libc++abi code to check what to catch</p>
-  <p>Performance of C++ exceptions using Emscripten therefore depends on the performance of JavaScript exceptions</p>
+  <p class="fragment">We implement <b>C++</b> exceptions using <strong>JS</strong> exceptions, JS VM provides stack unwinding</p>
+  <p class="fragment">Performance therefore depends on the speed of JS exceptions, which varies</p>
 </section>
 
 <section>
   <h3><b>Back to Memory</b></h3>
   <br>
-  <p>As mentioned, we represent memory using a single flat array</p>
-  <p>Pointers are indexes into the array</p>
+  <p>Recall that we represent memory using a <b>single flat array</b></p>
+  <p>Pointers are <b>indexes</b> into the array</p>
   <pre><code>
   var HEAP = new Uint8Array(20*1024*1024);
   function compiledCode(ptr) {
@@ -474,12 +473,13 @@
     return HEAP[ptr + 4]; // read from an address
   }
   </code></pre>
-  <p>Which is basically how C and C++ see memory - a pointer can point anywhere in all of memory</p>
+  <p class="fragment">Which is basically how C and C++ see memory: a pointer can point <strong>anywhere</strong> in all of memory</p>
 </section>
 
 <section>
-  <p>But this is not how languages like JavaScript, C#, Java, Python etc. see memory</p>
-  <p>Each object or array in those languages is in its own "space", which is even bounds-checked, and there is no pointer that can point to anywhere, pointers are references to objects</p>
+  <p>But this is <b>not</b> how languages like JavaScript, C#, Java, Python etc. see memory</p>
+  <br>
+  <p>Each object or array in those languages is in its own "space", which is bounds-checked, and pointers cannot point to anywhere, they are <strong>references to distinct objects</strong></p>
 </section>
 
 <section>
@@ -494,26 +494,30 @@
   function getInput(array) {
     // array is a NORMAL JavaScript array
     // compiledCode cannot refer to it!
-    // must copy into the HEAP
+    // must *copy* into the HEAP
     var buffer = malloc(array.length);
     HEAP.set(array, buffer);
     // buffer is now a pointer to a copy of array
     return compiledCode(buffer);
   }
   </code></pre>
-  <p>These problems happen when connecting compiled code and outside JavaScript</p>
-  <p>Ideas?</p>
+  <p class="fragment">Ideas?</p>
 </section>
 
 <section>
-  <h3><b>Summary</b></h3>
+    <a href="http://emscripten.org"><img src="emscripten_switch_logo.png" height="100px"></a>
   <br>
-  <p>We can compile C++ into JavaScript and run it on the web, in a fast and standards-compliant way</p>
-  <p>JavaScript is a weird compiler target</p>
+  <p class="fragment">We can <strong>compile C++ into JavaScript</strong> and run it on the web, in a <b>fast</b> and <b>standards-compliant</b> way</p>
   <br>
-  <p><b style="color: #c11">Thank you for listening!</b></p>
+  <p class="fragment">JavaScript is a weird compiler target</p>
   <br>
-  <p><b>Questions?</b></p>
+  <div class="fragment">
+    <hr>
+    <br>
+    <p><b style="color: #c11">Thank you for listening!</b></p>
+    <br>
+    <p><b>Questions?</b></p>
+  </div>
 </section>
 
 
