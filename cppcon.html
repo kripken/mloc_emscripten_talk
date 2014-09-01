@@ -147,7 +147,7 @@
     if (typeof item === typeof z) console.log([z, item]);
   }); // emits ["2a", "two"]
   </code></pre>
-  <p>Kind of a weird compiler target...</p>
+  <p class="fragment">Kind of a weird compiler target...</p>
 </section>
 
 <!--section>
@@ -185,14 +185,13 @@
 <section>
   <img src="emscripten_switch_logo.png">
   <br>
+  <p>Open source (MIT license) LLVM-based C++ to JavaScript compiler</p>
   <br>
-  <p><b style="color: #f42">C++</b>&nbsp&nbsp<b style="color: #000">&rArr;</b>&nbsp&nbsp<b style="color: #7af">LLVM</b>&nbsp&nbsp<b style="color: #000">&rArr;</b>&nbsp&nbsp<b style="color: #8f5"><a href="http://emscripten.org">Emscripten</a></b>&nbsp&nbsp<b style="color: #000">&rArr;</b>&nbsp&nbsp<b style="color: #f58">JavaScript</b></p>
-  <br>
-  <p>Open source (MIT)</p>
+  <p style="background-color: black; padding: 1em; box-shadow: 8px 8px 8px rgba(0,0,0,0.6)"><b style="color: #f42">C++</b>&nbsp&nbsp<b style="color: #fff">&rArr;</b>&nbsp&nbsp<b style="color: #7af">LLVM</b>&nbsp&nbsp<b style="color: #fff">&rArr;</b>&nbsp&nbsp<b style="color: #8f5"><a href="http://emscripten.org">Emscripten</a></b>&nbsp&nbsp<b style="color: #fff">&rArr;</b>&nbsp&nbsp<b style="color: #f58">JavaScript</b></p>
 </section>
 
 <section>
-  <p>Emscripten Builds on the LLVM family of projects:</p>
+  <p>Emscripten builds on the LLVM family of projects:</p>
   <br>
   <p><b>clang</b> C++ frontend</p>
   <p><b>LLVM</b> optimizer</p>
@@ -206,6 +205,7 @@
   <h3><b>Other libraries</b></h3>
   <br>
   <p>Hybrid libc: <b>musl</b> + plus parts written in JavaScript</p>
+  <br>
   <p>Implementations of <b>SDL</b>, <b>OpenGL</b>, etc., using Web APIs</p>
 </section>
 
@@ -243,8 +243,8 @@
     }
   }</code></pre>
   <p><b>&rArr;</b> Emscripten <b>&rArr;</b></p>
-  <pre><code contenteditable>  var HEAP = new ArrayBuffer(32768); // JavaScript
-  var g = new Float32Array(HEAP);
+  <pre><code contenteditable>  var buffer = new ArrayBuffer(32768); // JavaScript
+  var g = new Float32Array(buffer);
   function main() {
     var a = 0, b = 0;
     do {
@@ -267,7 +267,7 @@
   <table>
     <tr><td><b>C++</b></td><td width="5%"></td><td><center>Need to recompile for another CPU or OS</center></td></tr>
     <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
-    <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>Single build runs the same everywhere</center></td></tr>
+    <tr class="fragment"><td><b><center>JS</center></b></td><td width="5%"></td><td><center>Single build runs the same everywhere</center></td></tr>
   </table>
   </center>
   <br><br>
@@ -281,11 +281,12 @@
   <table>
     <tr><td><b>C++</b></td><td width="5%"></td><td><center>Applications can use the system libs, access the local filesystem, etc.</center></td></tr>
     <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
-    <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>Sandboxed, cannot see the machine it is running on</center></td></tr>
+    <tr class="fragment"><td><b><center>JS</center></b></td><td width="5%"></td><td><center>Sandboxed, cannot see the machine it is running on</center></td></tr>
   </table>
   </center>
   <br><br>
   <p class="fragment">Applications must ship their own system libraries</p>
+  <br>
   <p class="fragment">We "fake" a filesystem to make porting easy</p>
 </section>
 
@@ -296,11 +297,11 @@
   <table>
     <tr><td><b>C++</b></td><td width="5%"></td><td><center>char, short, int, int64, float, double</center></td></tr>
     <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
-    <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>double</center></td></tr>
+    <tr class="fragment"><td><b><center>JS</center></b></td><td width="5%"></td><td><center>double</center></td></tr>
   </table>
   </center>
   <br><br>
-  <p>We build for a <strong>32-bit</strong> target, because 64-bit integers cannot all fit in doubles (but 32-bit ones can)</p>
+  <p class="fragment">We build for a <strong>32-bit</strong> target, because 64-bit integers cannot all fit in doubles (but 32-bit ones can)</p>
 </section>
 
 <section>
@@ -310,7 +311,7 @@
   <table>
     <tr><td><b>C++</b></td><td width="5%"></td><td><center>C-style code maps closely to CPU, higher-level C++ aspects can use RAII, etc., giving <strong>predictability</strong></center></td></tr>
     <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
-    <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>virtual machine (VM), just in time (JIT) compilers w/ type profiling, garbage collection, etc.</center></td></tr>
+    <tr class="fragment"><td><b><center>JS</center></b></td><td width="5%"></td><td><center>virtual machine (VM), just in time (JIT) compilers w/ type profiling, garbage collection, etc.</center></td></tr>
   </table>
   </center>
   <br>
@@ -334,10 +335,10 @@
 </section>
 
 <section>
-  <pre><code>  var HEAP = new ArrayBuffer(32768);
-  var HEAP8 = new Int8Array(HEAP);
-  var HEAP16 = new Int16Array(HEAP);
-  var HEAP32 = new Int32Array(HEAP);
+  <pre><code>  var buffer = new ArrayBuffer(32768);
+  var HEAP8 = new Int8Array(buffer);
+  var HEAP16 = new Int16Array(buffer);
+  var HEAP32 = new Int32Array(buffer);
 
   function mem_access() {
     return HEAP32[HEAP8[100] >> 2];
@@ -403,7 +404,7 @@
 <section>
   <h3><b>Robustness / Stability</b></h3>
   <br>
-  <p>Comparable to native builds with clang+LLVM</p>
+  <p>Comparable to native builds</p>
   <br>
   <p class="fragment">We <strong>fuzz</strong> using <a href="http://embed.cs.utah.edu/csmith/">csmith</a>, not currently aware of any Emscripten-specific bugs</p>
   <br>
@@ -412,7 +413,7 @@
 
 
 <section>
-  <p>Emscripten supports C++ exceptions... differently</p>
+  <p>Emscripten supports <strong>C++ exceptions</strong>... differently</p>
   <pre class="fragment"><code>  // C++
   void func() {
     try {
@@ -443,18 +444,18 @@
   Here are those runtime functions:
   <pre><code>  // JS
   function invoke(ptr) {
+    __thrown__ = 0;
     try {
-      __thrown__ = 0;
       dyn_call(ptr);
     } catch (e) {
       __thrown__ = e;
     }
   }
-  function do_throw(ptr) {
-    throw T;
-  }
   function can_handle(ptr, type) {
-    // call into libcxxabi internals
+    // call into libc++abi internals
+  }
+  function do_throw(ptr) {
+    throw ptr;
   }
 </code></pre>
   <p class="fragment">We implement <b>C++</b> exceptions using <strong>JS</strong> exceptions, JS VM provides stack unwinding</p>
@@ -466,13 +467,12 @@
   <br>
   <p>Recall that we represent memory using a <b>single flat array</b></p>
   <p>Pointers are <b>indexes</b> into the array</p>
-  <pre><code>
-  var HEAP = new Uint8Array(20*1024*1024);
+  <pre><code>  var buffer = new ArrayBuffer(32768);
+  var HEAP8 = new Int8Array(buffer);
   function compiledCode(ptr) {
     HEAP[ptr] = 12; // write to an address
     return HEAP[ptr + 4]; // read from an address
-  }
-  </code></pre>
+  }  </code></pre>
   <p class="fragment">Which is basically how C and C++ see memory: a pointer can point <strong>anywhere</strong> in all of memory</p>
 </section>
 
@@ -484,23 +484,23 @@
 
 <section>
   <p>This isn't just an academic point!</p>
-  <pre><code>
-  // same as before
-  var HEAP = new Uint8Array(20*1024*1024);
+  <pre><code>  // same as before
+  var buffer = new ArrayBuffer(32768);
+  var HEAP8 = new Int8Array(buffer);
   function compiledCode(ptr) {
-    HEAP[ptr] = 12;
-    return HEAP[ptr + 4];
+    HEAP8[ptr] = 12;
+    return HEAP8[ptr + 4];
   }
+  // a new function
   function getInput(array) {
     // array is a NORMAL JavaScript array
     // compiledCode cannot refer to it!
     // must *copy* into the HEAP
-    var buffer = malloc(array.length);
-    HEAP.set(array, buffer);
-    // buffer is now a pointer to a copy of array
-    return compiledCode(buffer);
-  }
-  </code></pre>
+    var copy = malloc(array.length);
+    HEAP8.set(array, copy);
+    // 'copy' is now a pointer to a copy of 'array'
+    return compiledCode(copy);
+  }  </code></pre>
   <p class="fragment">Ideas?</p>
 </section>
 
