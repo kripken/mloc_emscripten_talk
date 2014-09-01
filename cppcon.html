@@ -41,6 +41,21 @@
       }
     </style>
 
+    <style type="text/css">
+    #wrap {
+       width:600px;
+       margin:0 auto;
+    }
+    #left_col {
+       float:left;
+       width:300px;
+    }
+    #right_col {
+       float:right;
+       width:300px;
+    }
+    </style>
+
   </head>
 
   <body>
@@ -256,7 +271,7 @@
   </table>
   </center>
   <br><br>
-  <p>Strict portability prevents some optimizations</p>
+  <p class="fragment">Strict portability prevents some optimizations</p>
 </section>
 
 <section>
@@ -270,8 +285,8 @@
   </table>
   </center>
   <br><br>
-  <p>Applications must ship their own system libraries</p>
-  <p>We "fake" a filesystem to make porting easy</p>
+  <p class="fragment">Applications must ship their own system libraries</p>
+  <p class="fragment">We "fake" a filesystem to make porting easy</p>
 </section>
 
 <section>
@@ -285,21 +300,21 @@
   </table>
   </center>
   <br><br>
-  <p>We build for a 32-bit target, because 64-bit integers cannot all fit in doubles (but 32-bit ones can)</p>
+  <p>We build for a <strong>32-bit</strong> target, because 64-bit integers cannot all fit in doubles (but 32-bit ones can)</p>
 </section>
 
 <section>
-  <h3><b>Performance Model</b></h3>
+  <h3><b>Perf Model</b></h3>
   <br>
   <center>
   <table>
-    <tr><td><b>C++</b></td><td width="5%"></td><td><center>C-style code maps closely to CPU, higher-level C++ aspects can use RAII, etc., giving predictability</center></td></tr>
+    <tr><td><b>C++</b></td><td width="5%"></td><td><center>C-style code maps closely to CPU, higher-level C++ aspects can use RAII, etc., giving <strong>predictability</strong></center></td></tr>
     <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
     <tr><td><b><center>JS</center></b></td><td width="5%"></td><td><center>virtual machine (VM), just in time (JIT) compilers w/ type profiling, garbage collection, etc.</center></td></tr>
   </table>
   </center>
   <br>
-  <p>Yet, we need to be able to run code at reasonable speeds in a predictable way, or else this is pointless...</p>
+  <p class="fragment">But without good and predictable performance, this is pointless...</p>
 </section>
 
 <section>
@@ -308,12 +323,14 @@
   <p class="fragment">Competition &rArr; <b>type-specializing</b> JITs</p>
   <br>
   <p class="fragment">Those are very good at <b>implicitly statically typed</b> code</p>
-  <pre><code>
-  var x = 10;
-  var y = 20;
-  var z = (x + y) | 0; // int32 addition!
+  <pre class="fragment"><code>
+  function add(x, y) {
+    x = x | 0;          // | 0  =>  int32
+    y = y | 0;
+    return (x + y) | 0; // int32 addition!
+  }
   </code></pre>
-  <p class='fragment'>That's what <strong>asm.js</strong> is: a subset of JavaScript where all the operations are easily seen to actually be statically typed</p>
+  <p class='fragment'>That's what <strong>asm.js</strong> is: a subset of JavaScript where all the operations are clearly statically typed</p>
 </section>
 
 <section>
@@ -326,7 +343,7 @@
     return HEAP32[HEAP8[100] >> 2];
   }</code></pre>
   <br>
-  <p><strong>Loads</strong> in C++ become loads in LLVM IR which become <strong>reads</strong> from typed arrays in JS, which become <strong>reads</strong> in machine code</p>
+  <p><strong>Loads</strong> in C++ become <strong>reads</strong> from typed arrays in JS, which become <strong>reads</strong> in machine code</p>
   <br>
   <p class="fragment">Emscripten's <b>memory model</b> is identical to LLVM's, including aliasing, so can use <b>all</b> LLVM opts</p>
 </section>
@@ -349,11 +366,50 @@
 </section>
 
 <section>
-  <p>Overall, performance is around 67% of native speed, and still improving</p>
-  <p>More than enough for many applications already</p>
-  <p>Work is underway in the standards bodies for SIMD</p>
-  <p>However, some specific perf issues: setjmp, C++ exceptions</p>
+  <p>Overall, performance is around <strong>50-67%</strong> of native speed, and still improving</p>
+  <br>
+  <p class="fragment">Work is underway in the standards bodies for <b>SIMD</b>, other missing pieces</p>
+  <br>
+  <p class="fragment">Already fast enough for many applications</p>
 </section>
+
+<section>
+  <p>Game industry have been the early adopters here</p>
+  <br>
+  <div id="wrap">
+    <div id="left_col">
+      <p><b>Unity</b></p>
+      <p><b>Unigine</b></p>
+      <p><b><!--a href="http://minko.io/"-->Minko<!--/a--></b></p>
+      <p><b>Torque 2D</b></p>
+    </div>
+    <div id="right_col">
+      <p><b>Unreal</b></p>
+      <p><b>Nebula3</b></p>
+      <p><b>Cocos2D-X</b></p>
+      <p><b>Godot</b></p>
+    </div>
+    <p>etc.</p>
+  </div>
+  <br>
+  <p class="fragment">Products are shipping</p>
+</section>
+
+<section>
+  screenshots TODO
+  <p><iframe width="840" height="472" src="http//www.youtube.com/embed/cWIRUaR9G4w" frameborder="0" allowfullscreen></iframe></p>
+</section>
+
+<section>
+  <h3><b>Robustness / Stability</b></h3>
+  <br>
+  <p>Comparable to native builds with clang+LLVM</p>
+  <br>
+  <p class="fragment">We <strong>fuzz</strong> using <a href="http://embed.cs.utah.edu/csmith/">csmith</a>, not currently aware of any Emscripten-specific bugs</p>
+  <br>
+  <p class="fragment">While there are differences between browsers, having a <b>single build</b> for all of them reduces overall porting work</p>
+</section>
+
 
 <section>
   <p>Emscripten supports exceptions... differently:</p>
@@ -460,20 +516,12 @@
   <p><b>Questions?</b></p>
 </section>
 
-<section>
-  <h3><b>Example Ports</b></h3>
-  <br>
-  <p>Unity, Epic, etc. - multimillion-line C++ codebases work fine</p>
-  <p>Products are shipping</p>
-
-
-  <p>We have some JavaScript-specific optimizations that we run on a JavaScript AST</p>
-</section>
 
 <section>
   <h3><b>Emscripten details</b></h3>
   <br>
-  <p>Robustness is comparable to native builds with clang+LLVM: we can run the csmith fuzzer without finding new Emscripten-specific issues</p>
+code size discussion after perf
+  <p>We have some JavaScript-specific optimizations that we run on a JavaScript AST</p>
 </section>
 
       </div>
