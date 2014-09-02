@@ -68,10 +68,9 @@
 <section>
   <h2><b style="color: #f00">Emscripten</b> <b>and</b> <b style="color: #f00">asm.js</b><b>:<br>C++'s role in<br>the modern web</b></h2>
   <br>
-  <h3>Alon Zakai / Mozilla</h3>
   <br>
-  <!--p>(these slides just tweeted at <a href="http://twitter.com/#!/kripken">@kripken</a>)</p-->
-  <p><a href="http://twitter.com/#!/kripken">@kripken</a></p>
+  <h3>Alon Zakai / Mozilla</h3>
+  <p>(these slides just tweeted at <a href="http://twitter.com/#!/kripken">@kripken</a>)</p>
 </section>
 
 <section>
@@ -96,37 +95,29 @@
   </tr></table>
   <br>
   <p class="fragment">No C++ there :(</p>
-  <p class="fragment">Maybe we can run it in a <b>non</b>-standards-compliant way, using a plugin..?</p>
 </section>
 
 <section>
-  <p><strong>History</strong> of C++ in browser plugins</p>
+  <p>Are browser <b>plugins</b> (ActiveX, Flash/Alchemy, PNaCl/PPAPI) a solution?</p>
   <br>
-  <p class="fragment"><b>Unstandardized, unportable, unsafe</b>: Microsoft ActiveX, miscellaneous specific plugins (e.g. QuakeLive, Unity)</p>
+  <p class="fragment">Plugins have <strong>failed</strong> to reach significant adoption or standardization, for both <b>technical</b> and <b>non-technical</b> reasons</p>
   <br>
-  <p class="fragment"><b>Unstandardized, unportable</b>: Google Native Client (NaCl)+Pepper (PPAPI)</p>
-  <br>
-  <p class="fragment"><b>Unstandardized</b>: Adobe Alchemy (C++ &rArr; Flash), Google Portable NaCl (PNaCl)+PPAPI</p>
-</section>
-
-<section>
-  <p>All those plugins have failed to reach significant adoption or standardization, for both <b>technical</b> and <b>non-technical</b> reasons</p>
-  <br>
-  <p class="fragment">And plugins in general are on the way out - web browsers are <b>dropping support</b> (no Flash on iPhones, etc.)</p>
+  <p class="fragment">And plugins in general are on the way out - web browsers are <b>dropping support</b> (no plugins on the iPhone/iPad, etc.)</p>
   <br>
   <p class="fragment">This is a <strong>good</strong> trend - standardization is why websites work on both your laptop and your phone</p>
 </section>
 
 <section>
   <p>...where does that leave C++, then?</p>
+  <br>
   <p class="fragment">Well, JavaScript <b>is</b> already standardized, so how about if we... <strong>compile</strong> C++ into that?</p>
   <br>
   <p class="fragment">This has happened with many languages, in fact:
     <ul class="fragment">
-      <li>Java</li>
-      <li>C#</li>
-      <li>Python</li>
-      <li>New languages like TypeScript</li>
+      <li><b>Java</b></li>
+      <li><b>C#</b></li>
+      <li><b>Python</b></li>
+      <li>New languages like <b>TypeScript</b></li>
       <li>etc.</li>
     </ul>
   </p>
@@ -135,8 +126,8 @@
 <section>
   <h3><b>Compiling to JavaScript?</b></h3>
   <br>
-  <p>JavaScript is a dynamic scripting language</p>
-  <pre><code>
+  <p class="fragment">JavaScript is a <strong>dynamic scripting language</strong></p>
+  <pre class="fragment"><code>
   var x = 42;
   var y = "a string";
   var z = x + y; // z = "42a string"
@@ -159,7 +150,8 @@
 </section-->
 
 <section>
-  <p>Compiling to a <b>native executable</b>:</p>
+  <p>Reminder of compiling to a <b>native executable</b>:</p>
+  <br>
   <pre><code>  // hello.cpp
   #include &lt;stdio.h&gt;
   int main() {
@@ -204,7 +196,7 @@
 <section>
   <h3><b>Other libraries</b></h3>
   <br>
-  <p>Hybrid libc: <b>musl</b> + plus parts written in JavaScript</p>
+  <p>Hybrid libc: <b>musl</b> + parts written in JavaScript</p>
   <br>
   <p>Implementations of <b>SDL</b>, <b>OpenGL</b>, etc., using Web APIs</p>
 </section>
@@ -404,9 +396,7 @@
 <section>
   <h3><b>Robustness / Stability</b></h3>
   <br>
-  <p>Comparable to native builds</p>
-  <br>
-  <p class="fragment">We <strong>fuzz</strong> using <a href="http://embed.cs.utah.edu/csmith/">csmith</a>, not currently aware of any Emscripten-specific bugs</p>
+  <p class="fragment">We <strong>fuzz</strong> using <a href="http://embed.cs.utah.edu/csmith/">csmith</a>; not currently aware of any Emscripten-specific bugs</p>
   <br>
   <p class="fragment">While there are differences between browsers, having a <b>single build</b> for all of them reduces overall porting work</p>
 </section>
@@ -464,7 +454,7 @@
   }
 </code></pre>
   <p class="fragment">We implement <b>C++</b> exceptions using <strong>JS</strong> exceptions, JS VM provides stack unwinding</p>
-  <p class="fragment">Performance therefore depends on the speed of JS exceptions, which varies</p>
+  <p class="fragment">Perf depends on the speed of JS exceptions, which varies</p>
 </section>
 
 <section>
@@ -510,7 +500,7 @@
 </section>
 
 <section>
-    <a href="http://emscripten.org"><img src="emscripten_switch_logo.png" height="100px"></a>
+    <a href="http://emscripten.org"><img src="emscripten_switch_logo.png" height="150px"></a>
   <br>
   <p class="fragment">We can <strong>compile C++ into JavaScript</strong> and run it on the web, in a <b>fast</b> and <b>standards-compliant</b> way</p>
   <br>
