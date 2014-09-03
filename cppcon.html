@@ -227,6 +227,23 @@
 </section>
 
 <section>
+  <pre><code>
+  // JavaScript
+  function func(p) {
+    var r = HEAP[p];
+    return calc(r, r << 16);
+  }
+
+</code></pre>
+  <br>
+  <p>As this code we just saw shows, we implement <b>C++</b> functions using <strong>JS</strong> functions</p>
+  <br>
+  <p>The JS call stack is <b>managed</b> by the VM, and unobservable/unmodifiable by executing code</p>
+  <br>
+  <p>Compiled C++ is therefore <strong>immune</strong> to some types of buffer overflow attacks</p>
+</section>
+
+<section>
   <p>Another example:</p>
   <pre><code contenteditable>  float array[5000]; // C++
   int main() {
@@ -280,6 +297,20 @@
   <p class="fragment">Applications must ship their own system libraries</p>
   <br>
   <p class="fragment">We "fake" a filesystem to make porting easy</p>
+</section>
+
+<section>
+  <h3><b>Undefined Behavior</b></h3>
+  <br>
+  <center>
+  <table>
+    <tr><td><b>C++</b></td><td width="5%"></td><td><center>Has undefined behavior, compiler can use it to optimize</center></td></tr>
+    <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
+    <tr class="fragment"><td><b><center>JS</center></b></td><td width="5%"></td><td><center>No undefined behavior</center></td></tr>
+  </table>
+  </center>
+  <br><br>
+  <p class="fragment">We can optimize using undefined behavior during compilation, but final JS will have fully defined behavior</p>
 </section>
 
 <section>
