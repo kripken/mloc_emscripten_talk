@@ -218,7 +218,7 @@
   <pre><code>
   // JavaScript
   function func(p) {
-    var r = HEAP[p];
+    var r = HEAP32[p >> 2];
     return calc(r, r << 16);
   }
 
@@ -236,12 +236,12 @@
   }</code></pre>
   <p><b>&rArr;</b> Emscripten <b>&rArr;</b></p>
   <pre><code contenteditable>  var buffer = new ArrayBuffer(32768); // JavaScript
-  var g = new Float32Array(buffer);
+  var HEAPF32 = new Float32Array(buffer);
   function main() {
     var a = 0, b = 0;
     do {
       a = 8 + (b << 2) | 0;
-      g[a >> 2] = +g[a >> 2] + 1.0;
+      HEAPF32[a >> 2] = +HEAPF32[a >> 2] + 1.0;
       b = b + 1 | 0;
     } while ((b | 0) < 5000);
   }</code></pre>
