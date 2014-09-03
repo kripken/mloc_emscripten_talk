@@ -284,22 +284,6 @@
 </section>
 
 <section>
-  <h3><b>Sandboxing</b></h3>
-  <br>
-  <center>
-  <table>
-    <tr><td><b>C++</b></td><td width="5%"></td><td><center>Applications can use the system libs, access the local filesystem, etc.</center></td></tr>
-    <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
-    <tr class="fragment"><td><b><center>JS</center></b></td><td width="5%"></td><td><center>Sandboxed, cannot see the machine it is running on</center></td></tr>
-  </table>
-  </center>
-  <br><br>
-  <p class="fragment">Applications must ship their own system libraries</p>
-  <br>
-  <p class="fragment">We "fake" a filesystem to make porting easy</p>
-</section>
-
-<section>
   <h3><b>Undefined Behavior</b></h3>
   <br>
   <center>
@@ -314,24 +298,40 @@
   <center>
   <table class="fragment" style="background-color: black; padding: 1em; box-shadow: 8px 8px 8px rgba(0,0,0,0.6)">
     <tr>
+      <td style="color: #faa;"><center>dev machine</center></td>
+      <td><center>&nbsp;&nbsp;<b>|</b>&nbsp;&nbsp;</center></td>
+      <td style="color: #faa;"><center>user machine</center></td>
+    </tr>
+    <tr height="15"></tr>
+    <tr>
       <td style="color: #aaf;"><center>C++&nbsp;&nbsp;&rArr;&nbsp;&nbsp;JS</center></td>
       <td><center>&nbsp;&nbsp;<b>|</b>&nbsp;&nbsp;</center></td>
       <td style="color: #aaf;"><center>JS&nbsp;&nbsp;&rArr;&nbsp;&nbsp;Executable</center></td>
     </tr>
     <tr height="15"></tr>
     <tr>
-      <td style="color: #faa;"><center>Dev machine</center></td>
-      <td><center>&nbsp;&nbsp;<b>|</b>&nbsp;&nbsp;</center></td>
-      <td style="color: #faa;"><center>User's machine</center></td>
-    </tr>
-    <tr height="15"></tr>
-    <tr>
       <td style="color: #afa;"><center></center></td>
       <td><center>&nbsp;&nbsp;<b>|</b>&nbsp;&nbsp;</center></td>
-      <td style="color: #afa;"><center><b style="color: #afa">No</b> undefined behavior</center></td>
+      <td style="color: #afa;"><center><b style="color: #afa">NO</b> undefined behavior</center></td>
     </tr>
   </table>
   </center>
+</section>
+
+<section>
+  <h3><b>Sandboxing</b></h3>
+  <br>
+  <center>
+  <table>
+    <tr><td><b>C++</b></td><td width="5%"></td><td><center>Applications can use the system libs, access the local filesystem, etc.</center></td></tr>
+    <tr><td><hr></td><td width="5%"></td><td><hr></td></tr>
+    <tr class="fragment"><td><b><center>JS</center></b></td><td width="5%"></td><td><center>Sandboxed, cannot see the machine it is running on</center></td></tr>
+  </table>
+  </center>
+  <br><br>
+  <p class="fragment">Applications must ship their own system libraries</p>
+  <br>
+  <p class="fragment">We "fake" a filesystem to make porting easy</p>
 </section>
 
 <section>
