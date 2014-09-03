@@ -397,7 +397,7 @@
     return HEAP32[HEAP8[100] >> 2];
   }</code></pre>
   <br>
-  <p><strong>Loads</strong> in C++ become <strong>reads</strong> from typed arrays in JS, which become <strong>reads</strong> in machine code</p>
+  <p><strong>Loads</strong> in C++ become <b>reads</b> from typed arrays in JS, which become <strong>loads</strong> in machine code</p>
   <br>
   <p class="fragment">Emscripten's <b>memory model</b> is identical to LLVM's, including aliasing, so can use <b>all</b> LLVM opts</p>
 </section>
