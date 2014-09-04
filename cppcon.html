@@ -150,7 +150,9 @@
 </section-->
 
 <section>
-  <p>Reminder of compiling to a <b>native executable</b>:</p>
+  <p>But the usage is actually very conventional!</p>
+  <br>
+  <p>First, a reminder of compiling to a <b>native executable</b>:</p>
   <br>
   <pre><code>  // hello.cpp
   #include &lt;stdio.h&gt;
@@ -158,15 +160,15 @@
     printf("hello, world!\n");
   }  </code></pre>
   <br>
-  <pre><code>  $ gcc hello.cpp -o hello
-  $ ./hello
+  <pre><code>  $ gcc hello.cpp -o a.out
+  $ ./a.out
   hello, world!</code></pre>
 </section>
 
 <section>
   <p>Compiling to JS using <b>Emscripten</b>:</p>
-  <pre class="fragment"><code>  $ emcc hello.cpp -o hello.html
-  $ firefox hello.html  </code></pre>
+  <pre class="fragment"><code>  $ emcc hello.cpp -o a.html
+  $ firefox a.html  </code></pre>
   <br>
   <p class="fragment">Here's the output, running in an iframe right here on this web page:</p>
   <iframe class="fragment" src="hello/a.html" width="80%" scrolling=no></iframe>
@@ -240,9 +242,9 @@
   function main() {
     var a = 0, b = 0;
     do {
-      a = 8 + (b << 2) | 0;
+      a = (8 + (b << 2)) | 0;
       HEAPF32[a >> 2] = +HEAPF32[a >> 2] + 1.0;
-      b = b + 1 | 0;
+      b = (b + 1) | 0;
     } while ((b | 0) < 5000);
   }</code></pre>
   <p class="fragment">This "style" of code is a subset of JS called <b><a href="http://asmjs.org">asm.js</a></b>, which we'll discuss more later</p>
@@ -318,11 +320,11 @@
 </section>
 
 <section>
-  <p>JS VM sandboxing helps in some unexpected ways!</p>
+  <p>JS sandboxing helps in some unexpected ways!</p>
   <br>
   <p>Remember that we implement <b>C++</b> functions using <strong>JS</strong> functions:</p>
   <br>
-  <pre><code>  // Simple C function compiled to JavaScript
+  <pre><code>  // Simple C++ function compiled to JavaScript
   function func(p) {
     var r = HEAP[p];
     return calc(r, r << 16);
