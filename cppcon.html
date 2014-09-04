@@ -255,7 +255,7 @@
 </section>
 
 <section>
-  <h3><b>Build Portability</b></h3>
+  <h3><b>Builds</b></h3>
   <br>
   <center>
   <table>
@@ -265,7 +265,7 @@
   </table>
   </center>
   <br><br>
-  <p class="fragment">Strict portability prevents some optimizations</p>
+  <p class="fragment">Single build prevents some optimizations</p>
 </section>
 
 <section>
@@ -304,7 +304,7 @@
 </section>
 
 <section>
-  <h3><b>Sandboxing</b></h3>
+  <h3><b>Security</b></h3>
   <br>
   <center>
   <table>
@@ -401,7 +401,7 @@
   <br>
   <p><strong>Loads</strong> in C++ become <b>reads</b> from typed arrays in JS, which become <strong>loads</strong> in machine code</p>
   <br>
-  <p class="fragment">Emscripten's <b>memory model</b> is identical to LLVM's, including aliasing, so can use <b>all</b> LLVM opts</p>
+  <p class="fragment">Emscripten's <b>memory representation/layout</b> is identical to LLVM's, including aliasing, so can use <b>all</b> LLVM opts</p>
 </section>
 
 <section>
@@ -424,7 +424,7 @@
 <section>
   <p>Overall, performance is around <strong>50-67%</strong> of native speed, and still improving</p>
   <br>
-  <p class="fragment">Work is underway in the standards bodies for <b>SIMD</b>, other missing pieces</p>
+  <p class="fragment">Missing pieces remain, like <b>SIMD</b>, but work is underway in the standards bodies</p>
   <br>
   <p class="fragment">Already fast enough for many applications</p>
 </section>
@@ -566,18 +566,16 @@
 </section>
 
 <section>
-    <a href="http://emscripten.org"><img src="emscripten_switch_logo.png" height="150px"></a>
+  <p>We can <strong>compile C++ into JavaScript</strong> and run it on the web, in a <b>fast</b> and <b>standards-compliant</b> way</p>
   <br>
-  <p class="fragment">We can <strong>compile C++ into JavaScript</strong> and run it on the web, in a <b>fast</b> and <b>standards-compliant</b> way</p>
-  <br>
-  <p class="fragment">JavaScript is a weird compiler target</p>
+  <p class="fragment">JavaScript is a weird - but fun! - compiler target</p>
   <br>
   <div class="fragment">
     <hr>
-    <br>
-    <p><b style="color: #c11">Thank you for listening!</b></p>
-    <br>
-    <p><b>Questions?</b></p>
+    <p><b>That's it! Questions?</b></p>
+    <hr>
+    <a href="http://emscripten.org"><img src="emscripten_switch_logo.png" height="150px"></a>
+    <center><a href="http://emscripten.org">http://emscripten.org</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://asmjs.org">http://asmjs.org</a></center>
   </div>
 </section>
 
