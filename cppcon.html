@@ -150,7 +150,7 @@
 </section-->
 
 <section>
-  <p>But the usage is actually very conventional!</p>
+  <p>But from the developer's point of view, compiling to JavaScript can be very conventional!</p>
   <br>
   <p>First, a reminder of compiling to a <b>native executable</b>:</p>
   <br>
@@ -168,7 +168,7 @@
 <section>
   <p>Compiling to JS using <b>Emscripten</b>:</p>
   <pre class="fragment"><code>  $ emcc hello.cpp -o a.html
-  $ firefox a.html  </code></pre>
+  $ firefox a.html # or any other browser</code></pre>
   <br>
   <p class="fragment">Here's the output, running in an iframe right here on this web page:</p>
   <iframe class="fragment" src="hello/a.html" width="80%" scrolling=no></iframe>
@@ -426,11 +426,11 @@
   <br>
   <p class="fragment">Missing pieces remain, like <b>SIMD</b>, but work is underway in the standards bodies</p>
   <br>
-  <p class="fragment">Already fast enough for many applications, even performance sensitive ones like games</p>
+  <p class="fragment">Already fast enough for many applications, even performance sensitive ones like <strong>games</strong></p>
 </section>
 
 <section>
-  <p>In fact, the game industry has been an early adopter</p>
+  <p>In fact, the game industry has been an early adopter of compiling C++ to JavaScript, using Emscripten:</p>
   <br>
   <div id="wrap">
     <div id="left_col">
