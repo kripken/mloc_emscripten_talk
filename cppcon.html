@@ -469,9 +469,9 @@
 </section>
 
 <section>
-  <p>A lot of what we've talked about is equally true for <b>C</b> as for <b>C++</b></p>
+  <p>Emscripten supports practically all C++ features, because <b>clang</b> does</p>
   <br>
-  <p>There are C++-specific implementation issues as well, such as <strong>exception handling</strong></p>
+  <p class="fragment">But <strong>exception handling</strong> isn't something we just get for free</p>
 </section>
 
 <section>
@@ -521,7 +521,26 @@
   }
 </code></pre>
   <p class="fragment">We implement <b>C++</b> exceptions using <strong>JS</strong> exceptions, JS VM provides stack unwinding</p>
-  <p class="fragment">Perf depends on the speed of JS exceptions, which varies</p>
+  <br>
+  <p class="fragment">Perf depends on the speed of JS exceptions</p>
+</section>
+
+<section>
+  <p>We can <strong>compile C++ into JavaScript</strong> and run it on the web, in a <b>fast</b> and <b>standards-compliant</b> way</p>
+  <br>
+  <p class="fragment">JavaScript is a weird - but <strong>fun</strong>! - compiler target</p>
+  <br>
+  <div class="fragment">
+    <hr>
+    <p><b>That's it! Questions?</b></p>
+    <hr>
+    <a href="http://emscripten.org"><img src="emscripten_switch_logo.png" height="100px"></a>
+    <p>will tweet link to slides <a href="http://twitter.com/#!/kripken">@kripken</a></p>
+    <b><center><a href="http://emscripten.org">http://emscripten.org</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://asmjs.org">http://asmjs.org</a></center></b>
+  </div>
+</section>
+
+<section>
 </section>
 
 <section>
@@ -564,21 +583,6 @@
     return compiledCode(copy);
   }  </code></pre>
   <p class="fragment">Ideas?</p>
-</section>
-
-<section>
-  <p>We can <strong>compile C++ into JavaScript</strong> and run it on the web, in a <b>fast</b> and <b>standards-compliant</b> way</p>
-  <br>
-  <p class="fragment">JavaScript is a weird - but <strong>fun</strong>! - compiler target</p>
-  <br>
-  <div class="fragment">
-    <hr>
-    <p><b>That's it! Questions?</b></p>
-    <hr>
-    <a href="http://emscripten.org"><img src="emscripten_switch_logo.png" height="100px"></a>
-    <p>slides tweeted: <a href="http://twitter.com/#!/kripken">@kripken</a></p>
-    <b><center><a href="http://emscripten.org">http://emscripten.org</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://asmjs.org">http://asmjs.org</a></center></b>
-  </div>
 </section>
 
       </div>
