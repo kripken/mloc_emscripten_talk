@@ -155,25 +155,25 @@
   <p>First, a reminder of compiling to a <b>native executable</b>:</p>
   <br>
   <pre><code>  // hello.cpp
-  #include &lt;stdio.h&gt;
+  #include &lt;iostream&gt;
   int main() {
-    printf("hello, world!\n");
+    std::cout << "hello, world!" << std::endl;
   }  </code></pre>
   <br>
-  <pre><code>  $ gcc hello.cpp -o a.out
+  <pre><code>  $ g++ hello.cpp -o a.out
   $ ./a.out
   hello, world!</code></pre>
 </section>
 
 <section>
-  <p>Compiling to JS using <b>Emscripten</b>:</p>
-  <pre class="fragment"><code>  $ emcc hello.cpp -o a.html
+  <p>Compiling to JavaScript using <b>Emscripten</b>:</p>
+  <pre class="fragment"><code>  $ em++ hello.cpp -o a.html
   $ firefox a.html # or any other browser</code></pre>
   <br>
   <p class="fragment">Here's the output, running in an iframe right here on this web page:</p>
   <iframe class="fragment" src="hello/a.html" width="80%" scrolling=no></iframe>
   <br><br>
-  <p class="fragment"><strong>emcc</strong> is a drop-in replacement for a native compiler, workflow is almost identical</p>
+  <p class="fragment"><strong>emcc, em++</strong> are drop-in replacements for a native C or C++ compiler, workflow is almost identical</p>
 </section>
 
 <section>
@@ -390,6 +390,7 @@
 </section>
 
 <section>
+  <p>Memory access</p>
   <pre><code>  var buffer = new ArrayBuffer(32768);
   var HEAP8 = new Int8Array(buffer);
   var HEAP16 = new Int16Array(buffer);
